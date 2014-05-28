@@ -38,7 +38,8 @@
 	<col width="160px"><col width="640px">
   <tr>
 	<td>
-		<canvas id="canvas" width="320px" height="240px">please upgrade your browser</canvas>
+		<canvas id="canvas_one" width="320px" height="240px">please upgrade your browser</canvas>
+		<canvas id="canvas_two" width="320px" height="240px">please upgrade your browser</canvas>
 	</td>
 	<td><div id="blocklyDiv" style="width:640px;height: 480px"></div></td>
   </tr>
@@ -214,31 +215,55 @@
     <category name="Variables" custom="VARIABLE"></category>
     <category name="Functions" custom="PROCEDURE"></category>
 	<category name="Media Comp">
-		<block type="mediacomp_invertpixel">
-			<value name="X">
-			<block type="math_number"><field name="NUM">10</field></block>
-			</value>
-			<value name="Y">
-			<block type="math_number"><field name="NUM">10</field></block>
-			</value>
+		<block type="mediacomp_getcanvas"></block>
+		<block type="mediacomp_invertcanvas">
+			
 		</block>
-		<block type="mediacomp_invertcanvas"></block>
 	</category>
   </xml>
 
   <script>
+	var canvases = [ "one", "two" ];
+	var images = ["pokemon.png", "cat.png"];
+	var path = "images/";
+	
+	function initCanvases(){
+		for (var i = 0; i < canvases.length; i++){
+			var c_name = "canvas_" + canvases[i];
+			var ctx_name = "ctx_" + canvases[i];
+			Blockly.JavaScript.addReservedWords("canvas_"+canvases[i]);
+			Blockly.JavaScript.addReservedWords("ctx_"+canvases[i]);
+			
+			var code = "window." + c_name + " = document.getElementById(\"" + c_name + "\");\n";
+			code += "window." + ctx_name + " = " + c_name + ".getContext(\"2d\");\n";
+			code += ctx_name + ".fillStyle = \"#ffffff\";\n";
+			code += ctx_name + ".fillRect(0, 0, " + c_name + ".width, " + c_name + ".height);"
+			
+			console.log(code);
+			try{ eval(code); }
+			catch(e){ alert(e); }
+			
+			var c_obj = {ctx: eval(ctx_name), img: img};
+			var img = new Image;
+			img.onload = function(){
+				console.log(this.ctx);
+				this.ctx.drawImage(this.img,0,0);
+			}.bind(c_obj);
+			img.src = path + images[i];
+		}
+	}
+  
+	window.onload = function(){ initCanvases();}
+  
     Blockly.inject(document.getElementById('blocklyDiv'),
         {path: 'blockly/', toolbox: document.getElementById('toolbox')});
 		
-	function RunCode(){
-		var canvas = $("canvas");
-		var ctx = canvas.getContext("2d");
-		
+	function RunCode(){		
 		Blockly.JavaScript.addReservedWords('code');
 		var code = Blockly.JavaScript.workspaceToCode();
 		try {
-			eval(code);
 			//console.log(code);
+			eval(code);
 		} catch (e) {
 			alert(e);
 		}

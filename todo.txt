@@ -1,0 +1,3 @@
+1. getcanvaswidth/height
+2. overlay a color on the canvas at an opacity
+3. remove a color from canvas
