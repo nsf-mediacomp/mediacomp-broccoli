@@ -9,7 +9,7 @@ function drawCircle(ctx,color,x,y,r){
     ctx.strokeStyle = color;
     ctx.beginPath();
     ctx.arc(x,y,r,0,2*Math.PI);
-    ctx.stroke()
+    ctx.stroke();
 }
 function fillCircle(ctx,color,x,y,r){
     ctx.fillStyle = color;

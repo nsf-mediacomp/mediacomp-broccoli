@@ -1,8 +1,8 @@
 Blockly.Blocks['mediacomp_getcanvas'] = {
 	init: function() {
     var CANVI =
-        [["canvas 1", 'canvas_one'],
-         ["canvas 2", 'canvas_two']];
+        [["canvas 1", '0'],
+         ["canvas 2", '1']];
     this.setHelpUrl("http://www.example.com/");
     this.setColour(0);
     this.setOutput(true, "Canvas");
@@ -17,11 +17,43 @@ Blockly.Blocks['mediacomp_invertcanvas'] = {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(0);
     this.appendDummyInput()
-        .appendField("Invert");
+        .appendField("invert");
 	this.appendValueInput("CANVAS")
 		.setCheck("Canvas")
 		.setAlign(Blockly.ALIGN_CENTRE);
     this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Invert the color of the entire canvas');
+  }
+};
+
+Blockly.Blocks['mediacomp_setpixel'] = {
+	init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(0);
+    
+    this.appendValueInput('CANVAS')
+        .setCheck('Canvas')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("set pixel")
+        .appendField("on canvas");
+    
+    this.appendValueInput('X')
+        .setCheck('Number')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("x");
+    
+    this.appendValueInput('Y')
+        .setCheck('Number')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("y");
+        
+    this.appendValueInput('COLOUR')
+        .setCheck('Colour')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("colour");
+        
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('Invert the color of the entire canvas');
