@@ -59,3 +59,16 @@ Blockly.Blocks['mediacomp_setpixel'] = {
     this.setTooltip('Invert the color of the entire canvas');
   }
 };
+
+Blockly.Blocks['mediacomp_PARTYHARD'] = {
+ init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(0);
+    this.appendDummyInput()
+        .appendField("PARTY HARD");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('PARTY HARD');
+ }
+};

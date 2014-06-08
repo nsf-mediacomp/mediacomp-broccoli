@@ -58,3 +58,19 @@ Blockly.JavaScript['mediacomp_setpixel'] = function(block) {
   
   return code;
 };
+
+Blockly.JavaScript['mediacomp_PARTYHARD'] = function(block) {
+    var i = Blockly.JavaScript.variableDB_.getDistinctName('count', Blockly.Variables.NAME_TYPE);
+    var j = Blockly.JavaScript.variableDB_.getDistinctName('count', Blockly.Variables.NAME_TYPE);
+    var c = Blockly.JavaScript.variableDB_.getDistinctName('rand_colour', Blockly.Variables.NAME_TYPE);
+    var ctx_id = Blockly.JavaScript.variableDB_.getDistinctName('ctx_id', Blockly.Variables.NAME_TYPE);
+    
+    var code = "var " + ctx_id + " = ImageEdit.getRandomId();\n" +
+    "for(var "+i+" = 0; "+i+" < ImageEdit.getWidth(" + ctx_id + "); ++"+i+"){\n" +
+    "for(var "+j+"=0; "+j+" < ImageEdit.getHeight(" + ctx_id + "); ++"+j+"){\n" + 
+    "var "+c+" = '#' + ('00000' + Math.floor(Math.random() * Math.pow(2, 24)).toString(16)).substr(-6);\n" + 
+    "ImageEdit.setPixel(" + ctx_id + ", "+i+", "+j+", "+c+"); \n" +
+    "}\n" +
+    "}\n";
+    return code;
+};

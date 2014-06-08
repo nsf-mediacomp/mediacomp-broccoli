@@ -7,7 +7,24 @@ function Drawr(ctxs){
 
 Drawr.prototype.getCanvas = function(id){
     // actually return ctx but don't tell anyone
-    return this.ctxs[id];
+    if(typeof id === "undefined"){ // TODO: maybe revert this
+        var random_id = Math.floor(Math.random()*this.ctxs.length);
+        return this.ctxs[random_id];
+    }else{
+        return this.ctxs[id];
+    }
+}
+
+Drawr.prototype.getRandomId = function(){
+    return Math.floor(Math.random()*this.ctxs.length);
+}
+
+Drawr.prototype.getWidth = function(id){
+    return this.ctxs[id].canvas.width;
+}
+
+Drawr.prototype.getHeight = function(id){
+    return this.ctxs[id].canvas.height;
 }
 
 Drawr.prototype.invertCanvas = function(id){
