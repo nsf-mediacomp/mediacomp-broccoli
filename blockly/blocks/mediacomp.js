@@ -72,3 +72,30 @@ Blockly.Blocks['mediacomp_PARTYHARD'] = {
     this.setTooltip('PARTY HARD');
  }
 };
+
+
+Blockly.Blocks['colour_hsv'] = {
+  /**
+   * Block for composing a colour from HSV components.
+   * @this Blockly.Block
+   */
+  init: function() {
+    this.setHelpUrl(Blockly.Msg.COLOUR_RGB_HELPURL);
+    this.setColour(20);
+    this.appendValueInput('HUE')
+        .setCheck('Number')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.COLOUR_HSV_TITLE)
+        .appendField(Blockly.Msg.COLOUR_HSV_HUE);
+    this.appendValueInput('SATURATION')
+        .setCheck('Number')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.COLOUR_HSV_SATURATION);
+    this.appendValueInput('VALUE')
+        .setCheck('Number')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.COLOUR_HSV_VALUE);
+    this.setOutput(true, 'Colour');
+    this.setTooltip(Blockly.Msg.COLOUR_HSV_TOOLTIP);
+  }
+};

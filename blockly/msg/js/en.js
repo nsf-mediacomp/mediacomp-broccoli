@@ -29,6 +29,13 @@ Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.htm
 Blockly.Msg.COLOUR_RGB_RED = "red";
 Blockly.Msg.COLOUR_RGB_TITLE = "colour with";
 Blockly.Msg.COLOUR_RGB_TOOLTIP = "Create a colour with the specified amount of red, green, and blue.  All values must be between 0 and 100.";
+Blockly.Msg.COLOUR_HSV_HELPURL = 'http://en.wikipedia.org/wiki/HSL_and_HSV';
+Blockly.Msg.COLOUR_HSV_TITLE = 'colour with';
+Blockly.Msg.COLOUR_HSV_HUE = 'hue';
+Blockly.Msg.COLOUR_HSV_SATURATION = 'saturation';
+Blockly.Msg.COLOUR_HSV_VALUE = 'value';
+Blockly.Msg.COLOUR_HSV_TOOLTIP = 'Create a colour with the specified hue, saturation,\n' +
+    'and value.  All values must be between 0 and 100.';
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "break out of loop";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "continue with next iteration of loop";

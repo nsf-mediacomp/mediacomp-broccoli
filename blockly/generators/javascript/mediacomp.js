@@ -20,26 +20,6 @@ Blockly.JavaScript['mediacomp_getcanvas'] = function(block) {
   return [c_id, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-/*Blockly.JavaScript['mediacomp_invertcanvas'] = function(block) {  
-  var ctx_id = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-
-  var imgdata_var = Blockly.JavaScript.variableDB_.getDistinctName('imgdata', Blockly.Variables.NAME_TYPE);
-  var cv = Blockly.JavaScript.variableDB_.getDistinctName('count', Blockly.Variables.NAME_TYPE);
-  var ctx_var = Blockly.JavaScript.variableDB_.getDistinctName('ctx', Blockly.Variables.NAME_TYPE);
-  
-  var code = 	"var "+ctx_var+" = ImageEdit.getCanvas(" +ctx_id + ");\n" + 
-                "var "+ imgdata_var +" = " +
-				ctx_var + ".getImageData(0, 0, "+ctx_var+".canvas.width, "+ctx_var+".canvas.height);\n" +
-				"for (var " + cv + " = 0; " + cv + " < " + imgdata_var + ".data.length; " + cv + "+= 4){\n\t" + 
-				imgdata_var + ".data[" + cv + "] = 255 - " + imgdata_var + ".data[" + cv + "];\n\t" + 
-				imgdata_var + ".data[" + cv + "+1] = 255 - " + imgdata_var + ".data[" + cv + "+1];\n\t" +
-				imgdata_var + ".data[" + cv + "+2] = 255 - " + imgdata_var + ".data[" + cv + "+2];\n\t" + 
-				imgdata_var + ".data[" + cv + "+3] = 255;\n" +
-				"}\n" +
-				ctx_var + ".putImageData(" + imgdata_var + ", 0, 0);\n";
-  return code;
-};*/
-
 Blockly.JavaScript['mediacomp_invertcanvas'] = function(block) {  
   var ctx_id = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
   
@@ -73,4 +53,29 @@ Blockly.JavaScript['mediacomp_PARTYHARD'] = function(block) {
     "}\n" +
     "}\n";
     return code;
+};
+
+Blockly.JavaScript['colour_hsv'] = function(block) {
+  // Compose a colour from RGB components expressed as percentages.
+  var hue = Blockly.JavaScript.valueToCode(block, 'HUE',
+      Blockly.JavaScript.ORDER_COMMA) || 0;
+  var saturation = Blockly.JavaScript.valueToCode(block, 'SATURATION',
+      Blockly.JavaScript.ORDER_COMMA) || 0;
+  var value = Blockly.JavaScript.valueToCode(block, 'VALUE',
+      Blockly.JavaScript.ORDER_COMMA) || 0;
+  var functionName = Blockly.JavaScript.provideFunction_(
+      'colour_hsv',
+      [ 'function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
+          '(h, s, v) {',
+        '  h = Math.max(Math.min(Number(h), 100), 0) / 100.0;',
+        '  s = Math.max(Math.min(Number(s), 100), 0) / 100.0;',
+        '  v = Math.max(Math.min(Number(v), 100), 0) / 100.0;',
+		'  var c = HSVtoRGB(h, s, v);',
+        '  c.r = (\'0\' + (Math.round(c.r) || 0).toString(16)).slice(-2);',
+        '  c.g = (\'0\' + (Math.round(c.g) || 0).toString(16)).slice(-2);',
+        '  c.b = (\'0\' + (Math.round(c.b) || 0).toString(16)).slice(-2);',
+        '  return \'#\' + c.r + c.g + c.b;',
+        '}']);
+  var code = functionName + '(' + hue + ', ' + saturation + ', ' + value + ')';
+  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

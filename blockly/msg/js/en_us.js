@@ -71,6 +71,14 @@ Blockly.Msg.COLOUR_RGB_GREEN = 'green';
 Blockly.Msg.COLOUR_RGB_BLUE = 'blue';
 Blockly.Msg.COLOUR_RGB_TOOLTIP = 'Create a color with the specified amount of red, green,\n' +
     'and blue.  All values must be between 0 and 100.';
+	
+Blockly.Msg.COLOUR_HSV_HELPURL = 'http://en.wikipedia.org/wiki/HSL_and_HSV';
+Blockly.Msg.COLOUR_HSV_TITLE = 'color with';
+Blockly.Msg.COLOUR_HSV_HUE = 'hue';
+Blockly.Msg.COLOUR_HSV_SATURATION = 'saturation';
+Blockly.Msg.COLOUR_HSV_VALUE = 'brightness';
+Blockly.Msg.COLOUR_HSV_TOOLTIP = 'Create a color with the specified hue, saturation,\n' +
+    'and brightness.  All values must be between 0 and 100.';
 
 Blockly.Msg.COLOUR_BLEND_HELPURL = 'http://meyerweb.com/eric/tools/color-blend/';
 Blockly.Msg.COLOUR_BLEND_TITLE = 'blend';
