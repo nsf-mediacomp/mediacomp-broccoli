@@ -1,6 +1,21 @@
 
 /*** utils.js V1.0 ***/
 
+function getRidOfNakedCode(jscode){
+	var lines = jscode.split("\n");
+	var f_depth = 0;
+	for (var i = 0; i < lines.length; i++){
+		if (lines[i].indexOf("{") >= 0)
+			f_depth++;
+		else if (lines[i].indexOf("}") >= 0)
+			f_depth--;
+		else if (f_depth <= 0 && lines[i].replace(/ /g,'') !== "" &&
+			lines[i].replace(/ /g,'').substring(0, 3) !== "var")
+			lines[i] = "//" + lines[i];
+	}
+	return lines.join("\n");
+}
+
 function $(id){
     return document.getElementById(id);
 }

@@ -17,6 +17,9 @@
   
   <script type="text/javascript" src="utils.js"></script>
   <script type="text/javascript" src="image.js"></script>
+  
+  <!--okay actually inject blockly and initialize the stuff-->
+  <script type="text/javascript" src="run_mediacomp.js"></script>
  
   <style>
     body {
@@ -42,11 +45,12 @@
 		<canvas id="canvas_one" width="320px" height="240px">please upgrade your browser</canvas>
 		<canvas id="canvas_two" width="320px" height="240px">please upgrade your browser</canvas>
 	</td>
-	<td><div id="blocklyDiv" style="width:640px;height: 480px"></div></td>
+	<td><div id="blocklyDiv" style="width:960px;height: 496px"></div></td>
   </tr>
   </table>
   
   <input type="button" value="Run Code" onclick="RunCode(); return false;"/>
+  <input type="button" value="Reset Images" onclick="initCanvases(); return false;"/>
   
   </br>
   
@@ -271,60 +275,22 @@
     <category name="Variables" custom="VARIABLE"></category>
     <category name="Functions" custom="PROCEDURE"></category>
 	<category name="Media Comp">
-		<block type="mediacomp_getcanvas"></block>
-		<block type="mediacomp_invertcanvas">
-			
+		<block type="mediacomp_run"></block>
+		<block type="mediacomp_pixelLoop">
+			<value name="CANVAS">
+				<block type="mediacomp_getCanvas">
+					<field name="CANVAS">0</field>
+				</block>
+			</value>
 		</block>
+		<block type="mediacomp_getCanvas"></block>
+		<block type="mediacomp_getPixelRGB"></block>
+		<block type="mediacomp_setPixelRGB"></block>
+		<!--<block type="mediacomp_invertcanvas"></block>-->
 		<block type="mediacomp_setpixel"></block>
-		<block type="mediacomp_PARTYHARD"></block>
+		<!--<block type="mediacomp_PARTYHARD"></block>-->
 	</category>
   </xml>
-
-  <script>
-	var canvas_names = [ "one", "two" ];
-    var canvases = [];
-    var ctxs = [];
-	var images = ["pokemon.png", "cat.png"];
-	var path = "images/";
-    
-    Blockly.JavaScript.addReservedWords('ImageEdit');
-    var ImageEdit = 0; // init to null
-	
-	function initCanvases(){
-		for (var i = 0; i < canvas_names.length; i++){
-			var c_name = "canvas_" + canvas_names[i];
-			
-            canvases[i] = $(c_name);
-            ctxs[i] = canvases[i].getContext("2d");
-            ctxs[i].fillStyle = "#ffffff";
-            ctxs[i].fillRect(0, 0, canvases[i].width, canvases[i].height);
-			
-			var img = new Image();
-			img.onload = function(){
-				this.ctx.drawImage(this.img,0,0);
-			}.bind({ctx: ctxs[i], img: img});
-			img.src = path + images[i];
-		}
-        ImageEdit = new Drawr(ctxs);
-	}
-  
-	window.onload = function(){ initCanvases();}
-  
-    Blockly.inject(document.getElementById('blocklyDiv'),
-        {path: 'blockly/', toolbox: document.getElementById('toolbox')});
-		
-	function RunCode(){		
-		Blockly.JavaScript.addReservedWords('generated_code');
-        
-		var generated_code = Blockly.JavaScript.workspaceToCode();
-		try {
-			$("code").innerHTML = generated_code.replace(/\n/g, "<br/>\n");
-			eval(generated_code);
-		} catch (e) {
-			console.log(e);
-		}
-	}
-  </script>
 
 </body>
 </html>

@@ -1,18 +1,119 @@
-Blockly.Blocks['mediacomp_getcanvas'] = {
-	init: function() {
-    var CANVI =
-        [["canvas 1", '0'],
-         ["canvas 2", '1']];
-    this.setHelpUrl("http://www.example.com/");
-    this.setColour(0);
-    this.setOutput(true, "Canvas");
+Blockly.Blocks['mediacomp_run'] = {
+  /**
+   * Block to set the code that will run with the run button is pressed
+   * @this Blockly.Block
+   */
+  init: function() {
+    this.setHelpUrl("http://www.example.com");
+    this.setColour(210);
     this.appendDummyInput()
-        .appendField(new Blockly.FieldDropdown(CANVI), 'CANVAS');
-    this.setTooltip("Retrieve a canvas from the page.");
+        .appendField("When run button pressed");
+    this.appendStatementInput('DO')
+        .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
+    this.setPreviousStatement(false);
+    this.setNextStatement(false);
+    this.setTooltip("The block that contains what code to execute when the run button is pressed.");
   }
 };
 
-Blockly.Blocks['mediacomp_invertcanvas'] = {
+Blockly.Blocks['mediacomp_getCanvas'] = {
+	init: function() {
+		var CANVI =
+			[["canvas 1", '0'],
+			 ["canvas 2", '1']];
+		this.setHelpUrl("http://www.example.com/");
+		this.setColour(330);
+		this.setOutput(true, "Canvas");
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldDropdown(CANVI), 'CANVAS');
+		this.setTooltip("Retrieve a canvas from the page.");
+	}
+};
+
+Blockly.Blocks['mediacomp_pixelLoop'] = {
+  /**
+   * Block to set the code that will run with the run button is pressed
+   * @this Blockly.Block
+   */
+  init: function() {
+    this.setHelpUrl("http://www.example.com");
+    this.setColour(120);
+    this.appendValueInput("CANVAS")
+		.setCheck("Canvas")
+        .appendField("for each pixel")
+		.appendField(new Blockly.FieldVariable("pixel"), 'VAR')
+		.appendField("in canvas")
+		.setAlign(Blockly.ALIGN_CENTRE);
+    this.appendStatementInput('DO')
+        .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip("Will execute the code blocks inside of this loop for every pixel in the given canvas");
+  },
+  /**
+   * Return all variables referenced by this block.
+   * @return {!Array.<string>} List of variable names.
+   * @this Blockly.Block
+   */
+  getVars: function() {
+    return [this.getFieldValue('VAR')];
+  },
+  /**
+   * Notification that a variable is renaming.
+   * If the name matches one of this block's variables, rename it.
+   * @param {string} oldName Previous name of variable.
+   * @param {string} newName Renamed variable.
+   * @this Blockly.Block
+   */
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+      this.setFieldValue(newName, 'VAR');
+    }
+  },
+  customContextMenu: Blockly.Blocks['controls_for'].customContextMenu
+};
+
+Blockly.Blocks['mediacomp_getPixelRGB'] = {
+	init: function(){
+		var RGB = [["red", 'r'], ["green", 'g'], ["blue", 'b']];
+		this.setHelpUrl('http://www.example.com/');
+		this.setColour(230);
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldDropdown(RGB), 'RGB')
+			.appendField("value of pixel");
+		this.appendValueInput("PIXEL")
+			.setCheck("Pixel")
+			.setAlign(Blockly.ALIGN_CENTRE);
+		this.setInputsInline(true);
+		this.setOutput(true, "Number");
+		this.setTooltip('Get the red, green, or blue color value of a pixel');
+	}
+}
+
+Blockly.Blocks['mediacomp_setPixelRGB'] = {
+	init: function(){
+		var RGB = [["red", 'r'], ["green", 'g'], ["blue", 'b']];
+		this.setHelpUrl('http://www.example.com/');
+		this.setColour(0);
+		this.appendDummyInput()
+			.appendField("set")
+			.appendField(new Blockly.FieldDropdown(RGB), 'RGB')
+			.appendField("value of pixel");
+		this.appendValueInput("PIXEL")
+			.setCheck("Pixel")
+			.setAlign(Blockly.ALIGN_CENTRE);
+		this.appendValueInput("VALUE")
+			.setCheck("Number")
+			.appendField("to")
+			.setAlign(Blockly.ALIGN_CENTRE);
+		this.setInputsInline(true);
+		this.setPreviousStatement(true);
+		this.setNextStatement(true);
+		this.setTooltip('Set the red, green, or blue color value of a pixel');
+	}
+}
+
+/*Blockly.Blocks['mediacomp_invertcanvas'] = {
 	init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(0);
@@ -26,7 +127,7 @@ Blockly.Blocks['mediacomp_invertcanvas'] = {
     this.setNextStatement(true);
     this.setTooltip('Invert the color of the entire canvas');
   }
-};
+};*/
 
 Blockly.Blocks['mediacomp_setpixel'] = {
 	init: function() {

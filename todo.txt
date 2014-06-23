@@ -1,3 +1,12 @@
-1. getcanvaswidth/height
-2. overlay a color on the canvas at an opacity
-3. remove a color from canvas
+***SET UP COMMAND QUEUEING IN MEDIACOMP LIKE IN SPHERO...***
+
+MEDIACOMP!!! && make up a blockly name for it that's cute
+	-add STOP buttons to index
+
+-loop over all the pixels
+	-and in an x y array (not yet)
+	***repeat for the length of the canvas (width * height), get pixel at that position
+		***represent the canvas as a list in blockly
+
+	-a redraw canvas block???
+
