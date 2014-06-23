@@ -4,13 +4,20 @@
 function getRidOfNakedCode(jscode){
 	var lines = jscode.split("\n");
 	var f_depth = 0;
+	var is_in_function = false;
 	for (var i = 0; i < lines.length; i++){
-		if (lines[i].indexOf("{") >= 0)
+		
+		if (lines[i].match(/function(\s+[a-zA-Z0-9_\$]*)?\([^\)]*\)/)){
+			is_in_function = true;
+		}
+		
+		if (lines[i].indexOf("{") >= 0 && is_in_function)
 			f_depth++;
-		else if (lines[i].indexOf("}") >= 0)
+		else if (lines[i].indexOf("}") >= 0 && f_depth > 0){
 			f_depth--;
-		else if (f_depth <= 0 && lines[i].replace(/ /g,'') !== "" &&
-			lines[i].replace(/ /g,'').substring(0, 3) !== "var")
+			if (f_depth == 0) is_in_function = false;
+		}
+		else if (!is_in_function && f_depth <= 0 && lines[i].replace(/\s/g,'') !== "" && !lines[i].match(/\s*var/))
 			lines[i] = "//" + lines[i];
 	}
 	return lines.join("\n");
