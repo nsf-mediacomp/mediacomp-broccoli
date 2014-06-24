@@ -22,7 +22,7 @@ Blockly.JavaScript['mediacomp_run'] = function(block) {
   var code = 'function mediacomp_run(){\n' +
 	  'ImageEdit.clearAllCommands();\n' + 
       do_branch +
-	  'ImageEdit.begin_execute();}\n';
+	  'ImageEdit.begin_execute();\n}\n';
   return code;
 };
 
