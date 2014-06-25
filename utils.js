@@ -124,9 +124,52 @@ function replaceColor(ctx, old_r, old_g, old_b, n_r, n_g, n_b){
     ctx.putImageData(pixels,0,0);
 }
 
-// http://stackoverflow.com/questions/10073699/pad-a-number-with-leading-zeros-in-javascript
+ // http://stackoverflow.com/questions/10073699/pad-a-number-with-leading-zeros-in-javascript
 function padl(n, width, z){
     z = z || '0';
     n = n + '';
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+
+/*
+ // http://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format
+ // http://i.stack.imgur.com/jYeIc.png
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+        var str = this.toString();
+        if (!arguments.length)
+            return str;
+        var args = typeof arguments[0],
+            args = (("string" == args || "number" == args) ? arguments : arguments[0]);
+        for (arg in args)
+            str = str.replace(RegExp("\\{" + arg + "\\}", "gi"), args[arg]);
+        return str;
+    }
+}*/
+
+
+ // "Hello, {-name-}, are you feeling {-adjective-}?".format({name: "Mr. Crabs", adjective: "it now"})
+ // "Hello, {-0-}, are you feeling {-1-}?".format("Mr. Crabs", "it now")
+ // replacement identifiers can only be alphanumeric
+
+if (!String.prototype.format) {
+  String.prototype.format = function() {
+    var args = arguments;
+    
+    if(!arguments.length)
+        return this.toString();
+    
+    if(typeof arguments[0] == "string" || typeof arguments[1] == "number")
+        args = arguments;
+    else
+        args = arguments[0]; // if it's an object or array
+    
+    return this.replace(/{\-([0-9a-zA-Z]+)\-}/g, function(match, replacement_name) { 
+      return typeof args[replacement_name] != 'undefined'
+        ? args[replacement_name]
+        : match
+      ;
+    });
+  };
 }
