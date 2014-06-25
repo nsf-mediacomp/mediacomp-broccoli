@@ -38,8 +38,8 @@ Blockly.Blocks['mediacomp_pixelLoop'] = {
   init: function() {
     this.setHelpUrl("http://www.example.com");
     this.setColour(120);
-    this.appendValueInput("CANVAS")
-		.setCheck("Canvas")
+    //this.appendValueInput("CANVAS")
+	this.appendDummyInput()
         .appendField("for each pixel")
 		.appendField(new Blockly.FieldVariable("pixel"), 'VAR')
 		.appendField("in canvas")
@@ -48,7 +48,7 @@ Blockly.Blocks['mediacomp_pixelLoop'] = {
         .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("Will execute the code blocks inside of this loop for every pixel in the given canvas");
+    this.setTooltip("Will execute the code blocks inside of this loop for every pixel in the canvas");
   },
   /**
    * Return all variables referenced by this block.

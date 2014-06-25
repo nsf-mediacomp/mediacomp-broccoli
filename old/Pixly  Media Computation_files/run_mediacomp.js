@@ -4,7 +4,7 @@ BlocklyApps.LANGUAGES =
 BlocklyApps.LANG = BlocklyApps.getLang();
 BlocklyApps.log = [];
 
-Drawr.images = ["shrek.png", "sax.jpg", "waifu.png", "cat_attendant.jpg"];
+Drawr.images = ["shrek.png", "pokemon.png", "cat.png"];
 Drawr.path = "images/";
 
 Drawr.init = function(){ 
@@ -93,13 +93,12 @@ Drawr.Reset = function(){
 
 	Drawr.ctxDisplay.fillStyle = "#ffffff";
 	Drawr.ctxDisplay.fillRect(0, 0, Drawr.ctxDisplay.canvas.width, Drawr.ctxDisplay.canvas.height);
-
-	var r = Math.floor(Math.random()*Drawr.images.length);
+	
 	var img = new Image();
 	img.onload = function(){
 		this.ctx.drawImage(this.img,0,0);
 	}.bind({ctx: Drawr.ctxDisplay, img: img});
-	img.src = Drawr.path + Drawr.images[r];
+	img.src = Drawr.path + Drawr.images[0];
 }
 	
 Drawr.RunCode = function(){		

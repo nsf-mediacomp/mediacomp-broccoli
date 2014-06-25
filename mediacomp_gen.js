@@ -19,10 +19,10 @@ Blockly.JavaScript['mediacomp_run'] = function(block) {
   var do_branch = Blockly.JavaScript.statementToCode(block, 'DO');
   var funcName = Blockly.JavaScript.variableDB_.getDistinctName(
       'sphero_run', Blockly.Variables.NAME_TYPE);
-  var code = 'function mediacomp_run(){\n' +
-	  'ImageEdit.clearAllCommands();\n' + 
+  var code = 'function pixly_run(){\n' +
+	  '  Drawr.clearAllCommands();\n' + 
       do_branch +
-	  'ImageEdit.begin_execute();\n}\n';
+	  '  Drawr.begin_execute();\n}\n';
   return code;
 };
 
@@ -30,8 +30,8 @@ Blockly.JavaScript['mediacomp_pixelLoop'] = function(block){
   // For each loop.
   var variable0 = Blockly.JavaScript.variableDB_.getName(
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
-  var argument0 = Blockly.JavaScript.valueToCode(block, 'CANVAS',
-      Blockly.JavaScript.ORDER_ASSIGNMENT) || '[]';
+  /*var argument0 = Blockly.JavaScript.valueToCode(block, 'CANVAS',
+      Blockly.JavaScript.ORDER_ASSIGNMENT) || '[]';*/
   var branch = Blockly.JavaScript.statementToCode(block, 'DO');
   if (Blockly.JavaScript.INFINITE_LOOP_TRAP) {
     branch = Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g,
@@ -41,23 +41,31 @@ Blockly.JavaScript['mediacomp_pixelLoop'] = function(block){
 	  "imgData_data", Blockly.Variables.NAME_TYPE);
   var indexVar = Blockly.JavaScript.variableDB_.getDistinctName(
 	  "i", Blockly.Variables.NAME_TYPE);
-  /*var code = "var " + imgVar + " = ImageEdit.getPixelArray(" + argument0 + ");\n" +
+  /*var code = "var " + imgVar + " = Drawr.getPixelArray(" + argument0 + ");\n" +
       "for (var " + indexVar + " = 0; " + indexVar + " < " + imgVar + ".data.length; " +
 	  indexVar + "+=4) {\n" +
-	  variable0 + " = ImageEdit.getPixel(" + imgVar + ", " + indexVar +");\n" +
+	  variable0 + " = Drawr.getPixel(" + imgVar + ", " + indexVar +");\n" +
       branch + 
-	  "ImageEdit.setPixel(" + imgVar + ", " + variable0 + ");\n" + 
+	  "Drawr.setPixel(" + imgVar + ", " + variable0 + ");\n" + 
 	  "}\n" +
-	  "ImageEdit.setPixelArray(" + argument0 + ", " + imgVar + ");\n";*/
-  var code = "var {-img-} = ImageEdit.getPixelArray({-canvas-});\n" +
+	  "Drawr.setPixelArray(" + argument0 + ", " + imgVar + ");\n";*/
+  /*var code = "var {-img-} = Drawr.getPixelArray({-canvas-});\n" +
       "for (var {-i-} = 0; {-i-} < {-img-}.data.length; " +
 	  "{-i-}+=4) {\n" +
-	  "{-pixel-} = ImageEdit.getPixel({-img-}, {-i-});\n" +
+	  "{-pixel-} = Drawr.getPixel({-img-}, {-i-});\n" +
       "{-branch-}" + 
-	  "ImageEdit.setPixel({-img-}, {-pixel-});\n" + 
+	  "Drawr.setPixel({-img-}, {-pixel-});\n" + 
 	  "}\n" +
-	  "ImageEdit.setPixelArray({-canvas-}, {-img-});\n";
-  code = code.format({img: imgVar, canvas: argument0, pixel: variable0, i: indexVar, branch: branch});
+	  "Drawr.setPixelArray({-canvas-}, {-img-});\n";*/
+  var code = "var {-img-} = Drawr.getPixelArray();\n" + 
+      "for (var {-i-} = 0; {-i-} < {-img-}.data.length; " +
+	  "{-i-}+=4) {\n" +
+	  "{-pixel-} = Drawr.getPixel({-img-}, {-i-});\n" +
+      "{-branch-}" + 
+	  "Drawr.setPixel({-img-}, {-pixel-});\n" + 
+	  "}\n" +
+	  "Drawr.setPixelArray({-img-});\n";
+  code = code.format({img: imgVar, /*canvas: argument0, */pixel: variable0, i: indexVar, branch: branch});
   return code;
 };
 
@@ -88,7 +96,7 @@ Blockly.JavaScript['mediacomp_setPixelRGB'] = function(block){
 /*Blockly.JavaScript['mediacomp_invertcanvas'] = function(block) {  
   var ctx_id = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
   
-  var code = "ImageEdit.invertCanvas(" +ctx_id + ");\n";
+  var code = "Drawr.invertCanvas(" +ctx_id + ");\n";
   
   return code;
 };*/
@@ -99,7 +107,7 @@ Blockly.JavaScript['mediacomp_setpixel'] = function(block) {
   var y = Blockly.JavaScript.valueToCode(block, 'Y', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
   var colour = Blockly.JavaScript.valueToCode(block, 'COLOUR', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
   
-  var code = "ImageEdit.setPixel(" +ctx_id + ", " + x + ", " + y + ", " + colour + ");\n";
+  var code = "Drawr.setPixel(" +ctx_id + ", " + x + ", " + y + ", " + colour + ");\n";
   
   return code;
 };
@@ -110,15 +118,17 @@ Blockly.JavaScript['mediacomp_PARTYHARD'] = function(block) {
     var c = Blockly.JavaScript.variableDB_.getDistinctName('rand_colour', Blockly.Variables.NAME_TYPE);
     var ctx_id = Blockly.JavaScript.variableDB_.getDistinctName('ctx_id', Blockly.Variables.NAME_TYPE);
     
-    var code = "var " + ctx_id + " = ImageEdit.getRandomId();\n" +
-    "for(var "+i+" = 0; "+i+" < ImageEdit.getWidth(" + ctx_id + "); ++"+i+"){\n" +
-    "for(var "+j+"=0; "+j+" < ImageEdit.getHeight(" + ctx_id + "); ++"+j+"){\n" + 
+    var code = "var " + ctx_id + " = Drawr.getRandomId();\n" +
+    "for(var "+i+" = 0; "+i+" < Drawr.getWidth(" + ctx_id + "); ++"+i+"){\n" +
+    "for(var "+j+"=0; "+j+" < Drawr.getHeight(" + ctx_id + "); ++"+j+"){\n" + 
     "var "+c+" = '#' + ('00000' + Math.floor(Math.random() * Math.pow(2, 24)).toString(16)).substr(-6);\n" + 
-    "ImageEdit.setPixel(" + ctx_id + ", "+i+", "+j+", "+c+"); \n" +
+    "Drawr.setPixel(" + ctx_id + ", "+i+", "+j+", "+c+"); \n" +
     "}\n" +
     "}\n";
     return code;
 };
+
+
 
 Blockly.JavaScript['colour_hsv'] = function(block) {
   // Compose a colour from RGB components expressed as percentages.
