@@ -41,14 +41,23 @@ Blockly.JavaScript['mediacomp_pixelLoop'] = function(block){
 	  "imgData_data", Blockly.Variables.NAME_TYPE);
   var indexVar = Blockly.JavaScript.variableDB_.getDistinctName(
 	  "i", Blockly.Variables.NAME_TYPE);
-  var code = "var " + imgVar + " = ImageEdit.getPixelArray(" + argument0 + ");\n";
-  code += "for (var " + indexVar + " = 0; " + indexVar + " < " + imgVar + ".data.length; " +
+  /*var code = "var " + imgVar + " = ImageEdit.getPixelArray(" + argument0 + ");\n" +
+      "for (var " + indexVar + " = 0; " + indexVar + " < " + imgVar + ".data.length; " +
 	  indexVar + "+=4) {\n" +
 	  variable0 + " = ImageEdit.getPixel(" + imgVar + ", " + indexVar +");\n" +
       branch + 
 	  "ImageEdit.setPixel(" + imgVar + ", " + variable0 + ");\n" + 
 	  "}\n" +
-	  "ImageEdit.setPixelArray(" + argument0 + ", " + imgVar + ");\n";
+	  "ImageEdit.setPixelArray(" + argument0 + ", " + imgVar + ");\n";*/
+  var code = "var {-img-} = ImageEdit.getPixelArray({-canvas-});\n" +
+      "for (var {-i-} = 0; {-i-} < {-img-}.data.length; " +
+	  "{-i-}+=4) {\n" +
+	  "{-pixel-} = ImageEdit.getPixel({-img-}, {-i-});\n" +
+      "{-branch-}" + 
+	  "ImageEdit.setPixel({-img-}, {-pixel-});\n" + 
+	  "}\n" +
+	  "ImageEdit.setPixelArray({-canvas-}, {-img-});\n";
+  code = code.format({img: imgVar, canvas: argument0, pixel: variable0, i: indexVar, branch: branch});
   return code;
 };
 
