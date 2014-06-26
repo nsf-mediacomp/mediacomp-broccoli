@@ -149,8 +149,8 @@ if (!String.prototype.format) {
 }*/
 
 
- // "Hello, {-name-}, are you feeling {-adjective-}?".format({name: "Mr. Crabs", adjective: "it now"})
- // "Hello, {-0-}, are you feeling {-1-}?".format("Mr. Crabs", "it now")
+ // "Hello, {-name-}, are you feeling {-adjective-}?".format({name: "Mr. Krabs", adjective: "it now"})
+ // "Hello, {-0-}, are you feeling {-1-}?".format("Mr. Krabs", "it now")
  // replacement identifiers can only be alphanumeric
 
 if (!String.prototype.format) {
@@ -166,6 +166,31 @@ if (!String.prototype.format) {
         args = arguments[0]; // if it's an object or array
     
     return this.replace(/{\-([0-9a-zA-Z]+)\-}/g, function(match, replacement_name) { 
+      return typeof args[replacement_name] != 'undefined'
+        ? args[replacement_name]
+        : match
+      ;
+    });
+  };
+}
+
+
+ // perly interpolation
+ // "Hello, $name, are you feeling $adjective?".interpolate({name: "Mr. Krabs", adjective: "it now"})
+ // "Hello, $0, are you feeling $1?".interpolate("Mr. Krabs", "it now")
+if(!String.prototype.interpolate){
+  String.prototype.interpolate = function() {
+    var args = arguments;
+    
+    if(!arguments.length)
+        return this.toString();
+    
+    if(typeof arguments[0] == "string" || typeof arguments[1] == "number")
+        args = arguments;
+    else
+        args = arguments[0]; // if it's an object or array
+    
+    return this.replace(/\$([0-9a-zA-Z]+)/g, function(match, replacement_name) { 
       return typeof args[replacement_name] != 'undefined'
         ? args[replacement_name]
         : match

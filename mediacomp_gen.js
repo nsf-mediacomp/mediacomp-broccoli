@@ -57,14 +57,14 @@ Blockly.JavaScript['mediacomp_pixelLoop'] = function(block){
 	  "Drawr.setPixel({-img-}, {-pixel-});\n" + 
 	  "}\n" +
 	  "Drawr.setPixelArray({-canvas-}, {-img-});\n";*/
-  var code = "var {-img-} = Drawr.getPixelArray();\n" + 
-      "for (var {-i-} = 0; {-i-} < {-img-}.data.length; " +
-	  "{-i-}+=4) {\n" +
-	  "{-pixel-} = Drawr.getPixel({-img-}, {-i-});\n" +
-      "{-branch-}" + 
-	  "Drawr.setPixel({-img-}, {-pixel-});\n" + 
+  var code = "var $img = Drawr.getPixelArray();\n" + 
+      "for (var $i = 0; $i < $img.data.length; " +
+	  "$i+=4) {\n" +
+	  "$pixel = Drawr.getPixel($img, $i);\n" +
+      "$branch" + 
+	  "Drawr.setPixel($img, $pixel);\n" + 
 	  "}\n" +
-	  "Drawr.setPixelArray({-img-});\n";
+	  "Drawr.setPixelArray($img);\n";
   code = code.format({img: imgVar, /*canvas: argument0, */pixel: variable0, i: indexVar, branch: branch});
   return code;
 };
