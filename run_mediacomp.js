@@ -1,16 +1,27 @@
-// Supported languages.
-BlocklyApps.LANGUAGES =
-    ['en'];
-BlocklyApps.LANG = BlocklyApps.getLang();
-BlocklyApps.log = [];
-
-Drawr.images = ["shrek.png", "sax.jpg", "waifu.png", "cat_attendant.jpg"];
+Drawr.images = ["shrek.png", "sax.jpg", "waifu.png", "cat_attendant.jpg", "secret.png"];
 Drawr.path = "images/";
 
+Drawr.DOUBLE_CLICK_TIME = 100;
+
 Drawr.init = function(){ 
-	//INJECT IT!!!
-	BlocklyApps.init();
-	var rtl = BlocklyApps.isRtl();
+	// Set the page title with the content of the H1 title.
+	document.title = document.getElementById('title').textContent;
+
+	// Set the HTML's language and direction.
+	// document.dir fails in Mozilla, use document.body.parentNode.dir instead.
+	// https://bugzilla.mozilla.org/show_bug.cgi?id=151407
+	var rtl = false;
+	document.head.parentElement.setAttribute('dir', rtl ? 'rtl' : 'ltr');
+	document.head.parentElement.setAttribute('lang', "en");
+
+	// Fixes viewport for small screens.
+	var viewport = document.querySelector('meta[name="viewport"]');
+	if (viewport && screen.availWidth < 725) {
+	viewport.setAttribute('content',
+		'width=725, initial-scale=.35, user-scalable=no');
+	}
+
+	//Setting up Blockly for resizing
 	var blocklyDiv = $("blockly");
 	var visualization = $("visualization");
 	var onresize = function(e){
@@ -26,53 +37,76 @@ Drawr.init = function(){
 	window.addEventListener('resize', onresize);
 	onresize();
 	
+	//Inject Blockly into the webpage
 	var toolbox = document.getElementById('toolbox');
 	Blockly.inject($('blockly'),
 		{path: 'blockly/', toolbox: $('toolbox'), trashcan: true});
 		
-	Blockly.JavaScript.INFINITE_LOOP_TRAP = '	BlocklyApps.checkTimeout(%1);\n';
 	//Add to reserver word list
 	Blockly.JavaScript.addReservedWords('Drawr');
 	
 	window.addEventListener('beforeunload', function(e){
 		if (Blockly.mainWorkspace.getAllBlocks().length > 2){
-			e.returnValue = BlocklyApps.getMsg('Turtle_unloadWarning'); //Gecko
-			return BlocklyApps.getMsg('Turtle_unloadWarning'); //Webkit
+			var msg = "Leaving this page will result in the loss of your work.";
+			e.returnValue =  msg; //Gecko
+			return msg; //Webkit
 		}
 		return null;
 	});
-	
-	//Hide download button if browser lacks support
-	// (http://caniuse.com/#feat=download).
-	/*if (!(goog.userAgent.GECKO ||
-		(goog.userAgent.WEBKIT && !goog.userAgent.SAFARI))) {
-		document.getElementById('captureButton').className = 'disabled';
-	} else {
-		BlocklyApps.bindClick('captureButton', Turtle.createImageLink);
-	}*/
-	
-	//Initialize the slider
-	var sliderSvg = document.getElementById('slider');
-	Drawr.speedSlider = new Slider(10, 35, 130, sliderSvg);
 	
 	var defaultXml = 
 		'<xml>' +
 		'	<block type="mediacomp_run" x="70" y="70"></block>' +
 		'</xml>';
-	BlocklyApps.loadBlocks(defaultXml);
+	Drawr.loadBlocks(defaultXml);
 	
 	Drawr.ctxDisplay = $('display').getContext('2d');
 	Drawr.ctxScratch = $('scratch').getContext('2d');
 	Drawr.Reset();
-	
-	BlocklyApps.bindClick('runButton', Drawr.RunCode);
-	BlocklyApps.bindClick('resetButton', Drawr.Reset);
 
-	//Lazy-load the syntax highlighting
-	window.setTimeout(BlocklyApps.importPrettify, 1);
+	$("runButton").addEventListener("click", Drawr.RunCode);
+	$("resetButton").addEventListener("click", Drawr.Reset);
+	
+	$("codeButton").addEventListener("click", function(){
+		var generated_code = Blockly.JavaScript.workspaceToCode();
+			generated_code = getRidOfNakedCode(generated_code);
+			generated_code += "if (pixly_run) pixly_run();\n";
+		$("dialogBody").innerHTML = "<pre>" + generated_code + "</pre>";
+		
+		$("titleText").innerHTML = "Generated JavaScript Code";
+		$("dialog").style.display = "block";
+	});
+	$("closeDialogButton").addEventListener("click", function(){$("dialog").style.display = "none";});
 	
 	Drawr.Reset();
 }
+
+Drawr.loadBlocks = function(defaultXml){
+  try {
+    var loadOnce = window.sessionStorage.loadOnceBlocks;
+  } catch(e) {
+    // Firefox sometimes throws a SecurityError when accessing sessionStorage.
+    // Restarting Firefox fixes this, so it looks like a bug.
+    var loadOnce = null;
+  }
+  if ('BlocklyStorage' in window && window.location.hash.length > 1) {
+    // An href with #key trigers an AJAX call to retrieve saved blocks.
+    BlocklyStorage.retrieveXml(window.location.hash.substring(1));
+  } else if (loadOnce) {
+    // Language switching stores the blocks during the reload.
+    delete window.sessionStorage.loadOnceBlocks;
+    var xml = Blockly.Xml.textToDom(loadOnce);
+    Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+  } else if (defaultXml) {
+    // Load the editor with default starting blocks.
+    var xml = Blockly.Xml.textToDom(defaultXml);
+    Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+  } else if ('BlocklyStorage' in window) {
+    // Restore saved blocks in a separate thread so that subsequent
+    // initialization is not affected from a failed load.
+    window.setTimeout(BlocklyStorage.restoreBlocks, 0);
+  }
+};
 
 window.addEventListener('load', Drawr.init);
 
@@ -84,8 +118,7 @@ Drawr.Reset = function(){
 	$("runButton").style.display = "inline";
 	// Prevent double-clicks or double-taps.
 	$("runButton").disabled = true;
-	setTimeout(function() {$("runButton").disabled = false;},
-             BlocklyApps.DOUBLE_CLICK_TIME);
+	setTimeout(function() {$("runButton").disabled = false;}, Drawr.DOUBLE_CLICK_TIME);
 	document.getElementById('spinner').style.visibility = 'hidden';
 
 
@@ -110,8 +143,7 @@ Drawr.RunCode = function(){
 	$("resetButton").style.display = "inline";
 	// Prevent double-clicks or double-taps.
 	$("resetButton").disabled = true;
-	setTimeout(function() {$("resetButton").disabled = false;},
-             BlocklyApps.DOUBLE_CLICK_TIME);
+	setTimeout(function() {$("resetButton").disabled = false;}, Drawr.DOUBLE_CLICK_TIME);
 
 	document.getElementById('spinner').style.visibility = 'visible';
 
@@ -122,15 +154,12 @@ Drawr.RunCode = function(){
 	generated_code += "if (pixly_run) pixly_run();\n";
 	
 	try {
-		//$("code").innerHTML = generated_code.replace(/\n/g, "<br/>\n");
 		console.log(generated_code);
 		eval(generated_code);
 	} catch (e) {
 		console.log(e);
 	}
 }
-
-
 
 Drawr.speed_test = function(){
 	var then = Date.now();

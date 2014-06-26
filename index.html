@@ -7,14 +7,11 @@
   <script type="text/javascript" src="blockly/blockly_compressed.js"></script>
   <script type="text/javascript" src="blockly/blocks_compressed.js"></script>
   <script type="text/javascript" src="blockly/msg/js/en.js"></script>
-  <script type="text/javascript" src="common.js"></script>
-  <script type="text/javascript" src="blockly/appengine/storage.js"></script>
   <!--Javascript generator for blockly-->
   <script type="text/javascript" src="blockly/javascript_compressed.js"></script>
   
   <!--Custom block definitions-->
   <script type="text/javascript" src="mediacomp_blocks.js"></script>
-  <!--Custom block code-->
   <script type="text/javascript" src="mediacomp_gen.js"></script>
   
   <script type="text/javascript" src="utils.js"></script>
@@ -29,9 +26,6 @@
 	<table width="100%">
 		<tr><td>
 			<h1><span id="title">Pixly: Media Computation</span></h1>
-		</td>
-		<td class="farSide">
-			<select id="languageMenu"></select>
 		</td></tr>
 		</table>
 		<div id="visualization">
@@ -39,26 +33,17 @@
 			<canvas id="display" width="400" height="400"></canvas>
 		</div>
 		<table style="padding-top: 1em;">
-		<tr><td style="width: 190px; text-align: center; vertical-align: top;">
-			<script type="text/javascript" src="slider.js"></script>
-				<svg id="slider" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="150" height="50"><!-- Slow icon. --><!-- Extra SVG is temporary hack to fix bug #349701 in Chrome 34. --><!-- Harmless for other browsers. --><svg xmlns="http://www.w3.org/2000/svg" version="1.1"><clipPath id="slowClipPath"><rect width=26 height=12 x=5 y=14 /></clipPath><image xlink:href="icons.png" height=42 width=84 x=-21 y=-10 clip-path="url(#slowClipPath)" /></svg>
-					<!-- Fast icon. --><!-- Extra SVG is temporary hack to fix bug #349701 in Chrome 34. --><!-- Harmless for other browsers. -->
-					<svg xmlns="http://www.w3.org/2000/svg" version="1.1"><clipPath id="fastClipPath"><rect width=26 height=16 x=120 y=10 /></clipPath><image xlink:href="icons.png" height=42 width=84 x=120 y=-11 clip-path="url(#fastClipPath)" /></svg>
-				</svg>
-			</td>
+		<tr>
 			<td style="width: 15px;">
 				<img id="spinner" style="visibility: hidden;" src="loading.gif" height=15 width=15>
 			</td>
-			<td style="width: 190px; text-align: center">
+			<td style="text-align: center">
 				<button id="runButton" class="primary" title="Makes the canvas do what the blocks say.">
 					<img src="blockly/media/1x1.gif" class="run icon21">Run Program
 				</button>
 				<button id="resetButton" class="primary" style="display: none">
 					<img src="blockly/media/1x1.gif" class="stop icon21"> Reset
 				</button>
-			</td></tr>
-			</table>
-			<div id="toolbarDiv">
 				<button id="codeButton" class="notext" title="See generated JavaScript code.">
 					<img src='blockly/media/1x1.gif' class="code icon21">
 				</button>
@@ -69,8 +54,18 @@
 					<img src='blockly/media/1x1.gif' class="img icon21">
 				</button>
 				<a id="downloadImageLink" download="drawing.png"></a>
-			</div>
+			</td></tr>
+			</table>
 			<div id="blockly"></div>
+			
+			<div id="dialog" style="display:none;">
+				<div id="dialogTitle">
+					<span id="titleText"></span>
+					<button id="closeDialogButton" title="Close the dialog"
+						style="position:absolute; right: 0px; top: 0px; height: 22px; width:22px; padding: 0px;"> X </button>
+				</div>
+				<div id="dialogBody"></div>
+			</div>
   <!--<h1>Media Computation: Pixly</h1>
   
   <table width="800px" height="480px">

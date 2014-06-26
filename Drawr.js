@@ -52,21 +52,29 @@ Drawr.getPixelArray = function(/*id, */x, y, width, height){
 }
 
 Drawr.getPixel = function(imgData, index){
-	return {
-		index: index,
-		r: imgData.data[index],
-		g: imgData.data[index+1],
-		b: imgData.data[index+2],
-		a: imgData.data[index+3]
-	};
+	var pixel = {};
+	pixel['index'] = index;
+	pixel['r'] = imgData.data[index];
+	pixel['g'] = imgData.data[index+1];
+	pixel['b'] = imgData.data[index+2];
+	pixel['a'] = imgData.data[index+3];
+	return pixel;
 }
 
 Drawr.setPixel = function(imgData, pixel){
 	var i = pixel.index;
-	imgData.data[i+0] = pixel.r;
-	imgData.data[i+1] = pixel.g;
-	imgData.data[i+2] = pixel.b;
-	imgData.data[i+3] = pixel.a;
+	imgData.data[i+0] = pixel['r'];
+	imgData.data[i+1] = pixel['g'];
+	imgData.data[i+2] = pixel['b'];
+	imgData.data[i+3] = pixel['a'];
+}
+
+Drawr.getPixelRGB = function(pixel, rgb){
+	return pixel[rgb];
+}
+
+Drawr.setPixelRGB = function(pixel, rgb, value){
+	pixel[rgb] = value;
 }
 
 Drawr.setPixelArray = function(/*id, */imgData, x, y){
@@ -91,7 +99,7 @@ Drawr.getHeight = function(id){
 	return Drawr.ctxDisplay.canvas.height;
 }
 
-Drawr.invertCanvas = function(id){
+/*Drawr.invertCanvas = function(id){
     //var ctx = Drawr.getCanvas(id);
 	var ctx = Drawr.ctxDisplay;
     var imgdata = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -103,7 +111,7 @@ Drawr.invertCanvas = function(id){
         imgdata.data[i+3] = 255;
     }
     ctx.putImageData(imgdata, 0, 0);
-}
+}*/
 
 /*Drawr.setPixel = function(id, x, y, colour){
     //Drawr.ctxs[id].fillStyle = colour;
