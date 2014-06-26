@@ -67,6 +67,7 @@ Drawr.init = function(){
 	$("runButton").addEventListener("click", Drawr.RunCode);
 	$("resetButton").addEventListener("click", Drawr.Reset);
 	
+	$("closeDialogButton").addEventListener("click", function(){$("dialog").style.display = "none";});
 	$("codeButton").addEventListener("click", function(){
 		var generated_code = Blockly.JavaScript.workspaceToCode();
 			generated_code = getRidOfNakedCode(generated_code);
@@ -76,9 +77,23 @@ Drawr.init = function(){
 		$("titleText").innerHTML = "Generated JavaScript Code";
 		$("dialog").style.display = "block";
 	});
-	$("closeDialogButton").addEventListener("click", function(){$("dialog").style.display = "none";});
+	$("linkButton").addEventListener("click", function(){
+		var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+		xml = Blockly.Xml.domToPrettyText(xml);
+		$("dialogBody").innerHTML = "<textarea id='dialog_block_xml' style='width:98%;height:70%;margin-top:5px;'>" + xml + "</textarea>" + 
+		"<br/><div id='importXmlButton' onclick='Drawr.importXml(\"dialog_block_xml\");'>Import XML</div>";
+	
+		$("titleText").innerHTML = "Block XML";
+		$("dialog").style.display = "block";
+	});
 	
 	Drawr.Reset();
+}
+
+Drawr.importXml = function(textarea){
+	Blockly.mainWorkspace.clear();
+	Drawr.loadBlocks($(textarea).value);
+	$("dialog").style.display = "none";
 }
 
 Drawr.loadBlocks = function(defaultXml){
