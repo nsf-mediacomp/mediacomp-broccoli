@@ -90,6 +90,43 @@ Blockly.Blocks['mediacomp_getPixelRGB'] = {
 	}
 }
 
+Blockly.Blocks['mediacomp_getPixelColour'] = {
+	init: function(){
+		this.setHelpUrl('http://www.example.com/');
+		this.setColour(230);
+		this.appendDummyInput()
+			.appendField("color of pixel");
+		this.appendValueInput("PIXEL")
+			.setCheck("Pixel")
+			.setAlign(Blockly.ALIGN_CENTRE);
+		this.setInputsInline(true);
+		this.setOutput(true, "Colour");
+		this.setTooltip('Get the color of a pixel');
+	}
+}
+
+Blockly.Blocks['mediacomp_getPixelAt'] = {
+	init: function(){
+		this.setHelpUrl('http://www.example.com/');
+		this.setColour(230);
+        this.appendValueInput('X')
+            .setCheck('Number')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("pixel at x");
+        this.appendValueInput('Y')
+            .setCheck('Number')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("y");
+		/*this.appendValueInput("CANVAS")
+            .appendField("on canvas")
+			.setCheck("Canvas")
+			.setAlign(Blockly.ALIGN_CENTRE);*/
+		this.setInputsInline(true);
+		this.setOutput(true, "Pixel");
+		this.setTooltip('Get the red, green, or blue color value of a pixel');
+	}
+}
+
 Blockly.Blocks['mediacomp_setPixelRGB'] = {
 	init: function(){
 		var RGB = [["red", 'r'], ["green", 'g'], ["blue", 'b']];
@@ -110,6 +147,26 @@ Blockly.Blocks['mediacomp_setPixelRGB'] = {
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
 		this.setTooltip('Set the red, green, or blue color value of a pixel');
+	}
+}
+
+Blockly.Blocks['mediacomp_setPixelColour'] = {
+	init: function(){
+		this.setHelpUrl('http://www.example.com/');
+		this.setColour(0);
+		this.appendDummyInput()
+			.appendField("set color of pixel");
+		this.appendValueInput("PIXEL")
+			.setCheck("Pixel")
+			.setAlign(Blockly.ALIGN_CENTRE);
+		this.appendValueInput("COLOUR")
+			.setCheck("Colour")
+			.appendField("to")
+			.setAlign(Blockly.ALIGN_CENTRE);
+		this.setInputsInline(true);
+		this.setPreviousStatement(true);
+		this.setNextStatement(true);
+		this.setTooltip('Set the color of a pixel');
 	}
 }
 

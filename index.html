@@ -91,7 +91,28 @@
 	<category name="Media Comp">
 		<block type="mediacomp_run"></block>
 		<block type="mediacomp_pixelLoop"></block>
+	</category>
+    <category name="Pixels">
+		<block type="mediacomp_getPixelAt">
+			<value name="X">
+				<block type="math_number">
+					<field name="NUM">0</field>
+				</block>
+			</value>
+			<value name="Y">
+				<block type="math_number">
+					<field name="NUM">0</field>
+				</block>
+			</value>
+		</block>
 		<block type="mediacomp_getPixelRGB">
+			<value name="PIXEL">
+				<block type="variables_get">
+					<field name="VAR">pixel</field>
+				</block>
+			</value>
+		</block>
+		<block type="mediacomp_getPixelColour">
 			<value name="PIXEL">
 				<block type="variables_get">
 					<field name="VAR">pixel</field>
@@ -107,6 +128,13 @@
 			<value name="VALUE">
 				<block type="math_number">
 					<field name="NUM">0</field>
+				</block>
+			</value>
+		</block>
+		<block type="mediacomp_setPixelColour">
+			<value name="PIXEL">
+				<block type="variables_get">
+					<field name="VAR">pixel</field>
 				</block>
 			</value>
 		</block>
