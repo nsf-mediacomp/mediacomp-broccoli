@@ -4,6 +4,52 @@ Drawr.path = "images/";
 Drawr.DOUBLE_CLICK_TIME = 100;
 
 Drawr.init = function(){ 
+
+    Drawr.setupBlockly();
+	
+	var defaultXml = 
+		'<xml>' +
+		'	<block type="mediacomp_run" x="70" y="70"></block>' +
+		'</xml>';
+	Drawr.loadBlocks(defaultXml);
+	
+    // Connect canvases
+	Drawr.setupCanvases();
+
+	$("runButton").addEventListener("click", Drawr.RunCode);
+	$("resetButton").addEventListener("click", Drawr.Reset);
+	
+	$("closeDialogButton").addEventListener("click", function(){$("dialog").style.display = "none";});
+	$("codeButton").addEventListener("click", function(){
+		var generated_code = Blockly.JavaScript.workspaceToCode();
+			generated_code = getRidOfNakedCode(generated_code);
+			generated_code += "if (pixly_run) pixly_run();\n";
+		$("dialogBody").innerHTML = "<pre>" + generated_code + "</pre>";
+		
+		$("titleText").innerHTML = "Generated JavaScript Code";
+		$("dialog").style.display = "block";
+	});
+	$("linkButton").addEventListener("click", function(){
+		var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+		xml = Blockly.Xml.domToPrettyText(xml);
+		$("dialogBody").innerHTML = "<textarea id='dialog_block_xml' style='width:98%;height:70%;margin-top:5px;'>" + xml + "</textarea>" + 
+		"<br/><div id='importXmlButton' onclick='Drawr.importXml(\"dialog_block_xml\");'>Import XML</div>";
+	
+		$("titleText").innerHTML = "Block XML";
+		$("dialog").style.display = "block";
+	});
+	
+	Drawr.Reset();
+}
+
+Drawr.setupCanvases = function(){
+    Drawr.canvases = [];
+    Drawr.addCanvas($('display').getContext('2d'), "display");
+    Drawr.addCanvas($('scratch').getContext('2d'), "scratch");
+	Drawr.Reset();
+}
+
+Drawr.setupBlockly = function(){
 	// Set the page title with the content of the H1 title.
 	document.title = document.getElementById('title').textContent;
 
@@ -53,41 +99,6 @@ Drawr.init = function(){
 		}
 		return null;
 	});
-	
-	var defaultXml = 
-		'<xml>' +
-		'	<block type="mediacomp_run" x="70" y="70"></block>' +
-		'</xml>';
-	Drawr.loadBlocks(defaultXml);
-	
-	Drawr.ctxDisplay = $('display').getContext('2d');
-	Drawr.ctxScratch = $('scratch').getContext('2d');
-	Drawr.Reset();
-
-	$("runButton").addEventListener("click", Drawr.RunCode);
-	$("resetButton").addEventListener("click", Drawr.Reset);
-	
-	$("closeDialogButton").addEventListener("click", function(){$("dialog").style.display = "none";});
-	$("codeButton").addEventListener("click", function(){
-		var generated_code = Blockly.JavaScript.workspaceToCode();
-			generated_code = getRidOfNakedCode(generated_code);
-			generated_code += "if (pixly_run) pixly_run();\n";
-		$("dialogBody").innerHTML = "<pre>" + generated_code + "</pre>";
-		
-		$("titleText").innerHTML = "Generated JavaScript Code";
-		$("dialog").style.display = "block";
-	});
-	$("linkButton").addEventListener("click", function(){
-		var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-		xml = Blockly.Xml.domToPrettyText(xml);
-		$("dialogBody").innerHTML = "<textarea id='dialog_block_xml' style='width:98%;height:70%;margin-top:5px;'>" + xml + "</textarea>" + 
-		"<br/><div id='importXmlButton' onclick='Drawr.importXml(\"dialog_block_xml\");'>Import XML</div>";
-	
-		$("titleText").innerHTML = "Block XML";
-		$("dialog").style.display = "block";
-	});
-	
-	Drawr.Reset();
 }
 
 Drawr.importXml = function(textarea){
@@ -139,14 +150,15 @@ Drawr.Reset = function(){
 
 	Drawr.clearAllCommands();
 
-	Drawr.ctxDisplay.fillStyle = "#ffffff";
-	Drawr.ctxDisplay.fillRect(0, 0, Drawr.ctxDisplay.canvas.width, Drawr.ctxDisplay.canvas.height);
+	Drawr.canvases[0].ctx.fillStyle = "#ffffff";
+	Drawr.canvases[0].ctx.fillRect(0, 0, Drawr.canvases[0].width, Drawr.canvases[0].height);
 
 	var r = Math.floor(Math.random()*Drawr.images.length);
 	var img = new Image();
 	img.onload = function(){
-		this.ctx.drawImage(this.img,0,0);
-	}.bind({ctx: Drawr.ctxDisplay, img: img});
+		this.ctx.drawImage(this.img, 0, 0);
+        Drawr.resetCache(0); // the display canvas
+	}.bind({ctx: Drawr.canvases[0].ctx, img: img});
 	img.src = Drawr.path + Drawr.images[r];
 }
 	

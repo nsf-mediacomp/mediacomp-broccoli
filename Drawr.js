@@ -1,9 +1,23 @@
 function Drawr(ctxs){
+    alert("this never happens");
     Drawr.ctxs = ctxs;
 	Drawr.command_queue = [];
 	Drawr.pid = null;
 	Drawr.then = Date.now();
 	Drawr.wait_time = 0;
+    Drawr.canvases = [];
+}
+
+Drawr.addCanvas = function(ctx, title){
+    var id = Drawr.canvases.length;
+    Drawr.canvases[id] = {ctx: ctx, title: title, width: ctx.canvas.width, height: ctx.canvas.height};
+    Drawr.resetCache(id);
+    return id;
+}
+
+Drawr.resetCache = function(id){
+    var canvas = Drawr.canvases[id];
+    canvas.cache = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 }
 
 Drawr.clearAllCommands = function(){
@@ -31,42 +45,41 @@ Drawr.execute = function(){
 	}
 }
 
-/*Drawr.getCanvas = function(id){
-    // actually return ctx but don't tell anyone
+Drawr.getCtx = function(id){
     if(typeof id === "undefined"){ // TODO: maybe revert this
-        var random_id = Math.floor(Math.random()*Drawr.ctxs.length);
-        return Drawr.ctxs[random_id];
+        var random_id = Math.floor(Math.random()*Drawr.canvases.length);
+        return Drawr.canvases[random_id].ctx;
     }else{
-        return Drawr.ctxs[id];
+        return Drawr.canvases[id].ctx;
     }
-}*/
+}
 
-Drawr.getPixelArray = function(/*id, */x, y, width, height){
-	//var ctx = Drawr.getCanvas(id);
-	var ctx = Drawr.ctxDisplay;
+Drawr.getPixelArray = function(id){//, x, y, width, height){
+	/*var ctx = Drawr.getCtx(id);
 	x = x || 0;
 	y = y || 0;
 	width = width || ctx.canvas.width;
 	height = height || ctx.canvas.height;
-	return ctx.getImageData(x, y, width, height);
+	return ctx.getImageData(x, y, width, height);*/
+    return Drawr.canvases[id].cache;
 }
 
-Drawr.getPixel = function(imgData, index){
+Drawr.getPixel = function(data, index){
 	var pixel = {};
 	pixel['index'] = index;
-	pixel['r'] = imgData.data[index];
-	pixel['g'] = imgData.data[index+1];
-	pixel['b'] = imgData.data[index+2];
-	pixel['a'] = imgData.data[index+3];
+	pixel['r'] = data[index];
+	pixel['g'] = data[index+1];
+	pixel['b'] = data[index+2];
+	pixel['a'] = data[index+3];
 	return pixel;
 }
 
-Drawr.setPixel = function(imgData, pixel){
+Drawr.setPixel = function(data, pixel){
 	var i = pixel.index;
-	imgData.data[i+0] = pixel['r'];
-	imgData.data[i+1] = pixel['g'];
-	imgData.data[i+2] = pixel['b'];
-	imgData.data[i+3] = pixel['a'];
+	data[i+0] = pixel['r'];
+	data[i+1] = pixel['g'];
+	data[i+2] = pixel['b'];
+	data[i+3] = pixel['a'];
 }
 
 Drawr.getPixelRGB = function(pixel, rgb){
@@ -77,12 +90,21 @@ Drawr.setPixelRGB = function(pixel, rgb, value){
 	pixel[rgb] = value;
 }
 
-Drawr.setPixelArray = function(/*id, */imgData, x, y){
-	//var ctx = Drawr.getCanvas(id);
-	var ctx = Drawr.ctxDisplay;
-	x = x || 0;
-	y = y || 0;
-	ctx.putImageData(imgData, x, y);
+Drawr.setPixelArray = function(id, data/*, x, y*/){
+    // update cache
+    var canvas = Drawr.canvases[id];
+    canvas.cache = data;
+    // update the actual canvas
+    var imgData = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height);
+    //imgData.data = data; // ... doesn't work?
+    for(var i = 0; i < imgData.data.length; i += 4){
+        imgData.data[i] = data[i];
+        imgData.data[i+1] = data[i+1];
+        imgData.data[i+2] = data[i+2];
+        imgData.data[i+3] = data[i+3];
+    }
+    console.log(data[0] + ".." + imgData.data[0]);
+	canvas.ctx.putImageData(imgData, 0, 0);
 }
 
 /*Drawr.getRandomId = function(){
@@ -90,13 +112,11 @@ Drawr.setPixelArray = function(/*id, */imgData, x, y){
 }*/
 
 Drawr.getWidth = function(id){
-    //return Drawr.ctxs[id].canvas.width;
-	return Drawr.ctxDisplay.canvas.width;
+	return Drawr.canvases[id].width;
 }
 
 Drawr.getHeight = function(id){
-    //return Drawr.ctxs[id].canvas.height;
-	return Drawr.ctxDisplay.canvas.height;
+	return Drawr.canvases[id].height;
 }
 
 /*Drawr.invertCanvas = function(id){
