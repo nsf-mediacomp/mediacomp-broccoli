@@ -186,6 +186,8 @@ Drawr.RunCode = function(){
 	} catch (e) {
 		console.log(e);
 	}
+
+	document.getElementById('spinner').style.visibility = 'hidden';
 }
 
 Drawr.speed_test = function(){
