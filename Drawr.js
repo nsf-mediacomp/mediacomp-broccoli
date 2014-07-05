@@ -108,6 +108,7 @@ Drawr.getPixel = function(id, x, y){
     //var cache = Drawr.canvases[id].cache;
     var cache = drawr_global_cache[id]; // opt
 	var pixel = {
+        id: id,
         index: index,
         x: x,
         y: y,
@@ -126,7 +127,8 @@ Drawr.getPixel = function(id, x, y){
 	return pixel;
 }
 
-Drawr.setPixel = function(id, pixel){
+Drawr.setPixel = function(pixel){
+    var id = pixel['id'];
     var canvas = Drawr.canvases[id];
 	var i = pixel.index;
     //var cache = Drawr.canvases[id].cache;
@@ -147,6 +149,7 @@ Drawr.getPixelRGB = function(pixel, rgb){
 
 Drawr.setPixelRGB = function(pixel, rgb, value){
 	pixel[rgb] = value;
+    Drawr.setPixel(pixel);
 }
 
 /*Drawr.setPixelArray = function(id, data/*, x, y* /){

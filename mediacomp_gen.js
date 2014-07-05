@@ -50,7 +50,6 @@ Blockly.JavaScript['mediacomp_pixelLoop'] = function(block){
       "  for (var $i = 0; $i < Drawr.getWidth($id); $i++) {\n" +
 	  "    $pixel = Drawr.getPixel($id, $i, $j);\n" +
       "$branch\n" + 
-	  "    Drawr.setPixel($id, $pixel);\n" + 
 	  "  }\n" +
 	  "}\n"; // +
 	  //"Drawr.setPixelArray(0, $img);\n";
@@ -90,8 +89,8 @@ Blockly.JavaScript['mediacomp_getPixelAt'] = function(block){
 		Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
     // TODO: make sure they're within the range 0 < x,y < image size
 		
-	var code = "alert('getPixelAt: TODO')" // TODO: ACTUALLY DO ANYTHING
-		.interpolate({x: x, y: y});
+	var code = "Drawr.getPixel($id, $x, $y)"
+		.interpolate({id: 0, x: x, y: y});
 	return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
