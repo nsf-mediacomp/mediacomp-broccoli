@@ -1,7 +1,3 @@
-
-// so we don't have multiple layers of object property accesses to access the cache
-var drawr_global_cache = [];
-
 function Drawr(ctxs){
     alert("this never happens");
     Drawr.ctxs = ctxs;
@@ -21,8 +17,7 @@ Drawr.addCanvas = function(ctx, title){
 
 Drawr.resetCache = function(id){
     var canvas = Drawr.canvases[id];
-    //canvas.cache = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height).data; // DEPRECATED, this cache isn't changed anymore
-    drawr_global_cache[id] = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height).data; // opt
+    canvas.cache = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 }
 
 Drawr.flushCache = function(id){
@@ -32,14 +27,12 @@ Drawr.flushCache = function(id){
         }
     }else{
         var canvas = Drawr.canvases[id];
-        //var cache = canvas.cache;
-        var cache = drawr_global_cache[id]; // opt
         var imgData = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height);
         for(var i = 0; i < imgData.data.length; i += 4){
-            imgData.data[i] = cache[i];
-            imgData.data[i+1] = cache[i+1];
-            imgData.data[i+2] = cache[i+2];
-            imgData.data[i+3] = cache[i+3];
+            imgData.data[i] = canvas.cache[i];
+            imgData.data[i+1] = canvas.cache[i+1];
+            imgData.data[i+2] = canvas.cache[i+2];
+            imgData.data[i+3] = canvas.cache[i+3];
         }
         canvas.ctx.putImageData(imgData, 0, 0);
     }
@@ -104,17 +97,16 @@ Drawr.getHeight = function(id){
 }*/
 
 Drawr.getPixel = function(id, x, y){
-    var index = (y * Drawr.canvases[id].width + x)*4;
-    //var cache = Drawr.canvases[id].cache;
-    var cache = drawr_global_cache[id]; // opt
+    var canvas = Drawr.canvases[id];
+    var index = (y * canvas.width + x)*4;
 	var pixel = {
         index: index,
         x: x,
         y: y,
-        r: cache[index],
-        g: cache[index+1],
-        b: cache[index+2],
-        a: cache[index+3],
+        r: canvas.cache[index],
+        g: canvas.cache[index+1],
+        b: canvas.cache[index+2],
+        a: canvas.cache[index+3],
     };
 	/*pixel['index'] = index;
     pixel['x'] = x;
@@ -129,12 +121,10 @@ Drawr.getPixel = function(id, x, y){
 Drawr.setPixel = function(id, pixel){
     var canvas = Drawr.canvases[id];
 	var i = pixel.index;
-    //var cache = Drawr.canvases[id].cache;
-    var cache = drawr_global_cache[id]; // opt
-	cache[i+0] = pixel['r'];
-	cache[i+1] = pixel['g'];
-	cache[i+2] = pixel['b'];
-	cache[i+3] = pixel['a'];
+	canvas.cache[i+0] = pixel['r'];
+	canvas.cache[i+1] = pixel['g'];
+	canvas.cache[i+2] = pixel['b'];
+	canvas.cache[i+3] = pixel['a'];
     // draw a 1x1 rectangle so the image reflects the cache
     // INSTEAD: flushCache() at the end of execution, significantly faster.
     //canvas.ctx.fillStyle = "rgb(" + pixel['r'] + ", " +  pixel['g'] + ", " +  pixel['b'] + ")";
