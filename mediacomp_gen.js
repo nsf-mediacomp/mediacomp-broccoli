@@ -37,24 +37,19 @@ Blockly.JavaScript['mediacomp_pixelLoop'] = function(block){
     branch = Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g,
         '\'' + block.id + '\'') + branch;
   }
-  
-  var canvas_id = Blockly.JavaScript.variableDB_.getDistinctName(
-	  "canvas_id", Blockly.Variables.NAME_TYPE);
-  var indexVar1 = Blockly.JavaScript.variableDB_.getDistinctName(
-	  "x", Blockly.Variables.NAME_TYPE);
-  var indexVar2 = Blockly.JavaScript.variableDB_.getDistinctName(
-	  "y", Blockly.Variables.NAME_TYPE);
-      
-  var code = "var $id = 0 /*$canvas*/;\n" +
-      "for (var $j = 0; $j < Drawr.getHeight($id); $j++) {\n" +
-      "  for (var $i = 0; $i < Drawr.getWidth($id); $i++) {\n" +
-	  "    $pixel = Drawr.getPixel($id, $i, $j);\n" +
+  var imgVar = Blockly.JavaScript.variableDB_.getDistinctName(
+	  "img_data", Blockly.Variables.NAME_TYPE);
+  var indexVar = Blockly.JavaScript.variableDB_.getDistinctName(
+	  "i", Blockly.Variables.NAME_TYPE);
+  var code = "var $img = Drawr.getPixelArray(0);\n" + 
+      "for (var $i = 0; $i < $img.length; " +
+	  "$i+=4) {\n" +
+	  "  $pixel = Drawr.getPixel($img, $i);\n" +
       "$branch\n" + 
-	  "    Drawr.setPixel($id, $pixel);\n" + 
-	  "  }\n" +
-	  "}\n"; // +
-	  //"Drawr.setPixelArray(0, $img);\n";
-  code = code.interpolate({id: canvas_id, /*canvas: argument0, */pixel: variable0, i: indexVar1, j: indexVar2, branch: branch});
+	  "  Drawr.setPixel($img, $pixel);\n" + 
+	  "}\n" +
+	  "Drawr.setPixelArray(0, $img);\n";
+  code = code.interpolate({img: imgVar, /*canvas: argument0, */pixel: variable0, i: indexVar, branch: branch});
   return code;
 };
 

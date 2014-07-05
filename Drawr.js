@@ -20,24 +20,6 @@ Drawr.resetCache = function(id){
     canvas.cache = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 }
 
-Drawr.flushCache = function(id){
-    if(typeof id == "undefined"){
-        for(var i = 0; i < Drawr.canvases.length; ++i){
-            Drawr.flushCache(i);
-        }
-    }else{
-        var canvas = Drawr.canvases[id];
-        var imgData = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height);
-        for(var i = 0; i < imgData.data.length; i += 4){
-            imgData.data[i] = canvas.cache[i];
-            imgData.data[i+1] = canvas.cache[i+1];
-            imgData.data[i+2] = canvas.cache[i+2];
-            imgData.data[i+3] = canvas.cache[i+3];
-        }
-        canvas.ctx.putImageData(imgData, 0, 0);
-    }
-}
-
 Drawr.clearAllCommands = function(){
 	Drawr.command_queue = [];
 	clearTimeout(Drawr.pid);
@@ -45,11 +27,6 @@ Drawr.clearAllCommands = function(){
 }
 
 Drawr.begin_execute = function(){
-    // since we don't actually do any begin_execute'ing here, but we do call it at the end
-    // lets just randomly flushCache here (since it's done after all operations are done, as of right now)
-    // in the future: have the cache flush itself multiple times in a thread looped to like 100 ms (for slow programs that should update the canvas occasionally even before they finish)
-    Drawr.flushCache(); // <---- called at the end of execution
-    
 	Drawr.then = Date.now();
 	Drawr.pid = setTimeout(Drawr.execute(), 0);
 }
@@ -77,58 +54,32 @@ Drawr.getCtx = function(id){
     }
 }
 
-Drawr.getWidth = function(id){
-    return Drawr.canvases[id].width;
-}
-
-Drawr.getHeight = function(id){
-    return Drawr.canvases[id].height;
-}
-
-
-/*Drawr.getPixelArray = function(id){//, x, y, width, height){
+Drawr.getPixelArray = function(id){//, x, y, width, height){
 	/*var ctx = Drawr.getCtx(id);
 	x = x || 0;
 	y = y || 0;
 	width = width || ctx.canvas.width;
 	height = height || ctx.canvas.height;
-	return ctx.getImageData(x, y, width, height);* /
+	return ctx.getImageData(x, y, width, height);*/
     return Drawr.canvases[id].cache;
-}*/
+}
 
-Drawr.getPixel = function(id, x, y){
-    var canvas = Drawr.canvases[id];
-    var index = (y * canvas.width + x)*4;
-	var pixel = {
-        index: index,
-        x: x,
-        y: y,
-        r: canvas.cache[index],
-        g: canvas.cache[index+1],
-        b: canvas.cache[index+2],
-        a: canvas.cache[index+3],
-    };
-	/*pixel['index'] = index;
-    pixel['x'] = x;
-    pixel['y'] = y;
-	pixel['r'] = canvas.cache[index];
-	pixel['g'] = canvas.cache[index+1];
-	pixel['b'] = canvas.cache[index+2];
-	pixel['a'] = canvas.cache[index+3];*/
+Drawr.getPixel = function(data, index){
+	var pixel = {};
+	pixel['index'] = index;
+	pixel['r'] = data[index];
+	pixel['g'] = data[index+1];
+	pixel['b'] = data[index+2];
+	pixel['a'] = data[index+3];
 	return pixel;
 }
 
-Drawr.setPixel = function(id, pixel){
-    var canvas = Drawr.canvases[id];
+Drawr.setPixel = function(data, pixel){
 	var i = pixel.index;
-	canvas.cache[i+0] = pixel['r'];
-	canvas.cache[i+1] = pixel['g'];
-	canvas.cache[i+2] = pixel['b'];
-	canvas.cache[i+3] = pixel['a'];
-    // draw a 1x1 rectangle so the image reflects the cache
-    // INSTEAD: flushCache() at the end of execution, significantly faster.
-    //canvas.ctx.fillStyle = "rgb(" + pixel['r'] + ", " +  pixel['g'] + ", " +  pixel['b'] + ")";
-    //canvas.ctx.fillRect(pixel['x'], pixel['y'], 1, 1);
+	data[i+0] = pixel['r'];
+	data[i+1] = pixel['g'];
+	data[i+2] = pixel['b'];
+	data[i+3] = pixel['a'];
 }
 
 Drawr.getPixelRGB = function(pixel, rgb){
@@ -139,7 +90,7 @@ Drawr.setPixelRGB = function(pixel, rgb, value){
 	pixel[rgb] = value;
 }
 
-/*Drawr.setPixelArray = function(id, data/*, x, y* /){
+Drawr.setPixelArray = function(id, data/*, x, y*/){
     // update cache
     var canvas = Drawr.canvases[id];
     canvas.cache = data;
@@ -152,7 +103,12 @@ Drawr.setPixelRGB = function(pixel, rgb, value){
         imgData.data[i+2] = data[i+2];
         imgData.data[i+3] = data[i+3];
     }
+    console.log(data[0] + ".." + imgData.data[0]);
 	canvas.ctx.putImageData(imgData, 0, 0);
+}
+
+/*Drawr.getRandomId = function(){
+    return Math.floor(Math.random()*Drawr.ctxs.length);
 }*/
 
 Drawr.getWidth = function(id){
