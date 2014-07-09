@@ -17,10 +17,11 @@
   <script type="text/javascript" src="utils.js"></script>
   
   <!--okay actually inject blockly and initialize the stuff-->
-  <script type="text/javascript" src="Drawr.js"></script>
-  <script type="text/javascript" src="run_mediacomp.js"></script>
+  <script type="text/javascript" src="drawr/Drawr.js"></script>
+  <script type="text/javascript" src="drawr/run_mediacomp.js"></script>
+  <script type="text/javascript" src="drawr/canvas_select.js"></script>
  
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 	<table width="100%">
@@ -63,36 +64,36 @@
     
     <!--221,221,221
     238,238,238-->
-    <div id="canvas_select_container">
-        <div id="canvas_select_controls">
-            <a href="javascript:void(0)" onclick="return 0;">+canvas</a> &nbsp; &nbsp;
-            <a href="javascript:void(0)" onclick="return 0;">-canvas</a> &nbsp; &nbsp;
-            <a href="javascript:void(0)" onclick="return 0;">+upload</a>
+    <div id="canvas_select_controls">
+        <a href="javascript:void(0)" onclick="return 0;">+canvas</a> &nbsp; &nbsp;
+        <a href="javascript:void(0)" onclick="return 0;">-canvas</a> &nbsp; &nbsp;
+        <a href="javascript:void(0)" onclick="return 0;">+upload</a>
+    </div>
+    <br/>
+    <div id="canvas_select">
+        <div id="canvas_select_width_div"></div>
+        <div class="canvas_select_box" id="canvas_select_0" onclick="CanvasSelect.select(0)">
+            <img src="images/cat_attendant.jpg" width="75px" height="75px"/><br/>
+            canvas 1
         </div>
-        <div id="canvas_select">
-            <div class="canvas_select_box" id="canvas_select_1">
-                <img src="images/cat_attendant.jpg" width="75px" height="75px"/><br/>
-                canvas 1
-            </div>
-            <div class="canvas_select_box" id="canvas_select_2">
-                <img src="images/sax.jpg" width="75px" height="75px"/><br/>
-                loading...
-            </div>
-            <div class="canvas_select_box" id="canvas_select_3">
-                <img src="images/secret.png" width="75px" height="75px"/><br/>
-                canvas 3
-            </div>
-            <div class="canvas_select_box" id="canvas_select_4">
-                <img src="images/shrek.png" width="75px" height="75px"/><br/>
-                canvas 4
-            </div>
-            <div class="canvas_select_box" id="canvas_select_5">
-                <img src="images/waifu.png" width="75px" height="75px"/><br/>
-                canvas 5
-            </div>
+        <div class="canvas_select_box" id="canvas_select_1" onclick="CanvasSelect.select(1)">
+            <img src="images/sax.jpg" width="75px" height="75px"/><br/>
+            loading...
+        </div>
+        <div class="canvas_select_box" id="canvas_select_2" onclick="CanvasSelect.select(2)">
+            <img src="images/secret.png" width="75px" height="75px"/><br/>
+            canvas 3
+        </div>
+        <div class="canvas_select_box" id="canvas_select_3" onclick="CanvasSelect.select(3)">
+            <img src="images/shrek.png" width="75px" height="75px"/><br/>
+            canvas 4
+        </div>
+        <div class="canvas_select_box" id="canvas_select_4" onclick="CanvasSelect.select(4)">
+            <img src="images/waifu.png" width="75px" height="75px"/><br/>
+            canvas 5
         </div>
     </div>
-    
+
     
     <div id="blockly"></div>
     
