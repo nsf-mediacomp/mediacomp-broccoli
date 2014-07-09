@@ -1,6 +1,11 @@
 body {
   background-color: #fff;
   font-family: sans-serif;
+  height: 100%;
+  //overflow: hidden;
+}
+html{
+    height: 100%;
 }
 h1 {
   font-weight: normal;
@@ -154,4 +159,43 @@ button.notext {
 	padding: 3px;
 	border: 1px solid black;
 	cursor: pointer;
+}
+
+/* canvas selector */
+
+#canvas_select_container{
+    display: inline-block;
+    width: 400px;
+    height: 1px;
+    border: 1px rgb(221,221,221) solid;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#canvas_select_controls{
+    display: inline-block;
+    width: 380px; /* 400 - 10 - 10 */
+    background: rgb(238,238,255);
+    padding: 5px 10px;
+    font-size: 0.75em;
+}
+
+#canvas_select{
+    display: inline-block;
+    width: 400px;
+    /*overflow-x: hidden;
+    overflow-y: auto;*/
+}
+
+.canvas_select_box{
+    font-size: 0.8em;
+    display: inline-block;
+    float: left;
+    width: 75px;
+    border: 1px solid rgb(221,221,221);
+    height: 105px;
+    text-align: center;
+    /* canvas_selector width: 400px. 3 boxes per line. (400px - 4 boxes * (75+5+5+2)px) / (5 margins surrounding 4 boxes) = 10px */
+    margin: 5px 0px 5px 10px;
+    padding: 5px;
 }

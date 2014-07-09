@@ -49,6 +49,18 @@ Drawr.setupCanvases = function(){
 	Drawr.Reset();
 }
 
+Drawr.onresize = function(){
+    var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    
+    /* canvas select sizing */
+    var canvas_select = $("canvas_select_container");
+    canvas_select.style.height = (h - canvas_select.offsetTop - 10) + "px"; // why -10? who knows. css is awful.
+    
+    /* canvas selector boxes aligning */
+    var select_boxes = document.getElementsByClassName("canvas_select_box");
+    var canvas_select_width = 400;
+}
+
 Drawr.setupBlockly = function(){
 	// Set the page title with the content of the H1 title.
 	document.title = document.getElementById('title').textContent;
@@ -78,10 +90,15 @@ Drawr.setupBlockly = function(){
 	};
 	window.addEventListener('scroll', function(){
 		onresize();
+        Drawr.onresize();
 		Blockly.fireUiEvent(window, 'resize');
 	});
-	window.addEventListener('resize', onresize);
+	window.addEventListener('resize', function(){
+        onresize();
+        Drawr.onresize();
+    });
 	onresize();
+    Drawr.onresize();
 	
 	//Inject Blockly into the webpage
 	var toolbox = document.getElementById('toolbox');
