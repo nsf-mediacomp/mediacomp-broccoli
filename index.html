@@ -31,8 +31,11 @@
     </table>
     
     <div id="visualization">
-        <canvas id="scratch" width="400" height="400" style="display: none"></canvas>
-        <canvas id="display" width="400" height="400"></canvas>
+        <canvas id="canvas_0" width="400" height="400" class="display_canvas"></canvas>
+        <canvas id="canvas_1" width="400" height="400" class="display_canvas" style="display: none"></canvas>
+        <canvas id="canvas_2" width="400" height="400" class="display_canvas" style="display: none"></canvas>
+        <canvas id="canvas_3" width="400" height="400" class="display_canvas" style="display: none"></canvas>
+        <canvas id="canvas_4" width="400" height="400" class="display_canvas" style="display: none"></canvas>
     </div>
     
     <table style="padding-top: 1em;">
@@ -125,12 +128,111 @@
   <div id="code" style="font-family: monospace; font-size: 14px;">
     {code();}
   </div>-->
+        <!--value name="FROM">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <value name="TO">
+          <block type="math_number">
+            <field name="NUM">400</field>
+          </block>
+        </value>
+        <value name="BY">
+          <block type="math_number">
+            <field name="NUM">1</field>
+          </block>
+        </value-->
+        <!--statement name="DO">
+          <block type="controls_for">
+            <!--field name="VAR">j</field- ->
+            <value name="FROM">
+              <block type="math_number" id="79">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+            <value name="TO">
+              <block type="math_number" id="80">
+                <field name="NUM">400</field>
+              </block>
+            </value>
+            <value name="BY">
+              <block type="math_number" id="81">
+                <field name="NUM">1</field>
+              </block>
+            </value>
+          </block>
+        </statement-->
 
   <xml id="toolbox" style="display: none">
+  
 	<category name="Media Comp">
-		<block type="mediacomp_run"></block>
-		<block type="mediacomp_pixelLoop"></block>
+	  <block type="mediacomp_run"></block>
+      <!--block type="mediacomp_pixelLoop"></block-->
+      <block type="controls_for">
+      <field name="VAR">x</field>
+        <value name="FROM">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <value name="TO">
+          <block type="math_number">
+            <field name="NUM">400</field>
+          </block>
+        </value>
+        <value name="BY">
+          <block type="math_number">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <statement name="DO">
+          <block type="controls_for">
+            <field name="VAR">y</field>
+            <value name="FROM">
+              <block type="math_number">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+            <value name="TO">
+              <block type="math_number">
+                <field name="NUM">400</field>
+              </block>
+            </value>
+            <value name="BY">
+              <block type="math_number">
+                <field name="NUM">1</field>
+              </block>
+            </value>
+            <statement name="DO">
+                <block type="variables_set">
+                    <field name="VAR">pixel</field>
+                    <value name="VALUE">
+                      <block type="mediacomp_getPixelAt">
+                        <value name="X">
+                          <block type="variables_get">
+                            <field name="VAR">x</field>
+                          </block>
+                        </value>
+                        <value name="Y">
+                          <block type="variables_get">
+                            <field name="VAR">y</field>
+                          </block>
+                        </value>
+                        <value name="CANVAS">
+                          <block type="math_number">
+                            <field name="NUM">0</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                </block>
+            </statement>
+          </block>
+        </statement>
+      </block>
 	</category>
+    
     <category name="Pixels">
 		<block type="mediacomp_getPixelAt">
 			<value name="X">
@@ -143,6 +245,11 @@
 					<field name="NUM">0</field>
 				</block>
 			</value>
+            <value name="CANVAS">
+              <block type="math_number">
+                <field name="NUM">0</field>
+              </block>
+            </value>
 		</block>
 		<block type="mediacomp_getPixelRGB">
 			<value name="PIXEL">
@@ -177,7 +284,7 @@
 				</block>
 			</value>
 		</block-->
-		<block type="mediacomp_setpixel"></block>
+		<!--block type="mediacomp_setpixel"></block-->
 	</category>
     <category name="Logic">
       <block type="controls_if"></block>

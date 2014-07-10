@@ -87,10 +87,12 @@ Blockly.JavaScript['mediacomp_getPixelAt'] = function(block){
 		Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
 	var y = Blockly.JavaScript.valueToCode(block, 'Y',
 		Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+	var canvas = Blockly.JavaScript.valueToCode(block, 'CANVAS',
+		Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
     // TODO: make sure they're within the range 0 < x,y < image size
 		
 	var code = "Drawr.getPixel($id, $x, $y)"
-		.interpolate({id: 0, x: x, y: y});
+		.interpolate({id: canvas, x: x, y: y});
 	return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 

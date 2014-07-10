@@ -1,5 +1,4 @@
-Drawr.images = ["shrek.png", "sax.jpg", "waifu.png", "cat_attendant.jpg", "secret.png"];
-Drawr.path = "images/";
+Drawr.images = ["images/cat_attendant.jpg", "images/sax.jpg", "images/secret.png", "images/shrek.png", "images/waifu.png"];
 
 Drawr.DOUBLE_CLICK_TIME = 100;
 
@@ -14,7 +13,9 @@ Drawr.init = function(){
 	Drawr.loadBlocks(defaultXml);
 	
     // Connect canvases
-	Drawr.setupCanvases();
+    CanvasSelect.init(5, Drawr.images);
+    
+    // Setup buttons
 
 	$("runButton").addEventListener("click", Drawr.RunCode);
 	$("resetButton").addEventListener("click", Drawr.Reset);
@@ -39,13 +40,6 @@ Drawr.init = function(){
 		$("dialog").style.display = "block";
 	});
 	
-	Drawr.Reset();
-}
-
-Drawr.setupCanvases = function(){
-    Drawr.canvases = [];
-    Drawr.addCanvas($('display').getContext('2d'), "display");
-    Drawr.addCanvas($('scratch').getContext('2d'), "scratch");
 	Drawr.Reset();
 }
 
@@ -152,27 +146,17 @@ Drawr.Reset = function(){
 	setTimeout(function() {$("runButton").disabled = false;}, Drawr.DOUBLE_CLICK_TIME);
 	document.getElementById('spinner').style.visibility = 'hidden';
 
-
 	Drawr.clearAllCommands();
 
-	Drawr.canvases[0].ctx.fillStyle = "#ffffff";
-	Drawr.canvases[0].ctx.fillRect(0, 0, Drawr.canvases[0].width, Drawr.canvases[0].height);
-
-	var r = Math.floor(Math.random()*Drawr.images.length);
-	var img = new Image();
-	img.onload = function(){
-		this.ctx.drawImage(this.img, 0, 0);
-        Drawr.resetCache(0); // the display canvas
-	}.bind({ctx: Drawr.canvases[0].ctx, img: img});
-	img.src = Drawr.path + Drawr.images[r];
+	CanvasSelect.reset();
 }
 	
 Drawr.RunCode = function(){		
 	if (!$("resetButton").style.minWidth){
 		$("resetButton").style.minWidth = $("runButton").offsetWidth + "px";
 	}
-	$("runButton").style.display = 'none';
-	$("resetButton").style.display = "inline";
+	//$("runButton").style.display = 'none'; /////////////
+	//$("resetButton").style.display = "inline";
 	// Prevent double-clicks or double-taps.
 	$("resetButton").disabled = true;
 	setTimeout(function() {$("resetButton").disabled = false;}, Drawr.DOUBLE_CLICK_TIME);
@@ -193,33 +177,4 @@ Drawr.RunCode = function(){
 	}
 
 	document.getElementById('spinner').style.visibility = 'hidden';
-}
-
-Drawr.speed_test = function(){
-	var then = Date.now();
-	var ctx = Drawr.getCanvas(0);
-	var imgData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-	for (var i = 0; i < imgData.data.length; i+=4){
-		imgData.data[i] = 255 - imgData.data[i];
-		imgData.data[i+1] = 255 - imgData.data[i+1];
-		imgData.data[i+2] = 255 - imgData.data[i+2];
-	}
-	ctx.putImageData(imgData, 0, 0);
-	alert((Date.now() - then) + " ms");
-}
-
-Drawr.speed_test2 = function(){
-	var then = Date.now();
-	Drawr.clearAllCommands();
-	var imgData_data = Drawr.getPixelArray(1);
-	for (var i = 0; i < imgData_data.data.length; i+=4) {
-		pixel = Drawr.getPixel(imgData_data, i);
-		pixel.r = 255 - pixel.r;
-		pixel.g = 255 - pixel.g;
-		pixel.b = 255 - pixel.b;
-		Drawr.setPixel(imgData_data, pixel);
-	}
-	Drawr.setPixelArray(1, imgData_data);
-	Drawr.begin_execute();
-	alert((Date.now() - then) + " ms");
 }

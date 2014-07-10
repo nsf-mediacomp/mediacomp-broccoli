@@ -117,6 +117,10 @@ Blockly.Blocks['mediacomp_getPixelAt'] = {
             .setCheck('Number')
             .setAlign(Blockly.ALIGN_RIGHT)
             .appendField("y");
+        this.appendValueInput("CANVAS")
+            .setCheck('Number')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("on canvas");
 		/*this.appendValueInput("CANVAS")
             .appendField("on canvas")
 			.setCheck("Canvas")
