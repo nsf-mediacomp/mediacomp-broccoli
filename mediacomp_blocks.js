@@ -121,10 +121,6 @@ Blockly.Blocks['mediacomp_getPixelAt'] = {
             .setCheck('Number')
             .setAlign(Blockly.ALIGN_RIGHT)
             .appendField("on canvas");
-		/*this.appendValueInput("CANVAS")
-            .appendField("on canvas")
-			.setCheck("Canvas")
-			.setAlign(Blockly.ALIGN_CENTRE);*/
 		this.setInputsInline(true);
 		this.setOutput(true, "Pixel");
 		this.setTooltip('Get the red, green, or blue color value of a pixel');

@@ -11,7 +11,7 @@ h1 {
   font-weight: normal;
   font-size: 140%;
 }
-canvas {
+.display_canvas {
 	border: 1px solid black;
 }
 

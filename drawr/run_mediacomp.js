@@ -169,12 +169,14 @@ Drawr.RunCode = function(){
 	generated_code = getRidOfNakedCode(generated_code);
 	generated_code += "if (pixly_run) pixly_run();\n";
 	
-	try {
-		console.log(generated_code);
-		eval(generated_code);
-	} catch (e) {
-		console.log(e);
-	}
+    setTimeout(function(){
+        try {
+            console.log(generated_code);
+            eval(generated_code);
+        } catch (e) {
+            console.log(e);
+        }
 
-	document.getElementById('spinner').style.visibility = 'hidden';
+        document.getElementById('spinner').style.visibility = 'hidden';
+    }, 0);
 }
