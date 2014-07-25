@@ -1,0 +1,158 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <block type="mediacomp_run" id="2" x="63" y="34">
+    <statement name="DO">
+      <block type="controls_for" id="3" inline="true">
+        <field name="VAR">x</field>
+        <value name="FROM">
+          <block type="math_number" id="4">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <value name="TO">
+          <block type="math_number" id="5">
+            <field name="NUM">400</field>
+          </block>
+        </value>
+        <value name="BY">
+          <block type="math_number" id="6">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <statement name="DO">
+          <block type="controls_for" id="7" inline="true">
+            <field name="VAR">y</field>
+            <value name="FROM">
+              <block type="math_number" id="8">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+            <value name="TO">
+              <block type="math_number" id="9">
+                <field name="NUM">400</field>
+              </block>
+            </value>
+            <value name="BY">
+              <block type="math_number" id="10">
+                <field name="NUM">1</field>
+              </block>
+            </value>
+            <statement name="DO">
+              <block type="variables_set" id="11" inline="true">
+                <field name="VAR">pixel</field>
+                <value name="VALUE">
+                  <block type="mediacomp_getPixelAt" id="12" inline="true">
+                    <value name="X">
+                      <block type="variables_get" id="13">
+                        <field name="VAR">x</field>
+                      </block>
+                    </value>
+                    <value name="Y">
+                      <block type="variables_get" id="14">
+                        <field name="VAR">y</field>
+                      </block>
+                    </value>
+                    <value name="CANVAS">
+                      <block type="math_number" id="15">
+                        <field name="NUM">4</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <next>
+                  <block type="mediacomp_setPixelRGB" id="16" inline="true">
+                    <field name="RGB">r</field>
+                    <value name="PIXEL">
+                      <block type="variables_get" id="17">
+                        <field name="VAR">pixel</field>
+                      </block>
+                    </value>
+                    <value name="VALUE">
+                      <block type="math_arithmetic" id="18" inline="true">
+                        <field name="OP">MINUS</field>
+                        <value name="A">
+                          <block type="math_number" id="21">
+                            <field name="NUM">255</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="mediacomp_getPixelRGB" id="19" inline="true">
+                            <field name="RGB">r</field>
+                            <value name="PIXEL">
+                              <block type="variables_get" id="20">
+                                <field name="VAR">pixel</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="mediacomp_setPixelRGB" id="22" inline="true">
+                        <field name="RGB">g</field>
+                        <value name="PIXEL">
+                          <block type="variables_get" id="23">
+                            <field name="VAR">pixel</field>
+                          </block>
+                        </value>
+                        <value name="VALUE">
+                          <block type="math_arithmetic" id="34" inline="true">
+                            <field name="OP">MINUS</field>
+                            <value name="A">
+                              <block type="math_number" id="35">
+                                <field name="NUM">255</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <block type="mediacomp_getPixelRGB" id="36" inline="true">
+                                <field name="RGB">g</field>
+                                <value name="PIXEL">
+                                  <block type="variables_get" id="37">
+                                    <field name="VAR">pixel</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="mediacomp_setPixelRGB" id="28" inline="true">
+                            <field name="RGB">b</field>
+                            <value name="PIXEL">
+                              <block type="variables_get" id="29">
+                                <field name="VAR">pixel</field>
+                              </block>
+                            </value>
+                            <value name="VALUE">
+                              <block type="math_arithmetic" id="38" inline="true">
+                                <field name="OP">MINUS</field>
+                                <value name="A">
+                                  <block type="math_number" id="39">
+                                    <field name="NUM">255</field>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <block type="mediacomp_getPixelRGB" id="40" inline="true">
+                                    <field name="RGB">b</field>
+                                    <value name="PIXEL">
+                                      <block type="variables_get" id="41">
+                                        <field name="VAR">pixel</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+</xml>

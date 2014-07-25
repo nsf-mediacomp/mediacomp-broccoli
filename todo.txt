@@ -1,8 +1,5 @@
 ***SET UP COMMAND QUEUEING IN MEDIACOMP LIKE IN SPHERO...***
 
-MEDIACOMP!!! && make up a blockly name for it that's cute
-	-add STOP buttons to index
-
 -loop over all the pixels
 	-and in an x y array (not yet)
 	***repeat for the length of the canvas (width * height), get pixel at that position
