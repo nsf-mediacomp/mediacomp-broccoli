@@ -11,17 +11,17 @@
   <script type="text/javascript" src="blockly/javascript_compressed.js"></script>
   
   <!--Custom block definitions-->
-  <script type="text/javascript" src="mediacomp_blocks.js"></script>
-  <script type="text/javascript" src="mediacomp_gen.js"></script>
+  <script type="text/javascript" src="mediacomp/mediacomp_blocks.js"></script>
+  <script type="text/javascript" src="mediacomp/mediacomp_gen.js"></script>
   
-  <script type="text/javascript" src="utils.js"></script>
+  <script type="text/javascript" src="mediacomp/utils.js"></script>
   
   <!--okay actually inject blockly and initialize the stuff-->
-  <script type="text/javascript" src="drawr/Drawr.js"></script>
-  <script type="text/javascript" src="drawr/run_mediacomp.js"></script>
-  <script type="text/javascript" src="drawr/canvas_select.js"></script>
+  <script type="text/javascript" src="mediacomp/drawr/Drawr.js"></script>
+  <script type="text/javascript" src="mediacomp/drawr/run_mediacomp.js"></script>
+  <script type="text/javascript" src="mediacomp/drawr/canvas_select.js"></script>
  
-  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="mediacomp/css/style.css">
 </head>
 <body>
 	<table width="100%">
@@ -41,7 +41,7 @@
     <table style="padding-top: 1em;">
     <tr>
         <td style="width: 15px;">
-            <img id="spinner" style="visibility: hidden;" src="loading.gif" height=15 width=15>
+            <img id="spinner" style="visibility: hidden;" src="mediacomp/loading.gif" height=15 width=15>
         </td>
         <td style="text-align: center">
             <button id="runButton" class="primary" title="Makes the canvas do what the blocks say.">
@@ -169,6 +169,49 @@
 	<category name="Media Comp">
 	  <block type="mediacomp_run"></block>
       <!--block type="mediacomp_pixelLoop"></block-->
+	  <block type="controls_forfor">
+      <field name="VAR">x</field>
+	  <field name="VAR2">y</field>
+        <value name="FROM">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <value name="TO">
+          <block type="math_number">
+            <field name="NUM">400</field>
+          </block>
+        </value>
+        <value name="BY">
+          <block type="math_number">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <statement name="DO">
+			<block type="variables_set">
+				<field name="VAR">pixel</field>
+				<value name="VALUE">
+				  <block type="mediacomp_getPixelAt">
+					<value name="X">
+					  <block type="variables_get">
+						<field name="VAR">x</field>
+					  </block>
+					</value>
+					<value name="Y">
+					  <block type="variables_get">
+						<field name="VAR">y</field>
+					  </block>
+					</value>
+					<value name="CANVAS">
+					  <block type="math_number">
+						<field name="NUM">0</field>
+					  </block>
+					</value>
+				  </block>
+				</value>
+			</block>
+        </statement>
+      </block>
       <block type="controls_for">
       <field name="VAR">x</field>
         <value name="FROM">
@@ -250,6 +293,41 @@
                 <field name="NUM">0</field>
               </block>
             </value>
+		</block>
+		<block type="mediacomp_setPixelAt">
+			<value name="X">
+			  <block type="variables_get">
+				<field name="VAR">x</field>
+			  </block>
+			</value>
+			<value name="Y">
+			  <block type="variables_get">
+				<field name="VAR">y</field>
+			  </block>
+			</value>
+            <value name="CANVAS">
+              <block type="math_number">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+			<value name="PIXEL"></value>
+		</block>
+		<block type="mediacomp_setPixel">
+			<value name="PIXEL">
+				<block type="variables_get">
+					<field name="VAR">pixel</field>
+				</block>
+			</value>
+			<value name="PIXEL2">
+				<block type="colour_picker"></block>
+			</value>
+		</block>
+		<block type="mediacomp_getPixelRGBIntensity">
+			<value name="PIXEL">
+				<block type="variables_get">
+					<field name="VAR">pixel</field>
+				</block>
+			</value>
 		</block>
 		<block type="mediacomp_getPixelRGB">
 			<value name="PIXEL">

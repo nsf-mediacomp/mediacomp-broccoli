@@ -1,18 +1,4 @@
-***SET UP COMMAND QUEUEING IN MEDIACOMP LIKE IN SPHERO...***
-
--loop over all the pixels
-	-and in an x y array (not yet)
-	***repeat for the length of the canvas (width * height), get pixel at that position
-		***represent the canvas as a list in blockly
-
-	-a redraw canvas block???
-
-===============================
 Post Demo:: 
 ----------------------
 1. TUTORIALS::
 	-for students: tutorial on how to begin playing around with mediacomp should be included on the page itself
-	
-2. IMAGE BLOCK::
-	-Have on central big Canvas to the Right of the blockly editor
-	-in the blockly editor, let students drag an image block to set the picture of the canvas
