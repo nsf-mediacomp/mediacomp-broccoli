@@ -4,18 +4,10 @@ function CanvasSelect(){}
 CanvasSelect.init = function(count, init_images){
     CanvasSelect.default_images = init_images;
     Drawr.canvases = [];
-    Drawr.addCanvas($('canvas_0').getContext('2d'));
-    Drawr.addCanvas($('canvas_1').getContext('2d'));
-    Drawr.addCanvas($('canvas_2').getContext('2d'));
-    Drawr.addCanvas($('canvas_3').getContext('2d'));
-    Drawr.addCanvas($('canvas_4').getContext('2d'));
-    
-    //CanvasSelect.select_boxes = [];
-    CanvasSelect.addSelectBox();
-    CanvasSelect.addSelectBox();
-    CanvasSelect.addSelectBox();
-    CanvasSelect.addSelectBox();
-    CanvasSelect.addSelectBox();
+	for (var i = 0; i < count; i++){
+		Drawr.addCanvas($('canvas_'+i).getContext('2d'));
+		CanvasSelect.addSelectBox();
+	}
     
     CanvasSelect.reset();
     
@@ -36,6 +28,7 @@ CanvasSelect.reset = function(){
         img.onload = function(){
             Drawr.getCtx(this.index).drawImage(this.img, 0, 0);
             Drawr.resetCache(this.index);
+			Drawr.canvases[this.index].image = this.img;
             //CanvasSelect.updateSelectBoxCanvases();
         }.bind({index: i, img: img});
         img.src = CanvasSelect.default_images[i];

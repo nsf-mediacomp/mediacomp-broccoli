@@ -19,30 +19,21 @@ Drawr.addCanvas = function(ctx, title){
     return id;
 }
 
-Drawr.resetCache = function(id){
-    var canvas = Drawr.canvases[id];
-    //canvas.cache = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height).data; // DEPRECATED, this cache isn't changed anymore
-    drawr_global_cache[id] = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+Drawr.getCtx = function(id){
+    if(typeof id === "undefined"){ // TODO: maybe revert this
+        var random_id = Math.floor(Math.random()*Drawr.canvases.length);
+        return Drawr.canvases[random_id].ctx;
+    }else{
+        return Drawr.canvases[id].ctx;
+    }
 }
 
-Drawr.flushCache = function(id){
-    if(typeof id == "undefined"){
-        for(var i = 0; i < Drawr.canvases.length; ++i){
-            Drawr.flushCache(i);
-        }
-    }else{
-        var canvas = Drawr.canvases[id];
-        //var cache = canvas.cache;
-        var cache = drawr_global_cache[id];
-        var imgData = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height);
-        for(var i = 0; i < imgData.data.length; i += 4){
-            imgData.data[i] = cache[i];
-            imgData.data[i+1] = cache[i+1];
-            imgData.data[i+2] = cache[i+2];
-            imgData.data[i+3] = cache[i+3];
-        }
-        canvas.ctx.putImageData(imgData, 0, 0);
-    }
+Drawr.getWidth = function(id){
+    return Drawr.canvases[id].width;
+}
+
+Drawr.getHeight = function(id){
+    return Drawr.canvases[id].height;
 }
 
 Drawr.clearAllCommands = function(){
@@ -75,23 +66,38 @@ Drawr.execute = function(){
 	}
 }
 
-Drawr.getCtx = function(id){
-    if(typeof id === "undefined"){ // TODO: maybe revert this
-        var random_id = Math.floor(Math.random()*Drawr.canvases.length);
-        return Drawr.canvases[random_id].ctx;
+Drawr.restartCanvas = function(id){
+	var canvas = Drawr.canvases[id];
+
+	Drawr.getCtx(id).drawImage(canvas.image, 0, 0);
+    Drawr.resetCache(id);
+}
+
+Drawr.resetCache = function(id){
+    var canvas = Drawr.canvases[id];
+    //canvas.cache = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height).data; // DEPRECATED, this cache isn't changed anymore
+    drawr_global_cache[id] = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+}
+
+Drawr.flushCache = function(id){
+    if(typeof id == "undefined"){
+        for(var i = 0; i < Drawr.canvases.length; ++i){
+            Drawr.flushCache(i);
+        }
     }else{
-        return Drawr.canvases[id].ctx;
+        var canvas = Drawr.canvases[id];
+        //var cache = canvas.cache;
+        var cache = drawr_global_cache[id];
+        var imgData = canvas.ctx.getImageData(0, 0, canvas.width, canvas.height);
+        for(var i = 0; i < imgData.data.length; i += 4){
+            imgData.data[i] = cache[i];
+            imgData.data[i+1] = cache[i+1];
+            imgData.data[i+2] = cache[i+2];
+            imgData.data[i+3] = cache[i+3];
+        }
+        canvas.ctx.putImageData(imgData, 0, 0);
     }
 }
-
-Drawr.getWidth = function(id){
-    return Drawr.canvases[id].width;
-}
-
-Drawr.getHeight = function(id){
-    return Drawr.canvases[id].height;
-}
-
 
 /*Drawr.getPixelArray = function(id){//, x, y, width, height){
 	/*var ctx = Drawr.getCtx(id);
@@ -164,6 +170,10 @@ Drawr.setPixel2 = function(pixel, pixel2){
 	cache[i+1] = pixel2['g'];
 	cache[i+2] = pixel2['b'];
 	cache[i+3] = pixel2['a'];
+}
+
+Drawr.getPixelColour = function(pixel){
+	return rgbToHex(pixel['r'], pixel['g'], pixel['b']);
 }
 
 Drawr.getPixelRGB = function(pixel, rgb){

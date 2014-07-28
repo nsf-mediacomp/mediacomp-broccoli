@@ -14,7 +14,7 @@ Drawr.init = function(){
 	Drawr.loadBlocks(defaultXml);
 	
     // Connect canvases
-    CanvasSelect.init(5, Drawr.images);
+    CanvasSelect.init(Drawr.images.length, Drawr.images);
     
     // Setup buttons
 

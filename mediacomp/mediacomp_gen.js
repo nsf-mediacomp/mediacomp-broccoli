@@ -26,93 +26,20 @@ Blockly.JavaScript['mediacomp_run'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['mediacomp_pixelLoop'] = function(block){
-  // For each loop.
-  var variable0 = Blockly.JavaScript.variableDB_.getName(
-      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
-  /*var argument0 = Blockly.JavaScript.valueToCode(block, 'CANVAS',
-      Blockly.JavaScript.ORDER_ASSIGNMENT) || '[]';*/
-  var branch = Blockly.JavaScript.statementToCode(block, 'DO');
-  if (Blockly.JavaScript.INFINITE_LOOP_TRAP) {
-    branch = Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g,
-        '\'' + block.id + '\'') + branch;
-  }
-  
-  var canvas_id = Blockly.JavaScript.variableDB_.getDistinctName(
-	  "canvas_id", Blockly.Variables.NAME_TYPE);
-  var indexVar1 = Blockly.JavaScript.variableDB_.getDistinctName(
-	  "x", Blockly.Variables.NAME_TYPE);
-  var indexVar2 = Blockly.JavaScript.variableDB_.getDistinctName(
-	  "y", Blockly.Variables.NAME_TYPE);
-      
-  var code = "var $id = 0 /*$canvas*/;\n" +
-      "for (var $j = 0; $j < Drawr.getHeight($id); $j++) {\n" +
-      "  for (var $i = 0; $i < Drawr.getWidth($id); $i++) {\n" +
-	  "    $pixel = Drawr.getPixel($id, $i, $j);\n" +
-      "$branch\n" + 
-	  "  }\n" +
-	  "}\n"; // +
-	  //"Drawr.setPixelArray(0, $img);\n";
-  code = code.interpolate({id: canvas_id, /*canvas: argument0, */pixel: variable0, i: indexVar1, j: indexVar2, branch: branch});
+Blockly.JavaScript['mediacomp_updateCanvas'] = function(block) {  
+  var ctxid = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+ 
+  var code = "Drawr.flushCache($ctxid);\n"
+	.interpolate({ctxid: ctxid}); 
   return code;
 };
 
-/**We deal mostly with contexts, not canvas**/
-Blockly.JavaScript['mediacomp_getCanvas'] = function(block) {
-  var c_id = block.getFieldValue('CANVAS').toLowerCase();
-  return [c_id, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript['mediacomp_getPixelRGB'] = function(block){
-	var rgb = block.getFieldValue('RGB').toLowerCase();
-	var pixel = Blockly.JavaScript.valueToCode(block, 'PIXEL',
-		Blockly.JavaScript.ORDER_ASSIGNMENT) || '{index: 0, r: 0, g: 0, b: 0, a: 0}';
-		
-	var code = "Drawr.getPixelRGB($pixel, '$rgb')"
-		.interpolate({pixel: pixel, rgb: rgb});
-	return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript['mediacomp_setPixelRGB'] = function(block){
-	var rgb = block.getFieldValue('RGB').toLowerCase();
-	var pixel = Blockly.JavaScript.valueToCode(block, 'PIXEL',
-		Blockly.JavaScript.ORDER_ASSIGNMENT) || '{index: 0, r: 0, g: 0, b: 0, a: 0}';
-	var value = Blockly.JavaScript.valueToCode(block, 'VALUE',
-		Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-		
-	var code = "Drawr.setPixelRGB($pixel, '$rgb', $value);\n"
-		.interpolate({pixel: pixel, rgb: rgb, value: value});
-	return code;
-};
-
-Blockly.JavaScript['mediacomp_getPixelRGBIntensity'] = function(block){
-	var rgb = block.getFieldValue('RGB').toLowerCase();
-	var pixel = Blockly.JavaScript.valueToCode(block, 'PIXEL',
-		Blockly.JavaScript.ORDER_ASSIGNMENT) || '{index: 0, r: 0, g: 0, b: 0, a: 0}';
-		
-	var code = "Drawr.getPixelRGBIntensity($pixel, '$rgb')"
-		.interpolate({pixel: pixel, rgb: rgb});
-	return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript['mediacomp_getPixelColour'] = function(block){
-	var pixel = Blockly.JavaScript.valueToCode(block, 'PIXEL',
-		Blockly.JavaScript.ORDER_ASSIGNMENT) || '{index: 0, r: 0, g: 0, b: 0, a: 0}';
-		
-	var code = "alert('getPixelColour: TODO')" // TODO: ACTUALLY DO ANYTHING
-		.interpolate({pixel: pixel});
-	return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript['mediacomp_setPixelColour'] = function(block){
-	var pixel = Blockly.JavaScript.valueToCode(block, 'PIXEL',
-		Blockly.JavaScript.ORDER_ASSIGNMENT) || '{index: 0, r: 0, g: 0, b: 0, a: 0}';
-	var value = Blockly.JavaScript.valueToCode(block, 'VALUE',
-		Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-		
-	var code = "alert('setPixelColour: TODO');\n" // TODO: ACTUALLY DO ANYTHING
-		.interpolate({pixel: pixel, colour: value});
-	return code;
+Blockly.JavaScript['mediacomp_restartCanvas'] = function(block) {  
+  var ctxid = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+ 
+  var code = "Drawr.restartCanvas($ctxid);\n"
+	.interpolate({ctxid: ctxid}); 
+  return code;
 };
 
 Blockly.JavaScript['mediacomp_getPixelAt'] = function(block){
@@ -148,6 +75,47 @@ Blockly.JavaScript['mediacomp_setPixel'] = function(block) {
   var code = "Drawr.setPixel2($pixel, $pixel2);\n"
 	.interpolate({pixel: pixel, pixel2: pixel2}); 
   return code;
+};
+
+Blockly.JavaScript['mediacomp_getPixelColour'] = function(block){
+	var pixel = Blockly.JavaScript.valueToCode(block, 'PIXEL',
+		Blockly.JavaScript.ORDER_ASSIGNMENT) || '{index: 0, r: 0, g: 0, b: 0, a: 0}';
+		
+	var code = "Drawr.getPixelColour($pixel);\n"
+		.interpolate({pixel: pixel});
+	return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['mediacomp_getPixelRGB'] = function(block){
+	var rgb = block.getFieldValue('RGB').toLowerCase();
+	var pixel = Blockly.JavaScript.valueToCode(block, 'PIXEL',
+		Blockly.JavaScript.ORDER_ASSIGNMENT) || '{index: 0, r: 0, g: 0, b: 0, a: 0}';
+		
+	var code = "Drawr.getPixelRGB($pixel, '$rgb')"
+		.interpolate({pixel: pixel, rgb: rgb});
+	return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['mediacomp_setPixelRGB'] = function(block){
+	var rgb = block.getFieldValue('RGB').toLowerCase();
+	var pixel = Blockly.JavaScript.valueToCode(block, 'PIXEL',
+		Blockly.JavaScript.ORDER_ASSIGNMENT) || '{index: 0, r: 0, g: 0, b: 0, a: 0}';
+	var value = Blockly.JavaScript.valueToCode(block, 'VALUE',
+		Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+		
+	var code = "Drawr.setPixelRGB($pixel, '$rgb', $value);\n"
+		.interpolate({pixel: pixel, rgb: rgb, value: value});
+	return code;
+};
+
+Blockly.JavaScript['mediacomp_getPixelRGBIntensity'] = function(block){
+	var rgb = block.getFieldValue('RGB').toLowerCase();
+	var pixel = Blockly.JavaScript.valueToCode(block, 'PIXEL',
+		Blockly.JavaScript.ORDER_ASSIGNMENT) || '{index: 0, r: 0, g: 0, b: 0, a: 0}';
+		
+	var code = "Drawr.getPixelRGBIntensity($pixel, '$rgb')"
+		.interpolate({pixel: pixel, rgb: rgb});
+	return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['colour_hsv'] = function(block) {
