@@ -5,10 +5,6 @@ var drawr_global_cache = [];
 function Drawr(ctxs){
     alert("this never happens");
     Drawr.ctxs = ctxs;
-	Drawr.command_queue = [];
-	Drawr.pid = null;
-	Drawr.then = Date.now();
-	Drawr.wait_time = 0;
     Drawr.canvases = [];
 }
 
@@ -29,11 +25,11 @@ Drawr.getCtx = function(id){
 }
 
 Drawr.getWidth = function(id){
-    return Drawr.canvases[id].width;
+	return Drawr.canvases[id].width;
 }
 
 Drawr.getHeight = function(id){
-    return Drawr.canvases[id].height;
+	return Drawr.canvases[id].height;
 }
 
 Drawr.clearAllCommands = function(){
@@ -42,28 +38,26 @@ Drawr.clearAllCommands = function(){
 	Drawr.pid = null;
 }
 
-Drawr.begin_execute = function(){
+Drawr.begin_execute = function(pixly_run){
     // since we don't actually do any begin_execute'ing here, but we do call it at the end
     // lets just randomly flushCache here (since it's done after all operations are done, as of right now)
     // in the future: have the cache flush itself multiple times in a thread looped to like 100 ms (for slow programs that should update the canvas occasionally even before they finish)
-    Drawr.flushCache(); // <---- called at the end of execution
-    
-	Drawr.then = Date.now();
-	Drawr.pid = setTimeout(Drawr.execute(), 0);
+    //Drawr.flushCache(); // <---- called at the end of execution
+	
+	if (pixly_run){
+		pixly_run();
+		Drawr.flushCache();
+	}
 }
 
-Drawr.execute = function(){
-	clearTimeout(Drawr.pid);
-	Drawr.pid = null;
-	Drawr.then = Date.now();
-	
-	var command = Drawr.command_queue.shift();
-	if (command !== undefined){
-		switch(command[0]){
-			default: break;
-		}
-		Drawr.pid = setTimeout(Drawr.execute.bind(Drawr), Drawr.wait_time);
-	}
+
+Drawr.beginFlush = function(){
+	Drawr.flush_pid = setInterval(Drawr.flushCache, 1000);
+}
+
+Drawr.endFlush = function(){
+	clearInterval(Drawr.flush_pid);
+	Drawr.flush_pid = null;
 }
 
 Drawr.restartCanvas = function(id){
@@ -95,6 +89,7 @@ Drawr.flushCache = function(id){
             imgData.data[i+2] = cache[i+2];
             imgData.data[i+3] = cache[i+3];
         }
+		console.log("Writing");
         canvas.ctx.putImageData(imgData, 0, 0);
     }
 }
@@ -188,10 +183,16 @@ Drawr.setPixelRGB = function(pixel, rgb, value){
 Drawr.getPixelRGBIntensity = function(pixel, rgb){
 	switch (rgb){
 		case 'r':
+			if (pixel['g'] + pixel['b'] === 0)
+				return pixel['r'];
 			return pixel['r'] / ((pixel['g']+pixel['b'])/2);
 		case 'g':
+			if (pixel['r'] + pixel['b'] === 0)
+				return pixel['g'];
 			return pixel['g'] / ((pixel['r']+pixel['b'])/2);
 		case 'b':
+			if (pixel['r'] + pixel['g'] === 0)
+				return pixel['b'];
 			return pixel['b'] / ((pixel['r']+pixel['g'])/2);
 		default:
 			return pixel['a'];
@@ -214,14 +215,6 @@ Drawr.getPixelRGBIntensity = function(pixel, rgb){
     }
 	canvas.ctx.putImageData(imgData, 0, 0);
 }*/
-
-Drawr.getWidth = function(id){
-	return Drawr.canvases[id].width;
-}
-
-Drawr.getHeight = function(id){
-	return Drawr.canvases[id].height;
-}
 
 /*Drawr.setPixel = function(id, x, y, colour){
     //Drawr.ctxs[id].fillStyle = colour;

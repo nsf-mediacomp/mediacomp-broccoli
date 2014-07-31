@@ -14,7 +14,7 @@ CanvasSelect.init = function(count, init_images){
     CanvasSelect.selected = 0;
     CanvasSelect.select(0);
     
-    setInterval(CanvasSelect.updateSelectBoxCanvases, 250);
+    setInterval(CanvasSelect.updateSelectBoxCanvases, 1000);
 }
 
 CanvasSelect.reset = function(){

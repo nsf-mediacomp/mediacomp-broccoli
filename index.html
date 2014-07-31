@@ -24,11 +24,7 @@
   <link rel="stylesheet" type="text/css" href="mediacomp/css/style.css">
 </head>
 <body>
-	<table width="100%">
-		<tr><td>
-			<h1 style="margin: 2px 5px 12px 5px;"><span id="title">Pixly: Media Computation</span></h1>
-		</td></tr>
-    </table>
+	<h1 style="font-size: 200%;margin-top:-3px;margin-bottom:3px;"><span id="title">Pixly: Media Computation</span></h1>
     
     <div id="visualization">
         <canvas id="canvas_0" width="400" height="400" class="display_canvas"></canvas>
@@ -38,7 +34,7 @@
         <canvas id="canvas_4" width="400" height="400" class="display_canvas" style="display: none"></canvas>
     </div>
     
-    <table style="padding-top: 1em;">
+    <table>
     <tr>
         <td style="width: 15px;">
             <img id="spinner" style="visibility: hidden;" src="mediacomp/loading.gif" height=15 width=15>
@@ -97,6 +93,7 @@
         </div>-->
     </div>
 
+	<script id="mediacomp_webworker" type="javascript/worker"></script>
     
     <div id="blockly"></div>
     

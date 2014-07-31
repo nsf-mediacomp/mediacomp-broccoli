@@ -4,7 +4,6 @@ Drawr.images = [Drawr.imagePath+"redeye.png", Drawr.imagePath+"greenscreen.png",
 Drawr.DOUBLE_CLICK_TIME = 100;
 
 Drawr.init = function(){ 
-
     Drawr.setupBlockly();
 	
 	var defaultXml = 
@@ -166,9 +165,9 @@ Drawr.RunCode = function(){
 
 	Blockly.JavaScript.addReservedWords('generated_code');
 	
-	var generated_code = Blockly.JavaScript.workspaceToCode();
-	generated_code = getRidOfNakedCode(generated_code);
-	generated_code += "if (pixly_run) pixly_run();\n";
+	var generated_code = "Drawr.clearAllCommands();\n";
+	generated_code += getRidOfNakedCode(Blockly.JavaScript.workspaceToCode());
+	generated_code += "Drawr.begin_execute(pixly_run);\n";
 	
     setTimeout(function(){
         try {
