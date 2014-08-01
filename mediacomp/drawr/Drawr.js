@@ -63,7 +63,7 @@ Drawr.endFlush = function(){
 Drawr.restartCanvas = function(id){
 	var canvas = Drawr.canvases[id];
 
-	Drawr.getCtx(id).drawImage(canvas.image, 0, 0);
+	Drawr.getCtx(id).drawImage(canvas.image, 0, 0, canvas.width, canvas.height);
     Drawr.resetCache(id);
 }
 

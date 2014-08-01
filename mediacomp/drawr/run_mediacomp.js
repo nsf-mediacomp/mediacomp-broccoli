@@ -39,6 +39,10 @@ Drawr.init = function(){
 		$("titleText").innerHTML = "Block XML";
 		$("dialog").style.display = "block";
 	});
+	$("captureButton").addEventListener("click", function(){
+		var canvas = Drawr.getCtx(CanvasSelect.selected).canvas;
+		download(canvas, 'pixlyCanvas.png');
+	});
 	
 	Drawr.Reset();
 }
@@ -171,7 +175,7 @@ Drawr.RunCode = function(){
 	
     setTimeout(function(){
         try {
-            console.log(generated_code);
+            //console.log(generated_code);
             eval(generated_code);
         } catch (e) {
             console.log(e);

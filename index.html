@@ -32,6 +32,13 @@
         <canvas id="canvas_2" width="400" height="400" class="display_canvas" style="display: none"></canvas>
         <canvas id="canvas_3" width="400" height="400" class="display_canvas" style="display: none"></canvas>
         <canvas id="canvas_4" width="400" height="400" class="display_canvas" style="display: none"></canvas>
+		<canvas id="canvas_5" width="400" height="400" class="display_canvas" style="display: none"></canvas>
+		<canvas id="canvas_6" width="400" height="400" class="display_canvas" style="display: none"></canvas>
+		<canvas id="canvas_7" width="400" height="400" class="display_canvas" style="display: none"></canvas>
+		<canvas id="canvas_8" width="400" height="400" class="display_canvas" style="display: none"></canvas>
+		<canvas id="canvas_9" width="400" height="400" class="display_canvas" style="display: none"></canvas>
+		<canvas id="canvas_10" width="400" height="400" class="display_canvas" style="display: none"></canvas>
+		<canvas id="canvas_11" width="400" height="400" class="display_canvas" style="display: none"></canvas>
     </div>
     
     <table>
@@ -64,9 +71,9 @@
     <!--221,221,221
     238,238,238-->
     <div id="canvas_select_controls">
-        <a href="javascript:void(0)" onclick="return 0;">+canvas</a> &nbsp; &nbsp;
-        <a href="javascript:void(0)" onclick="CanvasSelect.hide();">-canvas</a> &nbsp; &nbsp;
-        <a href="javascript:void(0)" onclick="return 0;">+upload</a>
+        <a id="pluscanvas" href="javascript:void(0)" onclick="CanvasSelect.newBox();">+canvas</a> &nbsp; &nbsp;
+        <a id="minuscanvas" href="javascript:void(0)" onclick="CanvasSelect.hide();">-canvas</a> &nbsp; &nbsp;
+        <input id="uploadcanvas" name="uploadcanvas" type="file" />
     </div>
     <br/>
     <div id="canvas_select">
@@ -321,7 +328,11 @@
                 <field name="NUM">0</field>
               </block>
             </value>
-			<value name="PIXEL"></value>
+			<value name="PIXEL">
+				<block type="variables_get">
+					<field name="VAR">p</field>
+				  </block>
+			</value>
 		</block>
 		<block type="mediacomp_setPixel">
 			<value name="PIXEL">
@@ -340,14 +351,15 @@
 				</block>
 			</value>
 		</block>
-		<block type="mediacomp_getPixelRGBIntensity">
+		
+		<block type="mediacomp_getPixelRGB">
 			<value name="PIXEL">
 				<block type="variables_get">
 					<field name="VAR">p</field>
 				</block>
 			</value>
 		</block>
-		<block type="mediacomp_getPixelRGB">
+		<block type="mediacomp_getPixelRGBIntensity">
 			<value name="PIXEL">
 				<block type="variables_get">
 					<field name="VAR">p</field>

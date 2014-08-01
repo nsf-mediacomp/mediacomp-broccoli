@@ -1,6 +1,8 @@
 
 function CanvasSelect(){}
 
+CanvasSelect.max_canvases = 12;
+
 CanvasSelect.init = function(count, init_images){
     CanvasSelect.default_images = init_images;
     Drawr.canvases = [];
@@ -8,13 +10,18 @@ CanvasSelect.init = function(count, init_images){
 		Drawr.addCanvas($('canvas_'+i).getContext('2d'));
 		CanvasSelect.addSelectBox();
 	}
+	for (var i = count; i < CanvasSelect.max_canvases; i++){
+		Drawr.addCanvas($('canvas_'+i).getContext('2d'));
+	}
     
     CanvasSelect.reset();
     
     CanvasSelect.selected = 0;
     CanvasSelect.select(0);
-    
+  
     setInterval(CanvasSelect.updateSelectBoxCanvases, 1000);
+	
+	$("uploadcanvas").addEventListener("change", CanvasSelect.upload, false);
 }
 
 CanvasSelect.reset = function(){
@@ -61,10 +68,11 @@ CanvasSelect.updateBoxes = function(){
 }
 
 CanvasSelect.addSelectBox = function(){
+    var boxes = document.getElementsByClassName("canvas_select_box");
+	var id = boxes.length;
+
     /*var id = CanvasSelect.select_boxes.push({enabled: 1});
     return id;*/
-    var boxes = document.getElementsByClassName("canvas_select_box");
-    var id = boxes.length;
     
     /* create: 
     <div class="canvas_select_box" id="canvas_select_0" onclick="CanvasSelect.select(0)">
@@ -72,14 +80,14 @@ CanvasSelect.addSelectBox = function(){
         canvas 0
     </div>
     */
-    var new_box = '<div class="canvas_select_box" id="canvas_select_$id" onclick="CanvasSelect.select($id)">' +
-        /*'    <!--img src="images/cat_attendant.jpg" width="75px" height="75px"/><br/-->' +*/
-        '    <canvas width="75px" height="75px"></canvas><br/>' +
-        '    canvas $id' +
-        '</div>';
-    new_box = new_box.interpolate({id: id});
-    $("canvas_select").innerHTML += new_box;
-    
+	var new_box = '<div class="canvas_select_box" id="canvas_select_$id" onclick="CanvasSelect.select($id)">' +
+		/*'    <!--img src="images/cat_attendant.jpg" width="75px" height="75px"/><br/-->' +*/
+		'    <canvas width="75px" height="75px"></canvas><br/>' +
+		'    canvas $id' +
+		'</div>';
+	new_box = new_box.interpolate({id: id});
+	$("canvas_select").innerHTML += new_box;
+	
     return id;
 }
 
@@ -103,6 +111,7 @@ CanvasSelect.getCanvas = function(id){
 CanvasSelect.updateSelectBoxCanvases = function(){
     var boxes = document.getElementsByClassName("canvas_select_box");
     for(var i=0; i<boxes.length; ++i){
+		if (boxes[i].style.display === "none") continue;
         var ctx = boxes[i].getElementsByTagName("canvas")[0].getContext('2d');
         var w = ctx.canvas.width;
         var h = ctx.canvas.height;
@@ -124,7 +133,76 @@ CanvasSelect.select = function(id){
     CanvasSelect.selected = id;
 }
 
+CanvasSelect.newBox = function(){
+	//Remove event listener wasn't working for me for some reason
+	if ($("pluscanvas").style.cursor === "not-allowed"){
+		return;
+	}
+	$("minuscanvas").style.cursor = "pointer";
+
+	var boxes = document.getElementsByClassName("canvas_select_box");
+	var id = boxes.length;
+	//CHECK TO SEE IF THERE ARE ANY CURRENTLY HIDDEN BOXES WE CAN OVERRIDE
+	var is_new_box = true;
+	for (var i = 0; i < boxes.length; i++){
+		if (boxes[i].style.display === "none"){
+			id = i;
+			is_new_box = false;
+			break;
+		}
+	}
+	if (is_new_box && id < CanvasSelect.max_canvases){
+		CanvasSelect.addSelectBox();
+		
+		if (id == CanvasSelect.max_canvases - 1){
+			$("pluscanvas").style.cursor = "not-allowed";
+		}
+	}else{
+		boxes[id].style.display = "block";
+	}
+	
+	CanvasSelect.select(id);
+	CanvasSelect.updateSelectBoxCanvases();
+	return id;
+}
+
 CanvasSelect.hide = function(){
+	if ($("minuscanvas").style.cursor === "not-allowed"){
+		return;
+	}
+	$("pluscanvas").style.cursor = "pointer";
+
     CanvasSelect.removeSelectBox(CanvasSelect.selected);
-    // TODO: change selected to one of the other visible ones...
+	
+    //change selected to one of the other visible ones
+    var boxes = document.getElementsByClassName("canvas_select_box");
+	var count = 0;
+	var p_selected = CanvasSelect.selected;
+	for (var i = 0; i < boxes.length; i++){
+		if (boxes[i].style.display !== "none"){
+			count++;
+		}
+	}
+	
+	if (count === 1){
+		$("minuscanvas").style.cursor = "not-allowed";
+	}
+	
+	CanvasSelect.updateSelectBoxCanvases();
+}
+
+//http://stackoverflow.com/questions/10906734/how-to-upload-image-into-html5-canvas
+CanvasSelect.upload = function(e){	
+	var reader = new FileReader();
+	reader.onload = function(event){
+		var img = new Image();
+		img.onload = function(){	
+			var id = CanvasSelect.selected;
+			Drawr.getCtx(id).drawImage(this, 0, 0, 400, 400);
+            Drawr.resetCache(id);
+			Drawr.canvases[id].image = this;
+		}
+		img.src = event.target.result;
+	}
+	reader.readAsDataURL(e.target.files[0]);
 }
