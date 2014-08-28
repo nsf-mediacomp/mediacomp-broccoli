@@ -1,579 +1,89 @@
-<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Pixly: Media Computation</title>
-  <!--Import blockly-->
-  <script type="text/javascript" src="blockly/blockly_compressed.js"></script>
-  <script type="text/javascript" src="blockly/blocks_compressed.js"></script>
-  <script type="text/javascript" src="blockly/msg/js/en.js"></script>
-  <!--Javascript generator for blockly-->
-  <script type="text/javascript" src="blockly/javascript_compressed.js"></script>
-  
-  <!--Custom block definitions-->
-  <script type="text/javascript" src="mediacomp/mediacomp_blocks.js"></script>
-  <script type="text/javascript" src="mediacomp/mediacomp_gen.js"></script>
-  
-  <script type="text/javascript" src="mediacomp/utils.js"></script>
-  
-  <!--okay actually inject blockly and initialize the stuff-->
-  <script type="text/javascript" src="mediacomp/drawr/Drawr.js"></script>
-  <script type="text/javascript" src="mediacomp/drawr/run_mediacomp.js"></script>
-  <script type="text/javascript" src="mediacomp/drawr/canvas_select.js"></script>
- 
-  <link rel="stylesheet" type="text/css" href="mediacomp/css/style.css">
+<title>Pixly: Media Computation</title>
+<link rel="icon" type="image/ico" href="favicon.ico">
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<h1 style="font-size: 200%;margin-top:-3px;margin-bottom:3px;"><span id="title">Pixly: Media Computation</span></h1>
-    
-    <div id="visualization">
-        <canvas id="canvas_0" width="400" height="400" class="display_canvas"></canvas>
-        <canvas id="canvas_1" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-        <canvas id="canvas_2" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-        <canvas id="canvas_3" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-        <canvas id="canvas_4" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_5" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_6" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_7" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_8" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_9" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_10" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_11" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-    </div>
-    
-    <table>
-    <tr>
-        <td style="width: 15px;">
-            <img id="spinner" style="visibility: hidden;" src="mediacomp/loading.gif" height=15 width=15>
-        </td>
-        <td style="text-align: center">
-            <button id="runButton" class="primary" title="Makes the canvas do what the blocks say.">
-                <img src="blockly/media/1x1.gif" class="run icon21">Run Program
-            </button>
-            <button id="resetButton" class="primary" style="display: none">
-                <img src="blockly/media/1x1.gif" class="stop icon21"> Reset
-            </button>
-            <button id="codeButton" class="notext" title="See generated JavaScript code.">
-                <img src='blockly/media/1x1.gif' class="code icon21">
-            </button>
-            <button id="linkButton" class="notext" title="Save and link to blocks.">
-                <img src='blockly/media/1x1.gif' class="link icon21">
-            </button>
-            <button class="notext" id="captureButton" title="Save the drawing.">
-                <img src='blockly/media/1x1.gif' class="img icon21">
-            </button>
-            <a id="downloadImageLink" download="drawing.png"></a>
-        </td>
-    </tr>
-    </table>
-    
-    
-    <!--221,221,221
-    238,238,238-->
-    <div id="canvas_select_controls">
-        <a id="pluscanvas" href="javascript:void(0)" onclick="CanvasSelect.newBox();">+canvas</a> &nbsp; &nbsp;
-        <a id="minuscanvas" href="javascript:void(0)" onclick="CanvasSelect.hide();">-canvas</a> &nbsp; &nbsp;
-        <input id="uploadcanvas" name="uploadcanvas" type="file" />
-    </div>
-    <br/>
-    <div id="canvas_select">
-        <div id="canvas_select_width_div"></div>
-        <!--<div class="canvas_select_box" id="canvas_select_0" onclick="CanvasSelect.select(0)">
-            <img src="images/cat_attendant.jpg" width="75px" height="75px"/><br/>
-            canvas 0
-        </div>
-        <div class="canvas_select_box" id="canvas_select_1" onclick="CanvasSelect.select(1)">
-            <img src="images/sax.jpg" width="75px" height="75px"/><br/>
-            canvas 1
-        </div>
-        <div class="canvas_select_box" id="canvas_select_2" onclick="CanvasSelect.select(2)">
-            <img src="images/secret.png" width="75px" height="75px"/><br/>
-            canvas 2
-        </div>
-        <div class="canvas_select_box" id="canvas_select_3" onclick="CanvasSelect.select(3)">
-            <img src="images/shrek.png" width="75px" height="75px"/><br/>
-            canvas 3
-        </div>
-        <div class="canvas_select_box" id="canvas_select_4" onclick="CanvasSelect.select(4)">
-            <img src="images/waifu.png" width="75px" height="75px"/><br/>
-            canvas 4
-        </div>-->
-    </div>
-
-	<script id="mediacomp_webworker" type="javascript/worker"></script>
-    
-    <div id="blockly"></div>
-    
-    <div id="dialog" style="display:none;">
-        <div id="dialogTitle">
-            <span id="titleText"></span>
-            <div id="closeDialogButton" title="Close the dialog"> X </div>
-        </div>
-        <div id="dialogBody"></div>
-    </div>
-  <!--<h1>Media Computation: Pixly</h1>
-  
-  <table width="800px" height="480px">
-	<col width="160px"><col width="640px">
-  <tr>
+<center>
+<h1>Pixly: Programmatic Media Computation</h1>
+<h3>Built on <a href="https://code.google.com/p/blockly/">Blockly</a></h3>
+<img src="content/screenshot.png" alt="Canvas" style="border:1px solid black;">
+<br/><br/>
+<button id="runButton" class="primary" title="Go to Pixly Application."
+		onclick="document.getElementById('link_to_run').click();">
+	<img src="run/blockly/media/1x1.gif" class="run icon21">Run Pixly Now
+</button>
+<a id="link_to_run" style="display:none" href="run/" target="_blank"></a>
+<div style="clear:both;"></div>
+<br/><br/>
+<table style="text-align:left; width:900px;">
+<col width="33%"><col width="33%"><col width="33%">
+<tr>
+	<th>About</th><th>Media</th><th>Built By</th>
+</tr>
+<tr>
 	<td>
-		<canvas id="canvas_one" width="320px" height="240px">please upgrade your browser</canvas>
-		<canvas id="canvas_two" width="320px" height="240px">please upgrade your browser</canvas>
+		<p>The Pixly Web Application is a Blockly language for Media Computation. 
+		<br/><br/>
+		Built by two University of Alabama students under support of:</p>
+			<ul>
+			<li><a href="http://www.nsf.gov/pubs/2014/nsf14523/nsf14523.htm" target="_blank">NSF CE21 #1240944</a></li>
+			<li><a href="http://gray.cs.ua.edu/" target="_blank">PI: Jeff Gray</a></li>
+			<li><a href="http://www.cs4hs.com/" target="_blank">Google CS4HS</a></li>
+			</ul>
+		<hr/>
+		<br/>
+		<u><b>Additional Links:</b></u>
+		<ul>
+			<li><a href='https://code.google.com/p/blockly/' target="_blank">Blockly: Open Source Blocks</a></li>
+			<li><a href="http://coweb.cc.gatech.edu/mediaComp-teach" target="_blank">Media Computation Resources</a></li>
+		</ul>
 	</td>
-	<td><div id="blocklyDiv" style="width:960px;height: 496px"></div></td>
-  </tr>
-  </table>
-  
-  <input type="button" value="Run Code" onclick="RunCode(); return false;"/>
-  <input type="button" value="Reset Images" onclick="initCanvases(); return false;"/>
-  
-  </br>
-  
-  <div id="code" style="font-family: monospace; font-size: 14px;">
-    {code();}
-  </div>-->
-        <!--value name="FROM">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-        <value name="TO">
-          <block type="math_number">
-            <field name="NUM">400</field>
-          </block>
-        </value>
-        <value name="BY">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value-->
-        <!--statement name="DO">
-          <block type="controls_for">
-            <!--field name="VAR">j</field- ->
-            <value name="FROM">
-              <block type="math_number" id="79">
-                <field name="NUM">0</field>
-              </block>
-            </value>
-            <value name="TO">
-              <block type="math_number" id="80">
-                <field name="NUM">400</field>
-              </block>
-            </value>
-            <value name="BY">
-              <block type="math_number" id="81">
-                <field name="NUM">1</field>
-              </block>
-            </value>
-          </block>
-        </statement-->
-
-  <xml id="toolbox" style="display: none">
-  
-	<category name="Media Comp">
-	  <block type="mediacomp_run"></block>
-      <!--block type="mediacomp_pixelLoop"></block-->
-	  <block type="controls_forfor">
-      <field name="VAR">x</field>
-	  <field name="VAR2">y</field>
-        <value name="FROM">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-        <value name="TO">
-          <block type="math_number">
-            <field name="NUM">399</field>
-          </block>
-        </value>
-        <value name="BY">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value>
-        <statement name="DO">
-			<block type="variables_set">
-				<field name="VAR">p</field>
-				<value name="VALUE">
-				  <block type="mediacomp_getPixelAt">
-					<value name="X">
-					  <block type="variables_get">
-						<field name="VAR">x</field>
-					  </block>
-					</value>
-					<value name="Y">
-					  <block type="variables_get">
-						<field name="VAR">y</field>
-					  </block>
-					</value>
-					<value name="CANVAS">
-					  <block type="math_number">
-						<field name="NUM">0</field>
-					  </block>
-					</value>
-				  </block>
-				</value>
-			</block>
-        </statement>
-      </block>
-	  <block type="mediacomp_updateCanvas">
-		<value name="CANVAS">
-		  <block type="math_number">
-			<field name="NUM">0</field>
-		  </block>
-		</value>
-	  </block>
-	  <block type="mediacomp_restartCanvas">
-		<value name="CANVAS">
-		  <block type="math_number">
-			<field name="NUM">0</field>
-		  </block>
-		</value>
-	  </block>
-      <block type="controls_for">
-      <field name="VAR">x</field>
-        <value name="FROM">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-        <value name="TO">
-          <block type="math_number">
-            <field name="NUM">399</field>
-          </block>
-        </value>
-        <value name="BY">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value>
-        <statement name="DO">
-          <block type="controls_for">
-            <field name="VAR">y</field>
-            <value name="FROM">
-              <block type="math_number">
-                <field name="NUM">0</field>
-              </block>
-            </value>
-            <value name="TO">
-              <block type="math_number">
-                <field name="NUM">399</field>
-              </block>
-            </value>
-            <value name="BY">
-              <block type="math_number">
-                <field name="NUM">1</field>
-              </block>
-            </value>
-            <statement name="DO">
-                <block type="variables_set">
-                    <field name="VAR">p</field>
-                    <value name="VALUE">
-                      <block type="mediacomp_getPixelAt">
-                        <value name="X">
-                          <block type="variables_get">
-                            <field name="VAR">x</field>
-                          </block>
-                        </value>
-                        <value name="Y">
-                          <block type="variables_get">
-                            <field name="VAR">y</field>
-                          </block>
-                        </value>
-                        <value name="CANVAS">
-                          <block type="math_number">
-                            <field name="NUM">0</field>
-                          </block>
-                        </value>
-                      </block>
-                    </value>
-                </block>
-            </statement>
-          </block>
-        </statement>
-      </block>
-	</category>
-    
-    <category name="Pixels">
-		<block type="mediacomp_getPixelAt">
-			<value name="X">
-				<block type="math_number">
-					<field name="NUM">0</field>
-				</block>
-			</value>
-			<value name="Y">
-				<block type="math_number">
-					<field name="NUM">0</field>
-				</block>
-			</value>
-            <value name="CANVAS">
-              <block type="math_number">
-                <field name="NUM">0</field>
-              </block>
-            </value>
-		</block>
-		<block type="mediacomp_setPixelAt">
-			<value name="X">
-			  <block type="variables_get">
-				<field name="VAR">x</field>
-			  </block>
-			</value>
-			<value name="Y">
-			  <block type="variables_get">
-				<field name="VAR">y</field>
-			  </block>
-			</value>
-            <value name="CANVAS">
-              <block type="math_number">
-                <field name="NUM">0</field>
-              </block>
-            </value>
-			<value name="PIXEL">
-				<block type="variables_get">
-					<field name="VAR">p</field>
-				  </block>
-			</value>
-		</block>
-		<block type="mediacomp_setPixel">
-			<value name="PIXEL">
-				<block type="variables_get">
-					<field name="VAR">p</field>
-				</block>
-			</value>
-			<value name="PIXEL2">
-				<block type="colour_picker"></block>
-			</value>
-		</block>
-		<block type="mediacomp_getPixelColour">
-			<value name="PIXEL">
-				<block type="variables_get">
-					<field name="VAR">p</field>
-				</block>
-			</value>
-		</block>
+	<td>
+		<b onclick="document.getElementById('link_to_video').click();" style="cursor:pointer;">
+			Intro Video:</b>
+		<a id="link_to_video" href="https://www.youtube.com/watch?v=250pTeLRnNw" style="display:none;" target="_blank"></a>
+		<embed width="300" height="246"
+			src="https://www.youtube.com/v/250pTeLRnNw"
+			type="application/x-shockwave-flash"
+			allowFullScreen="true">
+		<br/><hr/><br/>
 		
-		<block type="mediacomp_getPixelRGB">
-			<value name="PIXEL">
-				<block type="variables_get">
-					<field name="VAR">p</field>
-				</block>
-			</value>
-		</block>
-		<block type="mediacomp_getPixelRGBIntensity">
-			<value name="PIXEL">
-				<block type="variables_get">
-					<field name="VAR">p</field>
-				</block>
-			</value>
-		</block>
-		<!--block type="mediacomp_getPixelColour">
-			<value name="PIXEL">
-				<block type="variables_get">
-					<field name="VAR">pixel</field>
-				</block>
-			</value>
-		</block-->
-		<block type="mediacomp_setPixelRGB">
-			<value name="PIXEL">
-				<block type="variables_get">
-					<field name="VAR">p</field>
-				</block>
-			</value>
-			<value name="VALUE">
-				<block type="math_number">
-					<field name="NUM">0</field>
-				</block>
-			</value>
-		</block>
-		<!--block type="mediacomp_setPixelColour">
-			<value name="PIXEL">
-				<block type="variables_get">
-					<field name="VAR">pixel</field>
-				</block>
-			</value>
-		</block-->
-		<!--block type="mediacomp_setpixel"></block-->
-	</category>
-    <category name="Logic">
-      <block type="controls_if"></block>
-      <block type="logic_compare"></block>
-      <block type="logic_operation"></block>
-      <block type="logic_negate"></block>
-      <block type="logic_boolean"></block>
-      <block type="logic_null"></block>
-      <block type="logic_ternary"></block>
-    </category>
-    <category name="Loops">
-      <block type="controls_repeat_ext">
-        <value name="TIMES">
-          <block type="math_number">
-            <field name="NUM">10</field>
-          </block>
-        </value>
-      </block>
-      <block type="controls_whileUntil"></block>
-      <block type="controls_for">
-        <value name="FROM">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value>
-        <value name="TO">
-          <block type="math_number">
-            <field name="NUM">10</field>
-          </block>
-        </value>
-        <value name="BY">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value>
-      </block>
-      <block type="controls_forEach"></block>
-      <block type="controls_flow_statements"></block>
-    </category>
-    <category name="Math">
-      <block type="math_number"></block>
-      <block type="math_arithmetic"></block>
-      <block type="math_single"></block>
-      <block type="math_trig"></block>
-      <block type="math_constant"></block>
-      <block type="math_number_property"></block>
-      <block type="math_change">
-        <value name="DELTA">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value>
-      </block>
-      <block type="math_round"></block>
-      <block type="math_on_list"></block>
-      <block type="math_modulo"></block>
-      <block type="math_constrain">
-        <value name="LOW">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value>
-        <value name="HIGH">
-          <block type="math_number">
-            <field name="NUM">100</field>
-          </block>
-        </value>
-      </block>
-      <block type="math_random_int">
-        <value name="FROM">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value>
-        <value name="TO">
-          <block type="math_number">
-            <field name="NUM">100</field>
-          </block>
-        </value>
-      </block>
-      <block type="math_random_float"></block>
-    </category>
-    <category name="Lists">
-      <block type="lists_create_empty"></block>
-      <block type="lists_create_with"></block>
-      <block type="lists_repeat">
-        <value name="NUM">
-          <block type="math_number">
-            <field name="NUM">5</field>
-          </block>
-        </value>
-      </block>
-      <block type="lists_length"></block>
-      <block type="lists_isEmpty"></block>
-      <block type="lists_indexOf">
-        <value name="VALUE">
-          <block type="variables_get">
-            <field name="VAR">list</field>
-          </block>
-        </value>
-      </block>
-      <block type="lists_getIndex">
-        <value name="VALUE">
-          <block type="variables_get">
-            <field name="VAR">list</field>
-          </block>
-        </value>
-      </block>
-      <block type="lists_setIndex">
-        <value name="LIST">
-          <block type="variables_get">
-            <field name="VAR">list</field>
-          </block>
-        </value>
-      </block>
-      <block type="lists_getSublist">
-        <value name="LIST">
-          <block type="variables_get">
-            <field name="VAR">list</field>
-          </block>
-        </value>
-      </block>
-    </category>
-    <category name="Colour">
-      <block type="colour_picker"></block>
-      <block type="colour_random"></block>
-      <block type="colour_rgb">
-		<value name="RED">
-		  <block type="math_number">
-			<field name="NUM">100</field>
-		  </block>
-		</value>
-		<value name="BLUE">
-		  <block type="math_number">
-			<field name="NUM">50</field>
-		  </block>
-		</value>
-		<value name="GREEN">
-		  <block type="math_number">
-			<field name="NUM">0</field>
-		  </block>
-		</value>
-	  </block>
-	  <block type="colour_hsv">
-		<value name="HUE">
-		  <block type="math_number">
-			<field name="NUM">0</field>
-		  </block>
-		</value>
-		<value name="SATURATION">
-		  <block type="math_number">
-			<field name="NUM">100</field>
-		  </block>
-		</value>
-		<value name="VALUE">
-		  <block type="math_number">
-			<field name="NUM">100</field>
-		  </block>
-		</value>
-	  </block>
-      <block type="colour_blend">
-		<value name="COLOUR1">
-		  <block type="colour_picker">
-			<field name="COLOUR">#ff0000</field>
-		  </block>
-		</value>
-		<value name="COLOUR2">
-		  <block type="colour_picker">
-			<field name="COLOUR">#0000ff</field>
-		  </block>
-		</value>
-		<value name="RATIO">
-		  <block type="math_number">
-			<field name="NUM">0.5</field>
-		  </block>
-		</value>
-	  </block>
-    </category>
-    <category name="Variables" custom="VARIABLE"></category>
-    <category name="Functions" custom="PROCEDURE"></category>
-  </xml>
-
+		<div onclick="document.getElementById('link_to_manual').click();" style="cursor:pointer;">
+			<b>User Manual:</b>
+			<img style="border:1px solid black;" src="content/manual.png">
+		</div>
+		<a id="link_to_manual" href="content/PixlyUserManual.pdf" style="display:none;" target="_blank"></a>
+	</td>
+	<td>
+		<ul>
+		<li style="margin-left:-15px;"><div> 
+<!--style="cursor:pointer;" onclick="document.getElementById('link_to_jake').click();">-->
+			<b>Jake Trower:</b><br/>
+			<a id="link_to_jake" href="http://cakeandturtles.nfshost.com/games/index.php" style="display:none;" target="_blank"></a>
+				Undergraduate Senior at the University of Alabama. Computer Science Major, Mathematics Minor
+			<br/><br/>
+		</div></li>
+		<li style="margin-left:-15px;"><div>
+<!--style="cursor:pointer;" onclick="document.getElementById('link_to_kat').click();">-->
+			<b>Benjamin Hill:</b><br/>
+			<a id="link_to_kat" href="#" style="display:none;" target="_blank"></a>
+				Undergraduate Senior at the University of Alabama. Computer Science and Mathematics Major
+			<br/>
+		</div></li>
+		</ul>
+		<hr/>
+		<b>Supervision:</b>
+		<ul>
+			<li style="margin-left:-15px;">
+				<a href="http://gray.cs.ua.edu/" target="_blank"><b>Jeff Gray:</b></a><br/>
+				Associate Professor in the Department of Computer Science at the University of Alabama (UA)
+			</li>
+		</ul>
+	</td>
+</tr>
+</table>
+</center>
 </body>
 </html>
