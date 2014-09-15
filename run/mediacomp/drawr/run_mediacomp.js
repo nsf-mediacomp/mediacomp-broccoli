@@ -175,7 +175,7 @@ Drawr.RunCode = function(){
 	
     setTimeout(function(){
         try {
-            //console.log(generated_code);
+            console.log(generated_code);
             eval(generated_code);
         } catch (e) {
             console.log(e);

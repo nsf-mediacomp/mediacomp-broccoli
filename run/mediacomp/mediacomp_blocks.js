@@ -13,6 +13,7 @@ Blockly.Blocks['mediacomp_run'] = {
     this.setPreviousStatement(false);
     this.setNextStatement(false);
     this.setTooltip("The block that contains what code to execute when the run button is pressed.");
+	this.setDeletable(false);
   }
 };
 
@@ -43,6 +44,20 @@ Blockly.Blocks['mediacomp_restartCanvas'] = {
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
 		this.setTooltip('Redraw the canvas with its original image');
+	}
+}
+
+Blockly.Blocks['mediacomp_getPixels'] = {
+	init: function(){
+		this.setHelpUrl('http://www.example.com/');
+		this.setColour(230);
+		this.appendValueInput("CANVAS")
+			.setCheck('Number')
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField("pixels from canvas");
+		this.setInputsInline(true);
+		this.setOutput(true, "Array");
+		this.setTooltip("Get a one dimensional 'flattened' array of the canvas's pixels.");
 	}
 }
 
@@ -201,7 +216,7 @@ Blockly.Blocks['colour_hsv'] = {
    * @this Blockly.Block
    */
   init: function() {
-    this.setHelpUrl(Blockly.Msg.COLOUR_RGB_HELPURL);
+    this.setHelpUrl(Blockly.Msg.COLOUR_HSV_HELPURL);
     this.setColour(20);
     this.appendValueInput('HUE')
         .setCheck('Number')

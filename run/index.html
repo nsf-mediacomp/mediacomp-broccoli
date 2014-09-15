@@ -80,26 +80,6 @@
     <br/>
     <div id="canvas_select">
         <div id="canvas_select_width_div"></div>
-        <!--<div class="canvas_select_box" id="canvas_select_0" onclick="CanvasSelect.select(0)">
-            <img src="images/cat_attendant.jpg" width="75px" height="75px"/><br/>
-            canvas 0
-        </div>
-        <div class="canvas_select_box" id="canvas_select_1" onclick="CanvasSelect.select(1)">
-            <img src="images/sax.jpg" width="75px" height="75px"/><br/>
-            canvas 1
-        </div>
-        <div class="canvas_select_box" id="canvas_select_2" onclick="CanvasSelect.select(2)">
-            <img src="images/secret.png" width="75px" height="75px"/><br/>
-            canvas 2
-        </div>
-        <div class="canvas_select_box" id="canvas_select_3" onclick="CanvasSelect.select(3)">
-            <img src="images/shrek.png" width="75px" height="75px"/><br/>
-            canvas 3
-        </div>
-        <div class="canvas_select_box" id="canvas_select_4" onclick="CanvasSelect.select(4)">
-            <img src="images/waifu.png" width="75px" height="75px"/><br/>
-            canvas 4
-        </div>-->
     </div>
 
 	<script id="mediacomp_webworker" type="javascript/worker"></script>
@@ -113,125 +93,23 @@
         </div>
         <div id="dialogBody"></div>
     </div>
-  <!--<h1>Media Computation: Pixly</h1>
-  
-  <table width="800px" height="480px">
-	<col width="160px"><col width="640px">
-  <tr>
-	<td>
-		<canvas id="canvas_one" width="320px" height="240px">please upgrade your browser</canvas>
-		<canvas id="canvas_two" width="320px" height="240px">please upgrade your browser</canvas>
-	</td>
-	<td><div id="blocklyDiv" style="width:960px;height: 496px"></div></td>
-  </tr>
-  </table>
-  
-  <input type="button" value="Run Code" onclick="RunCode(); return false;"/>
-  <input type="button" value="Reset Images" onclick="initCanvases(); return false;"/>
-  
-  </br>
-  
-  <div id="code" style="font-family: monospace; font-size: 14px;">
-    {code();}
-  </div>-->
-        <!--value name="FROM">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-        <value name="TO">
-          <block type="math_number">
-            <field name="NUM">400</field>
-          </block>
-        </value>
-        <value name="BY">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value-->
-        <!--statement name="DO">
-          <block type="controls_for">
-            <!--field name="VAR">j</field- ->
-            <value name="FROM">
-              <block type="math_number" id="79">
-                <field name="NUM">0</field>
-              </block>
-            </value>
-            <value name="TO">
-              <block type="math_number" id="80">
-                <field name="NUM">400</field>
-              </block>
-            </value>
-            <value name="BY">
-              <block type="math_number" id="81">
-                <field name="NUM">1</field>
-              </block>
-            </value>
-          </block>
-        </statement-->
 
   <xml id="toolbox" style="display: none">
   
 	<category name="Media Comp">
 	  <block type="mediacomp_run"></block>
-      <!--block type="mediacomp_pixelLoop"></block-->
-	  <block type="controls_forfor">
-      <field name="VAR">x</field>
-	  <field name="VAR2">y</field>
-        <value name="FROM">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-        <value name="TO">
-          <block type="math_number">
-            <field name="NUM">399</field>
-          </block>
-        </value>
-        <value name="BY">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value>
-        <statement name="DO">
-			<block type="variables_set">
-				<field name="VAR">p</field>
-				<value name="VALUE">
-				  <block type="mediacomp_getPixelAt">
-					<value name="X">
-					  <block type="variables_get">
-						<field name="VAR">x</field>
-					  </block>
-					</value>
-					<value name="Y">
-					  <block type="variables_get">
-						<field name="VAR">y</field>
-					  </block>
-					</value>
-					<value name="CANVAS">
-					  <block type="math_number">
+	  <block type="controls_forEach">
+		<field name="VAR">p</field>
+		<value name="LIST">
+			<block type="mediacomp_getPixels">
+				<value name="CANVAS">
+					<block type="math_number">
 						<field name="NUM">0</field>
-					  </block>
-					</value>
-				  </block>
+					</block>
 				</value>
 			</block>
-        </statement>
-      </block>
-	  <!--<block type="mediacomp_updateCanvas">
-		<value name="CANVAS">
-		  <block type="math_number">
-			<field name="NUM">0</field>
-		  </block>
 		</value>
 	  </block>
-	  <block type="mediacomp_restartCanvas">
-		<value name="CANVAS">
-		  <block type="math_number">
-			<field name="NUM">0</field>
-		  </block>
-		</value>
-	  </block>-->
       <block type="controls_for">
       <field name="VAR">x</field>
         <value name="FROM">

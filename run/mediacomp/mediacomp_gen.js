@@ -41,6 +41,15 @@ Blockly.JavaScript['mediacomp_restartCanvas'] = function(block) {
   return code;
 };
 
+Blockly.JavaScript['mediacomp_getPixels'] = function(block){
+	var canvas = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+	//TODO:: how can we check to see that the canvas index is valid?
+	
+	var code = "Drawr.getPixels($id)"
+		.interpolate({id: canvas});
+	return [code, Blockly.JavaScript.ORDER_ATOMIC];
+}
+
 Blockly.JavaScript['mediacomp_getPixelAt'] = function(block){
 	var x = Blockly.JavaScript.valueToCode(block, 'X',
 		Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
