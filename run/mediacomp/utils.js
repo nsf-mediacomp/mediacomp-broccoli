@@ -17,8 +17,9 @@ function getRidOfNakedCode(jscode){
 			f_depth--;
 			if (f_depth == 0) is_in_function = false;
 		}
-		else if (!is_in_function && f_depth <= 0 && lines[i].replace(/\s/g,'') !== "" && !lines[i].match(/\s*var/))
+		else if (!is_in_function && f_depth <= 0 && lines[i].replace(/\s/g,'') !== "" && !(lines[i].match(/\s*var/) && !lines[i].match(/\s*for/))){
 			lines[i] = "//" + lines[i];
+		}
 	}
 	return lines.join("\n");
 }

@@ -7,12 +7,12 @@ Blockly.Blocks['mediacomp_run'] = {
     this.setHelpUrl("http://www.example.com");
     this.setColour(210);
     this.appendDummyInput()
-        .appendField("When run button pressed");
+        .appendField(Blockly.Msg.MEDIACOMP_RUN_TITLE);
     this.appendStatementInput('DO')
         .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
     this.setPreviousStatement(false);
     this.setNextStatement(false);
-    this.setTooltip("The block that contains what code to execute when the run button is pressed.");
+    this.setTooltip(Blockly.Msg.MEDIACOMP_RUN_TOOLTIP);
 	this.setDeletable(false);
   }
 };
@@ -24,11 +24,11 @@ Blockly.Blocks['mediacomp_updateCanvas'] = {
         this.appendValueInput("CANVAS")
             .setCheck('Number')
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("update canvas");
+            .appendField(Blockly.Msg.MEDIACOMP_UPDATECANVAS_TITLE);
 		this.setInputsInline(true);
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
-		this.setTooltip('Redraw the canvas with the currently manipulated pixels');
+		this.setTooltip(Blockly.Msg.MEDIACOMP_UPDATECANVAS_TOOLTIP);
 	}
 }
 
@@ -39,11 +39,11 @@ Blockly.Blocks['mediacomp_restartCanvas'] = {
         this.appendValueInput("CANVAS")
             .setCheck('Number')
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("restart canvas");
+            .appendField(Blockly.Msg.MEDIACOMP_RESTARTCANVAS_TITLE);
 		this.setInputsInline(true);
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
-		this.setTooltip('Redraw the canvas with its original image');
+		this.setTooltip(Blockly.Msg.MEDIACOMP_RESTARTCANVAS_TOOLTIP);
 	}
 }
 
@@ -54,10 +54,10 @@ Blockly.Blocks['mediacomp_getPixels'] = {
 		this.appendValueInput("CANVAS")
 			.setCheck('Number')
 			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField("pixels from canvas");
+			.appendField(Blockly.Msg.MEDIACOMP_GETPIXELS_TITLE);
 		this.setInputsInline(true);
 		this.setOutput(true, "Array");
-		this.setTooltip("Get a one dimensional 'flattened' array of the canvas's pixels.");
+		this.setTooltip(Blockly.Msg.MEDIACOMP_GETPIXELS_TOOLTIP);
 	}
 }
 
@@ -68,18 +68,18 @@ Blockly.Blocks['mediacomp_getPixelAt'] = {
         this.appendValueInput('X')
             .setCheck('Number')
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("pixel at x");
+            .appendField(Blockly.Msg.MEDIACOMP_GETPIXELAT_X);
         this.appendValueInput('Y')
             .setCheck('Number')
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("y");
+            .appendField(Blockly.Msg.MEDIACOMP_GETPIXELAT_Y);
         this.appendValueInput("CANVAS")
             .setCheck('Number')
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("on canvas");
+            .appendField(Blockly.Msg.MEDIACOMP_GETPIXELAT_CANVAS);
 		this.setInputsInline(true);
 		this.setOutput(true, "Pixel");
-		this.setTooltip('Get the red, green, or blue color value of a pixel');
+		this.setTooltip(Blockly.Msg.MEDIACOMP_GETPIXELAT_TOOLTIP);
 	}
 }
 
