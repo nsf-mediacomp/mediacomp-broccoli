@@ -4,7 +4,7 @@ Blockly.Blocks['mediacomp_run'] = {
    * @this Blockly.Block
    */
   init: function() {
-    this.setHelpUrl("http://www.example.com");
+    this.setHelpUrl("http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf");
     this.setColour(210);
     this.appendDummyInput()
         .appendField(Blockly.Msg.MEDIACOMP_RUN_TITLE);
@@ -19,7 +19,7 @@ Blockly.Blocks['mediacomp_run'] = {
 
 Blockly.Blocks['mediacomp_updateCanvas'] = {
 	init: function(){
-		this.setHelpUrl('http://www.example.com/');
+		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
 		this.setColour(230);
         this.appendValueInput("CANVAS")
             .setCheck('Number')
@@ -34,7 +34,7 @@ Blockly.Blocks['mediacomp_updateCanvas'] = {
 
 Blockly.Blocks['mediacomp_restartCanvas'] = {
 	init: function(){
-		this.setHelpUrl('http://www.example.com/');
+		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
 		this.setColour(230);
         this.appendValueInput("CANVAS")
             .setCheck('Number')
@@ -49,7 +49,7 @@ Blockly.Blocks['mediacomp_restartCanvas'] = {
 
 Blockly.Blocks['mediacomp_getPixels'] = {
 	init: function(){
-		this.setHelpUrl('http://www.example.com/');
+		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
 		this.setColour(230);
 		this.appendValueInput("CANVAS")
 			.setCheck('Number')
@@ -63,7 +63,7 @@ Blockly.Blocks['mediacomp_getPixels'] = {
 
 Blockly.Blocks['mediacomp_getPixelAt'] = {
 	init: function(){
-		this.setHelpUrl('http://www.example.com/');
+		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
 		this.setColour(230);
         this.appendValueInput('X')
             .setCheck('Number')
@@ -85,7 +85,7 @@ Blockly.Blocks['mediacomp_getPixelAt'] = {
 
 Blockly.Blocks['mediacomp_setPixelAt'] = {
 	init: function() {
-    this.setHelpUrl('http://www.example.com/');
+    this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
     this.setColour(0);
     
 	this.appendDummyInput()
@@ -117,7 +117,7 @@ Blockly.Blocks['mediacomp_setPixelAt'] = {
 
 Blockly.Blocks['mediacomp_setPixel'] = {
 	init: function() {
-    this.setHelpUrl('http://www.example.com/');
+    this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
     this.setColour(0);
     
 	this.appendDummyInput()
@@ -140,7 +140,7 @@ Blockly.Blocks['mediacomp_setPixel'] = {
 
 Blockly.Blocks['mediacomp_getPixelColour'] = {
 	init: function(){
-		this.setHelpUrl('http://www.example.com/');
+		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
 		this.setColour(230);
 		this.appendDummyInput()
 			.appendField("color of pixel");
@@ -156,7 +156,7 @@ Blockly.Blocks['mediacomp_getPixelColour'] = {
 Blockly.Blocks['mediacomp_getPixelRGB'] = {
 	init: function(){
 		var RGB = [["red", 'r'], ["green", 'g'], ["blue", 'b']];
-		this.setHelpUrl('http://www.example.com/');
+		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
 		this.setColour(230);
 		this.appendDummyInput()
 			.appendField(new Blockly.FieldDropdown(RGB), 'RGB')
@@ -173,7 +173,7 @@ Blockly.Blocks['mediacomp_getPixelRGB'] = {
 Blockly.Blocks['mediacomp_setPixelRGB'] = {
 	init: function(){
 		var RGB = [["red", 'r'], ["green", 'g'], ["blue", 'b']];
-		this.setHelpUrl('http://www.example.com/');
+		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
 		this.setColour(0);
 		this.appendDummyInput()
 			.appendField("change")
@@ -196,7 +196,7 @@ Blockly.Blocks['mediacomp_setPixelRGB'] = {
 Blockly.Blocks['mediacomp_getPixelRGBIntensity'] = {
 	init: function(){
 		var RGB = [["red", 'r'], ["green", 'g'], ["blue", 'b']];
-		this.setHelpUrl('http://www.example.com/');
+		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
 		this.setColour(230);
 		this.appendDummyInput()
 			.appendField(new Blockly.FieldDropdown(RGB), 'RGB')
