@@ -4,16 +4,36 @@
   <meta charset="utf-8">
   <title>Pixly: Media Computation</title>
   <link rel="icon" type="image/ico" href="../favicon.ico">
+  <!--JQUERY-->
+  <script type="text/javascript" src="lib/jquery.js"></script>
+  <!--Import Dialog.js-->
+  <script type="text/javascript" src="lib/dialog.js"></script>
+  <link rel="stylesheet" type="text/css" href="lib/dialog.css"></script>
   <!--Import blockly-->
   <script type="text/javascript" src="blockly/blockly_compressed.js"></script>
   <script type="text/javascript" src="blockly/blocks_compressed.js"></script>
   <script type="text/javascript" src="blockly/msg/js/en.js"></script>
+  
+  <script type="text/javascript" src="mediacomp/msg/en.js"></script>
   <!--Javascript generator for blockly-->
   <script type="text/javascript" src="blockly/javascript_compressed.js"></script>
   
+  <!--import custom block iterator-->
+  <script src="blockit/blockit.js"></script>
+  <script src="blockit/blockit_utils.js"></script>
+  <script src="blockit/blockit_colour.js"></script>
+  <script src="blockit/blockit_lists.js"></script>
+  <script src="blockit/blockit_logic.js"></script>
+  <script src="blockit/blockit_blockly_loops_modified.js"></script>
+  <script src="blockit/blockit_loops.js"></script>
+  <script src="blockit/blockit_math.js"></script>
+  <script src="blockit/blockit_procedures.js"></script>
+  <script src="blockit/blockit_text.js"></script>
+  <script src="blockit/blockit_variables.js"></script>
+  
   <!--Custom block definitions-->
   <script type="text/javascript" src="mediacomp/mediacomp_blocks.js"></script>
-  <script type="text/javascript" src="mediacomp/mediacomp_gen.js"></script>
+  <script type="text/javascript" src="mediacomp/pixel_blocks.js"></script>
   
   <script type="text/javascript" src="mediacomp/utils.js"></script>
   
@@ -21,11 +41,22 @@
   <script type="text/javascript" src="mediacomp/drawr/Drawr.js"></script>
   <script type="text/javascript" src="mediacomp/drawr/run_mediacomp.js"></script>
   <script type="text/javascript" src="mediacomp/drawr/canvas_select.js"></script>
+  <script type="text/javascript" src="mediacomp/drawr/project_management.js"></script>
  
   <link rel="stylesheet" type="text/css" href="mediacomp/css/style.css">
 </head>
 <body>
-	<h1 style="font-size: 200%;margin-top:-3px;margin-bottom:3px;"><span id="title">Pixly: Media Computation</span></h1>
+	<table><tr>
+	<td><h1 style="font-size: 200%;margin-top:-3px;margin-bottom:3px;"><span id="title">Pixly: Media Computation</span></h1></td>
+	<td><button id="importButton" class="primary" style="margin-top: -3px;margin-left:42px;">
+		<img src="mediacomp/css/folder.png" width="21" height="21" class="foldericon">
+		Import Project
+	</button>
+	<button id="exportButton" class="primary" style="margin-top: -3px;margin-left:5px;">
+		<img src="mediacomp/css/floppy.png" width="21" height="21" class="foldericon">
+		Export Project
+	</button>
+	</td></tr></table>
     
     <div id="visualization">
         <canvas id="canvas_0" width="400" height="400" class="display_canvas"></canvas>
@@ -49,16 +80,13 @@
         </td>
         <td style="text-align: center">
             <button id="runButton" class="primary" title="Makes the canvas do what the blocks say.">
-                <img src="blockly/media/1x1.gif" class="run icon21">Run Program
+                <img id="runButtonImg" src="blockly/media/1x1.gif" class="run icon21"><span id="runButtonText">Run Program</span>
             </button>
-            <button id="resetButton" class="primary" style="display: none">
-                <img src="blockly/media/1x1.gif" class="stop icon21"> Reset
-            </button>
-			<button id="linkButton" class="secondary" title="Export/Import blocks.">
-                Export/Import Blocks
+            <button id="resetButton" class="primary">
+                <img src="blockly/media/1x1.gif" class="icon21 turtleImg"> Reset Canvas
             </button>
 			<br/>
-            <button id="codeButton" class="notext" title="See generated JavaScript code.">
+			<button id="codeButton" class="notext" title="See generated JavaScript code.">
                 <img src='blockly/media/1x1.gif' class="code icon21">
             </button>
             <button class="notext" id="captureButton" title="Save the drawing.">
@@ -85,21 +113,17 @@
 	<script id="mediacomp_webworker" type="javascript/worker"></script>
     
     <div id="blockly"></div>
-    
-    <div id="dialog" style="display:none;">
-        <div id="dialogTitle">
-            <span id="titleText"></span>
-            <div id="closeDialogButton" title="Close the dialog"> X </div>
-        </div>
-        <div id="dialogBody"></div>
-    </div>
+	
+	<a id="export" download="" href="#" style="display:none;"></a>
 
   <xml id="toolbox" style="display: none">
   
 	<category name="Media Comp">
 	  <!--<block type="mediacomp_run"></block>-->
+	  <!--<block type="controls_forfor"></block>-->
 	  <block type="controls_forEach">
 		<field name="VAR">p</field>
+        <field name="RUN_FAST">TRUE</field>
 		<value name="LIST">
 			<block type="mediacomp_getPixels">
 				<value name="CANVAS">
@@ -112,6 +136,7 @@
 	  </block>
       <block type="controls_for">
       <field name="VAR">x</field>
+	  <field name="RUN_FAST">TRUE</field>
         <value name="FROM">
           <block type="math_number">
             <field name="NUM">0</field>
@@ -130,6 +155,7 @@
         <statement name="DO">
           <block type="controls_for">
             <field name="VAR">y</field>
+			<field name="RUN_FAST">TRUE</field>
             <value name="FROM">
               <block type="math_number">
                 <field name="NUM">0</field>
@@ -172,6 +198,8 @@
           </block>
         </statement>
       </block>
+	  <block type="mediacomp_run">
+	  </block>
 	</category>
     
     <category name="Pixels">

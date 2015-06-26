@@ -24,10 +24,6 @@ function getRidOfNakedCode(jscode){
 	return lines.join("\n");
 }
 
-function $(id){
-    return document.getElementById(id);
-}
-
 function drawCircle(ctx,color,x,y,r){
     ctx.strokeStyle = color;
     ctx.beginPath();
@@ -229,3 +225,32 @@ function download(canvas, filename) {
         lnk.fireEvent("onclick");
     }
 }
+
+//http://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server
+var createDownloadLink = function(anchorSelector, str, fileName){
+	if(window.navigator.msSaveOrOpenBlob) {
+		var fileData = [str];
+		blobObject = new Blob(fileData);
+		$(anchorSelector).click(function(){
+			window.navigator.msSaveOrOpenBlob(blobObject, fileName);
+		});
+	} else {
+		var url = "data:text/plain;charset=utf-8," + encodeURIComponent(str);
+		$(anchorSelector).attr("download", fileName);               
+		$(anchorSelector).attr("href", url);
+	}
+}
+
+//http://stackoverflow.com/questions/6507293/convert-xml-to-string-with-jquery
+var xmlToString = function (xmlData) { 
+    var xmlString;
+    //IE
+    if (window.ActiveXObject){
+        xmlString = xmlData.xml;
+    }
+    // code for Mozilla, Firefox, Opera, etc.
+    else{
+        xmlString = (new XMLSerializer()).serializeToString(xmlData);
+    }
+    return xmlString;
+}   

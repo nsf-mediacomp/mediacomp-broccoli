@@ -3,7 +3,7 @@
  * Visual Blocks Editor
  *
  * Copyright 2013 Google Inc.
- * https://blockly.googlecode.com/
+ * https://developers.google.com/blockly/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@
 goog.provide('Blockly.FieldAngle');
 
 goog.require('Blockly.FieldTextInput');
+goog.require('goog.math');
+goog.require('goog.userAgent');
 
 
 /**
@@ -36,7 +38,7 @@ goog.require('Blockly.FieldTextInput');
  *     to validate any constraints on what the user entered.  Takes the new
  *     text as an argument and returns the accepted text or null to abort
  *     the change.
- * @extends {Blockly.Field}
+ * @extends {Blockly.FieldTextInput}
  * @constructor
  */
 Blockly.FieldAngle = function(text, opt_changeHandler) {
@@ -182,7 +184,7 @@ Blockly.FieldAngle.prototype.onMouseMove = function(e) {
     // This shouldn't happen, but let's not let this error propogate further.
     return;
   }
-  angle = angle / Math.PI * 180;
+  angle = goog.math.toDegrees(angle);
   // 0: East, 90: North, 180: West, 270: South.
   if (dx < 0) {
     angle += 180;
@@ -208,6 +210,10 @@ Blockly.FieldAngle.prototype.onMouseMove = function(e) {
  */
 Blockly.FieldAngle.prototype.setText = function(text) {
   Blockly.FieldAngle.superClass_.setText.call(this, text);
+  if (!this.textElement_) {
+    // Not rendered yet.
+    return;
+  }
   this.updateGraph_();
   // Insert degree symbol.
   if (Blockly.RTL) {
@@ -227,7 +233,7 @@ Blockly.FieldAngle.prototype.updateGraph_ = function() {
   if (!this.gauge_) {
     return;
   }
-  var angleRadians = Number(this.getText()) / 180 * Math.PI;
+  var angleRadians = goog.math.toRadians(Number(this.getText()));
   if (isNaN(angleRadians)) {
     this.gauge_.setAttribute('d',
         'M ' + Blockly.FieldAngle.HALF + ', ' + Blockly.FieldAngle.HALF);

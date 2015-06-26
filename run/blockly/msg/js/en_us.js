@@ -2,7 +2,7 @@
  * Visual Blocks Language
  *
  * Copyright 2012 Google Inc.
- * https://blockly.googlecode.com/
+ * https://developers.google.com/blockly/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,19 +27,6 @@ goog.provide('Blockly.Msg.en_us');
 
 goog.require('Blockly.Msg');
 
-/**PIXLY MESSAGES**/
-Blockly.Msg.MEDIACOMP_RUN_TITLE = "When run button pressed";
-Blockly.Msg.MEDIACOMP_RUN_TOOLTIP = "The block that contains what code to execute when the run button is pressed";
-Blockly.Msg.MEDIACOMP_UPDATECANVAS_TITLE = "update canvas";
-Blockly.Msg.MEDIACOMP_UPDATECANVAS_TOOLTIP = "Redraw the canvas to match the current state of the pixels.";
-Blockly.Msg.MEDIACOMP_RESTARTCANVAS_TITLE = "restart canvas";
-Blockly.Msg.MEDIACOMP_RESTARTCANVAS_TOOLTIP = "Redraw the canvas with its original image";
-Blockly.Msg.MEDIACOMP_GETPIXELS_TITLE = "pixels from canvas";
-Blockly.Msg.MEDIACOMP_GETPIXELS_TOOLTIP = "Get a one dimensional 'flattened' array of the canvas's pixel";
-Blockly.Msg.MEDIACOMP_GETPIXELAT_X = "pixel at x";
-Blockly.Msg.MEDIACOMP_GETPIXELAT_Y = "y";
-Blockly.Msg.MEDIACOMP_GETPIXELAT_CANVAS = "on canvas";
-Blockly.Msg.MEDIACOMP_GETPIXELAT_TOOLTIP = "Get the pixel at the specified x and y position at the specified canvas.";
 
 /**
  * Due to the frequency of long strings, the 80-column wrap rule need not apply
@@ -84,14 +71,6 @@ Blockly.Msg.COLOUR_RGB_GREEN = 'green';
 Blockly.Msg.COLOUR_RGB_BLUE = 'blue';
 Blockly.Msg.COLOUR_RGB_TOOLTIP = 'Create a color with the specified amount of red, green,\n' +
     'and blue.  All values must be between 0 and 100.';
-	
-Blockly.Msg.COLOUR_HSV_HELPURL = 'http://en.wikipedia.org/wiki/HSL_and_HSV';
-Blockly.Msg.COLOUR_HSV_TITLE = 'color with';
-Blockly.Msg.COLOUR_HSV_HUE = 'hue';
-Blockly.Msg.COLOUR_HSV_SATURATION = 'saturation';
-Blockly.Msg.COLOUR_HSV_VALUE = 'brightness';
-Blockly.Msg.COLOUR_HSV_TOOLTIP = 'Create a color with the specified hue, saturation,\n' +
-    'and brightness.  All values must be between 0 and 100.';
 
 Blockly.Msg.COLOUR_BLEND_HELPURL = 'http://meyerweb.com/eric/tools/color-blend/';
 Blockly.Msg.COLOUR_BLEND_TITLE = 'blend';
@@ -107,7 +86,7 @@ Blockly.Msg.CONTROLS_REPEAT_TITLE_TIMES = 'times';
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = 'do';
 Blockly.Msg.CONTROLS_REPEAT_TOOLTIP = 'Do some statements several times.';
 
-Blockly.Msg.CONTROLS_WHILEUNTIL_HELPURL = 'http://code.google.com/p/blockly/wiki/Repeat';
+Blockly.Msg.CONTROLS_WHILEUNTIL_HELPURL = 'https://github.com/google/blockly/wiki/Repeat';
 Blockly.Msg.CONTROLS_WHILEUNTIL_INPUT_DO = 'do';
 Blockly.Msg.CONTROLS_WHILEUNTIL_OPERATOR_WHILE = 'repeat while';
 Blockly.Msg.CONTROLS_WHILEUNTIL_OPERATOR_UNTIL = 'repeat until';
@@ -144,7 +123,7 @@ Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = 'Warning:\n' +
     'be used within a loop.';
 
 // Logic Blocks.
-Blockly.Msg.CONTROLS_IF_HELPURL = 'http://code.google.com/p/blockly/wiki/If_Then';
+Blockly.Msg.CONTROLS_IF_HELPURL = 'https://github.com/google/blockly/wiki/IfElse';
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = 'If a value is true, then do some statements.';
 Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = 'If a value is true, then do the first block of statements.\n' +
     'Otherwise, do the second block of statements.';
@@ -177,18 +156,18 @@ Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = 'Return true if the first input is greate
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = 'Return true if the first input is greater\n' +
     'than or equal to the second input.';
 
-Blockly.Msg.LOGIC_OPERATION_HELPURL = 'http://code.google.com/p/blockly/wiki/And_Or';
+Blockly.Msg.LOGIC_OPERATION_HELPURL = 'https://github.com/google/blockly/wiki/Logic#logical-operations';
 Blockly.Msg.LOGIC_OPERATION_AND = 'and';
 Blockly.Msg.LOGIC_OPERATION_OR = 'or';
 Blockly.Msg.LOGIC_OPERATION_TOOLTIP_AND = 'Return true if both inputs are true.';
 Blockly.Msg.LOGIC_OPERATION_TOOLTIP_OR = 'Return true if either inputs are true.';
 
-Blockly.Msg.LOGIC_NEGATE_HELPURL = 'http://code.google.com/p/blockly/wiki/Not';
+Blockly.Msg.LOGIC_NEGATE_HELPURL = 'https://github.com/google/blockly/wiki/Logic#not';
 Blockly.Msg.LOGIC_NEGATE_INPUT_NOT = 'not';
 Blockly.Msg.LOGIC_NEGATE_TOOLTIP = 'Returns true if the input is false.\n' +
     'Returns false if the input is true.';
 
-Blockly.Msg.LOGIC_BOOLEAN_HELPURL = 'http://code.google.com/p/blockly/wiki/True_False';
+Blockly.Msg.LOGIC_BOOLEAN_HELPURL = 'https://github.com/google/blockly/wiki/Logic#values';
 Blockly.Msg.LOGIC_BOOLEAN_TRUE = 'true';
 Blockly.Msg.LOGIC_BOOLEAN_FALSE = 'false';
 Blockly.Msg.LOGIC_BOOLEAN_TOOLTIP = 'Returns either true or false.';

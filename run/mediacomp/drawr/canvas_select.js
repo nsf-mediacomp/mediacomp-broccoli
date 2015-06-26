@@ -4,11 +4,11 @@ CanvasSelect.init = function(count, init_images){
     CanvasSelect.default_images = init_images;
     Drawr.canvases = [];
 	for (var i = 0; i < count; i++){
-		Drawr.addCanvas($('canvas_'+i).getContext('2d'));
+		Drawr.addCanvas($('#canvas_'+i)[0].getContext('2d'));
 		CanvasSelect.addSelectBox();
 	}
 	for (var i = count; i < 12; i++){
-		Drawr.addCanvas($('canvas_'+i).getContext('2d'));
+		Drawr.addCanvas($('#canvas_'+i)[0].getContext('2d'));
 	}
     
     CanvasSelect.reset();
@@ -18,7 +18,7 @@ CanvasSelect.init = function(count, init_images){
   
     setInterval(CanvasSelect.updateSelectBoxCanvases, 1000);
 	
-	$("uploadcanvas").addEventListener("change", CanvasSelect.upload, false);
+	$("#uploadcanvas")[0].addEventListener("change", CanvasSelect.upload, false);
 }
 
 CanvasSelect.reset = function(){
@@ -43,12 +43,12 @@ CanvasSelect.onresize = function(){
     var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     
     /* canvas select sizing */
-    var canvas_select = $("canvas_select");
+    var canvas_select = $("#canvas_select")[0];
     canvas_select.style.height = (h - canvas_select.offsetTop - 10) + "px"; // -10 to align with bottom of blockly window
     
     /* box padding setting - to keep 4 per row, and keep them evenly spaced */
     /* canvas_selector width: 400px. 4 boxes per line. (400px - 4 boxes * (75+5+5+2)px) / (5 margins surrounding 4 boxes) = 10px */
-    var w = $("canvas_select_width_div").offsetWidth;
+    var w = $("#canvas_select_width_div")[0].offsetWidth;
     var box_width = 75 + 5 + 5 + 2; // padding, border
     var total_space_for_margins = w - 4 * box_width;
     // divide by 5 margins, 5 margins surround 4 boxes
@@ -83,7 +83,7 @@ CanvasSelect.addSelectBox = function(){
 		'    canvas $id' +
 		'</div>';
 	new_box = new_box.interpolate({id: id});
-	$("canvas_select").innerHTML += new_box;
+	$("#canvas_select")[0].innerHTML += new_box;
 	
     return id;
 }
@@ -98,11 +98,11 @@ CanvasSelect.removeSelectBox = function(id){
 }
 
 CanvasSelect.getSelectBox = function(id){
-    return $("canvas_select_" + id);
+    return $("#canvas_select_" + id)[0];
 }
 
 CanvasSelect.getCanvas = function(id){
-    return $("canvas_" + id);
+    return $("#canvas_" + id)[0];
 }
 
 CanvasSelect.updateSelectBoxCanvases = function(){
@@ -132,10 +132,10 @@ CanvasSelect.select = function(id){
 
 CanvasSelect.newBox = function(){
 	//Remove event listener wasn't working for me for some reason
-	if ($("pluscanvas").style.cursor === "not-allowed"){
+	if ($("#pluscanvas")[0].style.cursor === "not-allowed"){
 		return;
 	}
-	$("minuscanvas").style.cursor = "pointer";
+	$("#minuscanvas")[0].style.cursor = "pointer";
 
 	var boxes = document.getElementsByClassName("canvas_select_box");
 	var id = boxes.length;
@@ -152,7 +152,7 @@ CanvasSelect.newBox = function(){
 		CanvasSelect.addSelectBox();
 		
 		if (id == CanvasSelect.max_canvases - 1){
-			$("pluscanvas").style.cursor = "not-allowed";
+			$("#pluscanvas")[0].style.cursor = "not-allowed";
 		}
 	}else{
 		boxes[id].style.display = "block";
@@ -164,10 +164,10 @@ CanvasSelect.newBox = function(){
 }
 
 CanvasSelect.hide = function(){
-	if ($("minuscanvas").style.cursor === "not-allowed"){
+	if ($("#minuscanvas")[0].style.cursor === "not-allowed"){
 		return;
 	}
-	$("pluscanvas").style.cursor = "pointer";
+	$("#pluscanvas")[0].style.cursor = "pointer";
 
     CanvasSelect.removeSelectBox(CanvasSelect.selected);
 	
@@ -182,7 +182,7 @@ CanvasSelect.hide = function(){
 	}
 	
 	if (count === 1){
-		$("minuscanvas").style.cursor = "not-allowed";
+		$("#minuscanvas")[0].style.cursor = "not-allowed";
 	}
 	
 	CanvasSelect.updateSelectBoxCanvases();

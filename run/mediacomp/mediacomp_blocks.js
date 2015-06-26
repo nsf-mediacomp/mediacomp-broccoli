@@ -1,3 +1,16 @@
+/**
+ * @fileoverview Block definitions, javascript code generation for mediacomp visual blocks
+ * @author jatrower@crimson.ua.edu (Jake Trower)
+ * @previousauthor https://plus.google.com/u/0/107906348722042196808/ (Kathy Hill)
+ */
+
+'use strict';
+
+goog.provide('Blockly.JavaScript.variables');
+goog.provide('Blockly.JavaScript.colour');
+goog.require('Blockly.JavaScript');
+
+
 Blockly.Blocks['mediacomp_run'] = {
   /**
    * Block to set the code that will run with the run button is pressed
@@ -5,17 +18,31 @@ Blockly.Blocks['mediacomp_run'] = {
    */
   init: function() {
     this.setHelpUrl("http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf");
-    this.setColour(210);
+    this.setColour(15);
+	this.hex_colour = "#dd4b39";
     this.appendDummyInput()
-        .appendField(Blockly.Msg.MEDIACOMP_RUN_TITLE);
+		.appendField("when")
+		.appendField(new Blockly.FieldImage("arrow_2.png", 15, 15, "*"))
+        .appendField("Run Program clicked");
     this.appendStatementInput('DO')
         .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
     this.setPreviousStatement(false);
     this.setNextStatement(false);
     this.setTooltip(Blockly.Msg.MEDIACOMP_RUN_TOOLTIP);
-	this.setDeletable(false);
-  }
+  },
+  updateColour: function (){if(!this.disabled){var a=this.hex_colour,b=goog.color.hexToRgb(a),c=goog.color.lighten(b,.3),b=goog.color.darken(b,.4);this.svgPathLight_.setAttribute("stroke",goog.color.rgbArrayToHex(c));this.svgPathDark_.setAttribute("fill",goog.color.rgbArrayToHex(b));this.svgPath_.setAttribute("fill",a);c=this.getIcons();for(a=0;a<c.length;a++)c[a].updateColour();for(a=0;c=this.inputList[a];a++)for(var b=0,d;d=c.fieldRow[b];b++)d.setText(null)}}
 };
+Blockly.JavaScript['mediacomp_run'] = function(block) {
+  // ONly run the code that is inside this block when run button is pressed (like a main)
+  var do_branch = Blockly.JavaScript.statementToCode(block, 'DO');
+  var funcName = Blockly.JavaScript.variableDB_.getDistinctName(
+      'sphero_run', Blockly.Variables.NAME_TYPE);
+  var code = 'function pixly_run(){\n' + 
+      do_branch +
+	  '}\n';
+  return code;
+};
+
 
 Blockly.Blocks['mediacomp_updateCanvas'] = {
 	init: function(){
@@ -31,6 +58,18 @@ Blockly.Blocks['mediacomp_updateCanvas'] = {
 		this.setTooltip(Blockly.Msg.MEDIACOMP_UPDATECANVAS_TOOLTIP);
 	}
 }
+Blockly.JavaScript['mediacomp_updateCanvas'] = function(block) {  
+  var ctxid = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+ 
+  var code = "Drawr.flushCache($ctxid);\n"
+	.interpolate({ctxid: ctxid}); 
+  return code;
+};
+BlockIt['mediacomp_updateCanvas'] = function(block, ctxid){
+	ctxid = ctxid || 0;
+	Drawr.flushCache(ctxid);
+}
+
 
 Blockly.Blocks['mediacomp_restartCanvas'] = {
 	init: function(){
@@ -46,6 +85,18 @@ Blockly.Blocks['mediacomp_restartCanvas'] = {
 		this.setTooltip(Blockly.Msg.MEDIACOMP_RESTARTCANVAS_TOOLTIP);
 	}
 }
+Blockly.JavaScript['mediacomp_restartCanvas'] = function(block) {  
+  var ctxid = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+ 
+  var code = "Drawr.restartCanvas($ctxid);\n"
+	.interpolate({ctxid: ctxid}); 
+  return code;
+};
+BlockIt['mediacomp_restartCanvas'] = function(block, ctxid){
+	ctxid = ctxid || 0;
+	Drawr.restartCanvas(ctxid);
+}
+
 
 Blockly.Blocks['mediacomp_getPixels'] = {
 	init: function(){
@@ -60,181 +111,19 @@ Blockly.Blocks['mediacomp_getPixels'] = {
 		this.setTooltip(Blockly.Msg.MEDIACOMP_GETPIXELS_TOOLTIP);
 	}
 }
-
-Blockly.Blocks['mediacomp_getPixelAt'] = {
-	init: function(){
-		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
-		this.setColour(230);
-        this.appendValueInput('X')
-            .setCheck('Number')
-            .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(Blockly.Msg.MEDIACOMP_GETPIXELAT_X);
-        this.appendValueInput('Y')
-            .setCheck('Number')
-            .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(Blockly.Msg.MEDIACOMP_GETPIXELAT_Y);
-        this.appendValueInput("CANVAS")
-            .setCheck('Number')
-            .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(Blockly.Msg.MEDIACOMP_GETPIXELAT_CANVAS);
-		this.setInputsInline(true);
-		this.setOutput(true, "Pixel");
-		this.setTooltip(Blockly.Msg.MEDIACOMP_GETPIXELAT_TOOLTIP);
-	}
+Blockly.JavaScript['mediacomp_getPixels'] = function(block){
+	var canvas = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+	//TODO:: how can we check to see that the canvas index is valid?
+	
+	var code = "Drawr.getPixels($id)"
+		.interpolate({id: canvas});
+	return [code, Blockly.JavaScript.ORDER_ATOMIC];
+}
+BlockIt['mediacomp_getPixels'] = function(block, canvas){
+	canvas = canvas || 0;
+	return Drawr.getPixels(canvas);
 }
 
-Blockly.Blocks['mediacomp_setPixelAt'] = {
-	init: function() {
-    this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
-    this.setColour(0);
-    
-	this.appendDummyInput()
-		.appendField("change pixel at");
-    this.appendValueInput('X')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("x");
-    this.appendValueInput('Y')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("y");
-    this.appendValueInput('PIXEL')
-        .setCheck('Pixel')
-		.setCheck('Colour')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("to");
-	this.appendValueInput('CANVAS')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("on canvas");
-		
-	this.setInputsInline(true);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setTooltip('Set the pixel at the specified location to another pixel or color');
-  }
-};
-
-Blockly.Blocks['mediacomp_setPixel'] = {
-	init: function() {
-    this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
-    this.setColour(0);
-    
-	this.appendDummyInput()
-		.appendField("change pixel");
-    this.appendValueInput('PIXEL')
-        .setCheck('Pixel')
-        .setAlign(Blockly.ALIGN_RIGHT);
-    this.appendValueInput('PIXEL2')
-        .setCheck('Pixel')
-		.setCheck('Colour')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("to");
-		
-	this.setInputsInline(true);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setTooltip('Set the pixel to another pixel or color');
-  }
-};
-
-Blockly.Blocks['mediacomp_getPixelColour'] = {
-	init: function(){
-		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
-		this.setColour(230);
-		this.appendDummyInput()
-			.appendField("color of pixel");
-		this.appendValueInput("PIXEL")
-			.setCheck("Pixel")
-			.setAlign(Blockly.ALIGN_CENTRE);
-		this.setInputsInline(true);
-		this.setOutput(true, "Colour");
-		this.setTooltip('Get the color of a pixel');
-	}
-}
-
-Blockly.Blocks['mediacomp_getPixelRGB'] = {
-	init: function(){
-		var RGB = [["red", 'r'], ["green", 'g'], ["blue", 'b']];
-		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
-		this.setColour(230);
-		this.appendDummyInput()
-			.appendField(new Blockly.FieldDropdown(RGB), 'RGB')
-			.appendField("value of pixel");
-		this.appendValueInput("PIXEL")
-			.setCheck("Pixel")
-			.setAlign(Blockly.ALIGN_CENTRE);
-		this.setInputsInline(true);
-		this.setOutput(true, "Number");
-		this.setTooltip('Get the red, green, or blue color value of a pixel');
-	}
-}
-
-Blockly.Blocks['mediacomp_setPixelRGB'] = {
-	init: function(){
-		var RGB = [["red", 'r'], ["green", 'g'], ["blue", 'b']];
-		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
-		this.setColour(0);
-		this.appendDummyInput()
-			.appendField("change")
-			.appendField(new Blockly.FieldDropdown(RGB), 'RGB')
-			.appendField("value of pixel");
-		this.appendValueInput("PIXEL")
-			.setCheck("Pixel")
-			.setAlign(Blockly.ALIGN_CENTRE);
-		this.appendValueInput("VALUE")
-			.setCheck("Number")
-			.appendField("to")
-			.setAlign(Blockly.ALIGN_CENTRE);
-		this.setInputsInline(true);
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
-		this.setTooltip('Set the red, green, or blue color value of a pixel');
-	}
-}
-
-Blockly.Blocks['mediacomp_getPixelRGBIntensity'] = {
-	init: function(){
-		var RGB = [["red", 'r'], ["green", 'g'], ["blue", 'b']];
-		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
-		this.setColour(230);
-		this.appendDummyInput()
-			.appendField(new Blockly.FieldDropdown(RGB), 'RGB')
-			.appendField("intensity of pixel");
-		this.appendValueInput("PIXEL")
-			.setCheck("Pixel")
-			.setAlign(Blockly.ALIGN_CENTRE);
-		this.setInputsInline(true);
-		this.setOutput(true, "Number");
-		this.setTooltip('Get the red, green, or blue color intensity of a pixel');
-	}
-}
-
-Blockly.Blocks['colour_hsv'] = {
-  /**
-   * Block for composing a colour from HSV components.
-   * @this Blockly.Block
-   */
-  init: function() {
-    this.setHelpUrl(Blockly.Msg.COLOUR_HSV_HELPURL);
-    this.setColour(20);
-    this.appendValueInput('HUE')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(Blockly.Msg.COLOUR_HSV_TITLE)
-        .appendField(Blockly.Msg.COLOUR_HSV_HUE);
-    this.appendValueInput('SATURATION')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(Blockly.Msg.COLOUR_HSV_SATURATION);
-    this.appendValueInput('VALUE')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(Blockly.Msg.COLOUR_HSV_VALUE);
-    this.setOutput(true, 'Colour');
-    this.setTooltip(Blockly.Msg.COLOUR_HSV_TOOLTIP);
-  }
-};
 
 Blockly.Blocks['controls_forfor'] = {
   /**
@@ -257,6 +146,9 @@ Blockly.Blocks['controls_forfor'] = {
                         Blockly.ALIGN_RIGHT);
     this.appendStatementInput('DO')
         .appendField(Blockly.Msg.CONTROLS_FOR_INPUT_DO);
+	this.appendDummyInput()
+        .appendField(new Blockly.FieldCheckbox("FALSE"), "RUN_FAST")
+        .appendField(run_fast_msg);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setInputsInline(true);
@@ -316,4 +208,90 @@ Blockly.Blocks['controls_forfor'] = {
     option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
     options.push(option);
   }
+};
+Blockly.JavaScript['controls_forfor'] = function(block) {
+  // For loop.
+  var variable0 = Blockly.JavaScript.variableDB_.getName(
+      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+  var variable2 = Blockly.JavaScript.variableDB_.getName(
+      block.getFieldValue('VAR2'), Blockly.Variables.NAME_TYPE);
+  var argument0 = Blockly.JavaScript.valueToCode(block, 'FROM',
+      Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+  var argument1 = Blockly.JavaScript.valueToCode(block, 'TO',
+      Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+  var increment = Blockly.JavaScript.valueToCode(block, 'BY',
+      Blockly.JavaScript.ORDER_ASSIGNMENT) || '1';
+  var branch = Blockly.JavaScript.statementToCode(block, 'DO');
+  if (Blockly.JavaScript.INFINITE_LOOP_TRAP) {
+    branch = Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g,
+        '\'' + block.id + '\'') + branch;
+  }
+  var code;
+  if (Blockly.isNumber(argument0) && Blockly.isNumber(argument1) &&
+      Blockly.isNumber(increment)) {
+    // All arguments are simple numbers.
+    var up = parseFloat(argument0) <= parseFloat(argument1);
+    code = 'for (' + variable0 + ' = ' + argument0 + '; ' +
+        variable0 + (up ? ' <= ' : ' >= ') + argument1 + '; ' +
+        variable0;
+    var step = Math.abs(parseFloat(increment));
+    if (step == 1) {
+      code += up ? '++' : '--';
+    } else {
+      code += (up ? ' += ' : ' -= ') + step;
+    }
+    code += ') {\n';
+	code += "for (" + variable2 + " = " + argument0 + "; " +
+		variable2 + (up ? ' <= ' : ' >= ') + argument1 + '; ' +
+		variable2;
+	var step = Math.abs(parseFloat(increment));
+    if (step == 1) {
+      code += up ? '++' : '--';
+    } else {
+      code += (up ? ' += ' : ' -= ') + step;
+    }
+    code += ') {\n' + branch;
+	code += '}\n}\n';
+  } else {
+    code = '';
+    // Cache non-trivial values to variables to prevent repeated look-ups.
+    var startVar = argument0;
+    if (!argument0.match(/^\w+$/) && !Blockly.isNumber(argument0)) {
+      var startVar = Blockly.JavaScript.variableDB_.getDistinctName(
+          variable0 + '_start', Blockly.Variables.NAME_TYPE);
+      code += 'var ' + startVar + ' = ' + argument0 + ';\n';
+    }
+    var endVar = argument1;
+    if (!argument1.match(/^\w+$/) && !Blockly.isNumber(argument1)) {
+      var endVar = Blockly.JavaScript.variableDB_.getDistinctName(
+          variable0 + '_end', Blockly.Variables.NAME_TYPE);
+      code += 'var ' + endVar + ' = ' + argument1 + ';\n';
+    }
+    // Determine loop direction at start, in case one of the bounds
+    // changes during loop execution.
+    var incVar = Blockly.JavaScript.variableDB_.getDistinctName(
+        variable0 + '_inc', Blockly.Variables.NAME_TYPE);
+    code += 'var ' + incVar + ' = ';
+    if (Blockly.isNumber(increment)) {
+      code += Math.abs(increment) + ';\n';
+    } else {
+      code += 'Math.abs(' + increment + ');\n';
+    }
+    code += 'if (' + startVar + ' > ' + endVar + ') {\n';
+    code += Blockly.JavaScript.INDENT + incVar + ' = -' + incVar +';\n';
+    code += '}\n';
+    code += 'for (' + variable0 + ' = ' + startVar + ';\n' +
+        '     '  + incVar + ' >= 0 ? ' +
+        variable0 + ' <= ' + endVar + ' : ' +
+        variable0 + ' >= ' + endVar + ';\n' +
+        '     ' + variable0 + ' += ' + incVar + ') {\n';
+	code += 'for (' + variable2 + ' = ' + startVar + ';\n' +
+        '     '  + incVar + ' >= 0 ? ' +
+        variable2 + ' <= ' + endVar + ' : ' +
+        variable2 + ' >= ' + endVar + ';\n' +
+        '     ' + variable2 + ' += ' + incVar + ') {\n' +
+        branch + '}\n';
+	code += +'}\n';
+  }
+  return code;
 };

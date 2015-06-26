@@ -3,7 +3,7 @@
  * Visual Blocks Editor
  *
  * Copyright 2013 Google Inc.
- * https://blockly.googlecode.com/
+ * https://developers.google.com/blockly/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,26 @@ goog.require('goog.asserts');
  * Blocks.addTemplate().
  */
 goog.provide('Blockly.Blocks');
+
+/**
+ * Unique ID counter for created blocks.
+ * @private
+ */
+Blockly.Blocks.uidCounter_ = 0;
+
+/**
+ * Generate a unique ID.  This will be locally or globally unique, depending on
+ * whether we are in single user or realtime collaborative mode.
+ * @return {string}
+ */
+Blockly.Blocks.genUid = function() {
+  var uid = (++Blockly.Blocks.uidCounter_).toString();
+  if (Blockly.Realtime.isEnabled()) {
+    return Blockly.Realtime.genUid(uid);
+  } else {
+    return uid;
+  }
+};
 
 /**
  * Create a block template and add it as a field to Blockly.Blocks with the
@@ -107,8 +127,11 @@ Blockly.Blocks.addTemplate = function(details) {
         'details.nextStatement must not be true.');
   }
 
-  // Build up template.
   var block = {};
+  /**
+   * Build up template.
+   * @this Blockly.Block
+   */
   block.init = function() {
     var thisBlock = this;
     // Set basic properties of block.
@@ -142,8 +165,8 @@ Blockly.Blocks.addTemplate = function(details) {
         if (arg.type == 'undefined' || arg.type == Blockly.INPUT_VALUE) {
           interpArgs.push([arg.name,
                            arg.check,
-                           typeof arg.align == 'undefined' ? Blockly.ALIGN_RIGHT
-                               : arg.align]);
+                           typeof arg.align == 'undefined' ?
+                               Blockly.ALIGN_RIGHT : arg.align]);
         } else {
           // TODO: Write code for other input types.
           goog.asserts.fail('addTemplate() can only handle value inputs.');
@@ -159,11 +182,14 @@ Blockly.Blocks.addTemplate = function(details) {
     Blockly.Block.prototype.interpolateMsg.apply(this, interpArgs);
   };
 
-  // Create mutationToDom if needed.
   if (details.switchable) {
+    /**
+     * Create mutationToDom if needed.
+     * @this Blockly.Block
+     */
     block.mutationToDom = function() {
-      var container = details.mutationToDomFunc ? details.mutatationToDomFunc()
-          : document.createElement('mutation');
+      var container = details.mutationToDomFunc ?
+          details.mutatationToDomFunc() : document.createElement('mutation');
       container.setAttribute('is_statement', this['isStatement'] || false);
       return container;
     };

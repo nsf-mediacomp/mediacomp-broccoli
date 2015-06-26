@@ -3,7 +3,7 @@
  * Visual Blocks Editor
  *
  * Copyright 2011 Google Inc.
- * https://blockly.googlecode.com/
+ * https://developers.google.com/blockly/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,8 @@
 'use strict';
 
 goog.provide('Blockly.Tooltip');
+
+goog.require('goog.dom');
 
 
 /**
@@ -182,7 +184,7 @@ Blockly.Tooltip.onMouseOver_ = function(e) {
     Blockly.Tooltip.element_ = element;
   }
   // Forget about any immediately preceeding mouseOut event.
-  window.clearTimeout(Blockly.Tooltip.mouseOutPid_);
+  clearTimeout(Blockly.Tooltip.mouseOutPid_);
 };
 
 /**
@@ -195,12 +197,12 @@ Blockly.Tooltip.onMouseOut_ = function(e) {
   // a mouseOut followed instantly by a mouseOver.  Fork off the mouseOut
   // event and kill it if a mouseOver is received immediately.
   // This way the task only fully executes if mousing into the void.
-  Blockly.Tooltip.mouseOutPid_ = window.setTimeout(function() {
+  Blockly.Tooltip.mouseOutPid_ = setTimeout(function() {
         Blockly.Tooltip.element_ = null;
         Blockly.Tooltip.poisonedElement_ = null;
         Blockly.Tooltip.hide();
       }, 1);
-  window.clearTimeout(Blockly.Tooltip.showPid_);
+  clearTimeout(Blockly.Tooltip.showPid_);
 };
 
 /**
@@ -213,7 +215,7 @@ Blockly.Tooltip.onMouseMove_ = function(e) {
   if (!Blockly.Tooltip.element_ || !Blockly.Tooltip.element_.tooltip) {
     // No tooltip here to show.
     return;
-  } else if (Blockly.Block.dragMode_ != 0) {
+  } else if (Blockly.dragMode_ != 0) {
     // Don't display a tooltip during a drag.
     return;
   } else if (Blockly.WidgetDiv.isVisible()) {
@@ -232,11 +234,11 @@ Blockly.Tooltip.onMouseMove_ = function(e) {
     }
   } else if (Blockly.Tooltip.poisonedElement_ != Blockly.Tooltip.element_) {
     // The mouse moved, clear any previously scheduled tooltip.
-    window.clearTimeout(Blockly.Tooltip.showPid_);
+    clearTimeout(Blockly.Tooltip.showPid_);
     // Maybe this time the mouse will stay put.  Schedule showing of tooltip.
     Blockly.Tooltip.lastXY_ = Blockly.mouseToSvg(e);
     Blockly.Tooltip.showPid_ =
-        window.setTimeout(Blockly.Tooltip.show_, Blockly.Tooltip.HOVER_MS);
+        setTimeout(Blockly.Tooltip.show_, Blockly.Tooltip.HOVER_MS);
   }
 };
 
@@ -250,7 +252,7 @@ Blockly.Tooltip.hide = function() {
       Blockly.Tooltip.svgGroup_.style.display = 'none';
     }
   }
-  window.clearTimeout(Blockly.Tooltip.showPid_);
+  clearTimeout(Blockly.Tooltip.showPid_);
 };
 
 /**
@@ -332,6 +334,7 @@ Blockly.Tooltip.show_ = function() {
  * Wrap text to the specified width.
  * @param {string} text Text to wrap.
  * @param {number} limit Width to wrap each line.
+ * @return {string} Wrapped text.
  * @private
  */
 Blockly.Tooltip.wrap_ = function(text, limit) {
@@ -373,7 +376,7 @@ Blockly.Tooltip.wrap_ = function(text, limit) {
     score = Blockly.Tooltip.wrapScore_(words, wordBreaks, limit);
     text = Blockly.Tooltip.wrapToText_(words, wordBreaks);
     lineCount++;
-  } while (score > lastScore)
+  } while (score > lastScore);
   return lastText;
 };
 

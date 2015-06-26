@@ -3,7 +3,7 @@
  * Visual Blocks Editor
  *
  * Copyright 2011 Google Inc.
- * https://blockly.googlecode.com/
+ * https://developers.google.com/blockly/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -166,7 +166,7 @@ Blockly.Comment.prototype.setVisible = function(visible) {
     // Create the bubble.
     this.bubble_ = new Blockly.Bubble(
         /** @type {!Blockly.Workspace} */ (this.block_.workspace),
-        this.createEditor_(), this.block_.svg_.svgPath_,
+        this.createEditor_(), this.block_.svgPath_,
         this.iconX_, this.iconY_,
         this.width_, this.height_);
     this.bubble_.registerResizeEvent(this, this.resizeBubble_);

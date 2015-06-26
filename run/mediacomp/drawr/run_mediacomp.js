@@ -3,6 +3,9 @@ Drawr.images = [Drawr.imagePath+"redeye.png", Drawr.imagePath+"greenscreen.png",
 
 Drawr.DOUBLE_CLICK_TIME = 100;
 
+Drawr.stepTime = 10;
+Drawr.stepTimeoutId = null;
+
 Drawr.init = function(){ 
     Drawr.setupBlockly();
 	
@@ -17,34 +20,35 @@ Drawr.init = function(){
     
     // Setup buttons
 
-	$("runButton").addEventListener("click", Drawr.RunCode);
-	$("resetButton").addEventListener("click", Drawr.Reset);
-	
-	$("closeDialogButton").addEventListener("click", function(){$("dialog").style.display = "none";});
-	$("codeButton").addEventListener("click", function(){
+	$("#runButton")[0].addEventListener("click", Drawr.RunButton);
+	$("#resetButton")[0].addEventListener("click", Drawr.Reset);
+
+	$("#codeButton")[0].addEventListener("click", function(){
 		var generated_code = Blockly.JavaScript.workspaceToCode();
 			generated_code = getRidOfNakedCode(generated_code);
 			generated_code += "if (pixly_run) pixly_run();\n";
-		$("dialogBody").innerHTML = "<pre>" + generated_code + "</pre>";
-		
-		$("titleText").innerHTML = "Generated JavaScript Code";
-		$("dialog").style.display = "block";
+		var content = "<pre>" + generated_code + "</pre>";
+			
+		Dialog.Alert(content, "Generated JavaScript Code");
 	});
-	$("linkButton").addEventListener("click", function(){
-		var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-		xml = Blockly.Xml.domToPrettyText(xml);
-		$("dialogBody").innerHTML = "<textarea id='dialog_block_xml' style='width:98%;height:70%;margin-top:5px;'>" + xml + "</textarea>" + 
-		"<br/><div id='importXmlButton' onclick='Drawr.importXml(\"dialog_block_xml\");'>Import XML</div>";
+	$("#importButton")[0].addEventListener('click', function(){
+		Drawr.openProject();
+	});
+	$("#exportButton")[0].addEventListener('click', function(){
+		Drawr.saveProject();
+	});
 	
-		$("titleText").innerHTML = "Block XML";
-		$("dialog").style.display = "block";
-	});
-	$("captureButton").addEventListener("click", function(){
+	$("#captureButton")[0].addEventListener("click", function(){
 		var canvas = Drawr.getCtx(CanvasSelect.selected).canvas;
 		download(canvas, 'pixlyCanvas.png');
 	});
 	
 	Drawr.Reset();
+	
+	window.setTimeout(function(){
+		$("#runButton")[0].className = "";
+		$("#runButton")[0].className = "primary";
+	}, 10000);
 }
 
 Drawr.setupBlockly = function(){
@@ -66,8 +70,8 @@ Drawr.setupBlockly = function(){
 	}
 
 	//Setting up Blockly for resizing
-	var blocklyDiv = $("blockly");
-	var visualization = $("visualization");
+	var blocklyDiv = $("#blockly")[0];
+	var visualization = $("#visualization")[0];
 	var onresize = function(e){
 		var top = visualization.offsetTop;
 		blocklyDiv.style.top = Math.max(10, top - window.pageYOffset) + 'px';
@@ -88,8 +92,8 @@ Drawr.setupBlockly = function(){
 	
 	//Inject Blockly into the webpage
 	var toolbox = document.getElementById('toolbox');
-	Blockly.inject($('blockly'),
-		{path: 'blockly/', toolbox: $('toolbox'), trashcan: true});
+	Blockly.inject($('#blockly')[0],
+		{path: 'blockly/', toolbox: $('#toolbox')[0], trashcan: true});
 		
 	//Add to reserver word list
 	Blockly.JavaScript.addReservedWords('Drawr');
@@ -106,8 +110,7 @@ Drawr.setupBlockly = function(){
 
 Drawr.importXml = function(textarea){
 	Blockly.mainWorkspace.clear();
-	Drawr.loadBlocks($(textarea).value);
-	$("dialog").style.display = "none";
+	Drawr.loadBlocks($(textarea)[0].value);
 }
 
 Drawr.loadBlocks = function(defaultXml){
@@ -140,47 +143,41 @@ Drawr.loadBlocks = function(defaultXml){
 window.addEventListener('load', Drawr.init);
 
 Drawr.Reset = function(){
-	if (!$("runButton").style.minWidth){
-		$("runButton").style.minWidth = $("resetButton").offsetWidth + "px";
-	}
-	$("resetButton").style.display = 'none';
-	$("runButton").style.display = "inline";
-	// Prevent double-clicks or double-taps.
-	$("runButton").disabled = true;
-	setTimeout(function() {$("runButton").disabled = false;}, Drawr.DOUBLE_CLICK_TIME);
-	document.getElementById('spinner').style.visibility = 'hidden';
-
 	Drawr.clearAllCommands();
-
 	CanvasSelect.reset();
 }
 	
-Drawr.RunCode = function(){		
-	if (!$("resetButton").style.minWidth){
-		$("resetButton").style.minWidth = $("runButton").offsetWidth + "px";
-	}
-	//$("runButton").style.display = 'none'; /////////////
-	//$("resetButton").style.display = "inline";
+Drawr.runButton = true;
+Drawr.RunButton = function(){
 	// Prevent double-clicks or double-taps.
-	$("resetButton").disabled = true;
-	setTimeout(function() {$("resetButton").disabled = false;}, Drawr.DOUBLE_CLICK_TIME);
-
-	document.getElementById('spinner').style.visibility = 'visible';
-
-	Blockly.JavaScript.addReservedWords('generated_code');
+	$("#runButton")[0].disabled = true;
+	setTimeout(function() {$("#runButton")[0].disabled = false;}, Drawr.DOUBLE_CLICK_TIME);
 	
-	var generated_code = "Drawr.clearAllCommands();\n";
-	generated_code += getRidOfNakedCode(Blockly.JavaScript.workspaceToCode());
-	generated_code += "Drawr.begin_execute(pixly_run);\n";
-	
-    setTimeout(function(){
-        try {
-            console.log(generated_code);
-            eval(generated_code);
-        } catch (e) {
-            console.log(e);
-        }
+	if (Drawr.runButton){
+		$("#runButtonText")[0].innerHTML = "Stop Program";
+		$("#runButtonImg")[0].style.backgroundPosition = "-63px 0px";
+		Drawr.RunCode();
+	}else{
+		$("#runButtonText")[0].innerHTML = "Run Program";
+		$("#runButtonImg")[0].style.backgroundPosition = "-63px -21px";
+		Drawr.StopCode();
+	}
+	Drawr.runButton = !Drawr.runButton;
+}
+Drawr.RunCode = function(){		
+	//document.getElementById('spinner').style.visibility = 'visible';
 
-        document.getElementById('spinner').style.visibility = 'hidden';
-    }, 0);
+	//window.setInterval(function(){ Drawr.flushCache(); }, 10);
+	window.setTimeout(function(){
+		if (!BlockIt.IterateThroughBlocks("mediacomp_run", function(){
+			Drawr.flushCache();
+		})){
+			document.getElementById("runButton").click();
+		}
+	}, 0);
+}
+Drawr.StopCode = function(){	
+	BlockIt.StopIteration();
+
+	document.getElementById('spinner').style.visibility = 'hidden';
 }

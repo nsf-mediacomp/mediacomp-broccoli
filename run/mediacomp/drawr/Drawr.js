@@ -34,19 +34,6 @@ Drawr.clearAllCommands = function(){
 	Drawr.pid = null;
 }
 
-Drawr.begin_execute = function(pixly_run){
-    // since we don't actually do any begin_execute'ing here, but we do call it at the end
-    // lets just randomly flushCache here (since it's done after all operations are done, as of right now)
-    // in the future: have the cache flush itself multiple times in a thread looped to like 100 ms (for slow programs that should update the canvas occasionally even before they finish)
-    //Drawr.flushCache(); // <---- called at the end of execution
-	
-	if (pixly_run){
-		pixly_run();
-		Drawr.flushCache();
-	}
-}
-
-
 Drawr.beginFlush = function(){
 	Drawr.flush_pid = setInterval(Drawr.flushCache, 1000);
 }
@@ -61,6 +48,23 @@ Drawr.restartCanvas = function(id){
 
 	Drawr.getCtx(id).drawImage(canvas.image, 0, 0, canvas.width, canvas.height);
     Drawr.resetCache(id);
+}
+
+Drawr.blankPixel = function(id, x, y){
+	var canvas = Drawr.canvases[id];
+	
+	var index = x % canvas.width + y * canvas.width;
+	
+	return {
+        id: id,
+        index: index,
+        x: x,
+        y: y,
+        r: 0,
+        g: 0,
+        b: 0,
+        a: 1,
+    };
 }
 
 Drawr.resetCache = function(id){
@@ -118,7 +122,7 @@ Drawr.getPixels = function(id){
 
 Drawr.getPixel = function(id, x, y){
     var index = (y * Drawr.canvases[id].width + x)*4;
-    return Drawr.pixel_cache[id][index/4];
+    var pixel = Drawr.pixel_cache[id][index/4] || Drawr.blankPixel();;
     /*var cache = Drawr.global_cache[id];
 	var pixel = {
         id: id,
@@ -133,8 +137,19 @@ Drawr.getPixel = function(id, x, y){
 	return pixel;*/
 }
 
+Drawr.updatePixel = function(pixel){
+	if (pixel === undefined) return;
+	
+    // draw a 1x1 rectangle so the image reflects the cache
+    // INSTEAD: flushCache() at the end of execution, significantly faster.
+	var id = pixel['id'];
+    var canvas = Drawr.canvases[id];
+    canvas.ctx.fillStyle = "rgb(" + pixel['r'] + ", " +  pixel['g'] + ", " +  pixel['b'] + ")";
+    canvas.ctx.fillRect(pixel['x'], pixel['y'], 1, 1);
+}
 Drawr.setPixelAt = function(id, x, y, pixel){
-	var canvas = Drawr.canvases[id];
+	if (pixel === undefined) return;
+	
 	var index = (y * Drawr.canvases[id].width + x)*4;
 	var cache = Drawr.global_cache[id];
 	if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(pixel)){
@@ -147,11 +162,12 @@ Drawr.setPixelAt = function(id, x, y, pixel){
 	cache[index+3] = pixel['a'];
 	
 	Drawr.pixel_cache[id][index/4] = pixel;
+	Drawr.updatePixel(pixel);
 }
-
 Drawr.setPixel = function(pixel){
+	if (pixel === undefined) return;
+	
     var id = pixel['id'];
-    var canvas = Drawr.canvases[id];
 	var index = pixel.index;
     //var cache = Drawr.canvases[id].cache;
     var cache = Drawr.global_cache[id];
@@ -161,15 +177,12 @@ Drawr.setPixel = function(pixel){
 	cache[index+3] = pixel['a'];
 	
 	Drawr.pixel_cache[id][index/4] = pixel;
-    // draw a 1x1 rectangle so the image reflects the cache
-    // INSTEAD: flushCache() at the end of execution, significantly faster.
-    //canvas.ctx.fillStyle = "rgb(" + pixel['r'] + ", " +  pixel['g'] + ", " +  pixel['b'] + ")";
-    //canvas.ctx.fillRect(pixel['x'], pixel['y'], 1, 1);
+	Drawr.updatePixel(pixel);
 }
-
 Drawr.setPixel2 = function(pixel, pixel2){
+	if (pixel === undefined) return;
+	
     var id = pixel['id'];
-    var canvas = Drawr.canvases[id];
 	var index = pixel.index;
     //var cache = Drawr.canvases[id].cache;
     var cache = Drawr.global_cache[id];
@@ -183,22 +196,31 @@ Drawr.setPixel2 = function(pixel, pixel2){
 	cache[index+3] = pixel2['a'];
 	
 	Drawr.pixel_cache[id][index/4] = pixel;
+	Drawr.updatePixel(pixel);
 }
 
 Drawr.getPixelColour = function(pixel){
+	pixel = pixel || Drawr.blankPixel();
+	
 	return rgbToHex(pixel['r'], pixel['g'], pixel['b']);
 }
 
 Drawr.getPixelRGB = function(pixel, rgb){
+	pixel = pixel || Drawr.blankPixel();
+	
 	return pixel[rgb];
 }
 
 Drawr.setPixelRGB = function(pixel, rgb, value){
+	if (pixel === undefined) return;
+	
 	pixel[rgb] = value;
     Drawr.setPixel(pixel);
 }
 
 Drawr.getPixelRGBIntensity = function(pixel, rgb){
+	pixel = pixel || Drawr.blankPixel();
+	
 	switch (rgb){
 		case 'r':
 			if (pixel['g'] + pixel['b'] === 0)
