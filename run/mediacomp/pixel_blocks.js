@@ -56,17 +56,17 @@ Blockly.Blocks['mediacomp_setPixelAt'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("y");
+	this.appendValueInput('CANVAS')
+        .setCheck('Number')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("on canvas");
     this.appendValueInput('PIXEL')
         .setCheck('Pixel')
 		.setCheck('Colour')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("to");
-	this.appendValueInput('CANVAS')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("on canvas");
 		
-	this.setInputsInline(true);
+	//this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('Set the pixel at the specified location to another pixel or color');
@@ -82,7 +82,7 @@ Blockly.JavaScript['mediacomp_setPixelAt'] = function(block) {
 	.interpolate({ctxid: ctxid, x: x, y: y, pixel: pixel}); 
   return code;
 };
-BlockIt["mediacomp_setPixelAt"] = function(block, x, y, pixel, canvas){
+BlockIt["mediacomp_setPixelAt"] = function(block, x, y, canvas, pixel){
 	x = x || 0;
 	y = y || 0;
 	canvas = canvas || 0;
@@ -263,7 +263,7 @@ BlockIt["mediacomp_getPixelRGBIntensity"] = function(block, pixel){
 	return Drawr.getPixelRGBIntensity(pixel, rgb);
 }
 
-
+//CUSTOM HUE SATURATION VALUE BLOCK!!!
 Blockly.Blocks['colour_hsv'] = {
   /**
    * Block for composing a colour from HSV components.
@@ -290,7 +290,7 @@ Blockly.Blocks['colour_hsv'] = {
   }
 };
 Blockly.JavaScript['colour_hsv'] = function(block) {
-  // Compose a colour from RGB components expressed as percentages.
+  // Compose a colour from hsv components expressed as percentages.
   var hue = Blockly.JavaScript.valueToCode(block, 'HUE',
       Blockly.JavaScript.ORDER_COMMA) || 0;
   var saturation = Blockly.JavaScript.valueToCode(block, 'SATURATION',
@@ -319,9 +319,9 @@ BlockIt["colour_hsv"] = function(block, hue, saturation, value){
 	value = value || 0;
 	
 	var colour_hsv = function(h, s, v){
-		h = Math.max(Math.min(Number(h), 100), 0) / 100.0;
-        s = Math.max(Math.min(Number(s), 100), 0) / 100.0;
-        v = Math.max(Math.min(Number(v), 100), 0) / 100.0;
+		h = Math.max(Math.min(Number(h), 255), 0) / 255.0;
+        s = Math.max(Math.min(Number(s), 255), 0) / 255.0;
+        v = Math.max(Math.min(Number(v), 255), 0) / 255.0;
 		var c = HSVtoRGB(h, s, v);
         c.r = ('0' + (Math.round(c.r) || 0).toString(16)).slice(-2);
         c.g = ('0' + (Math.round(c.g) || 0).toString(16)).slice(-2);

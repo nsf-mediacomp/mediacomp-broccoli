@@ -27,6 +27,8 @@ BlockIt.HandleLoopStep = function(args){
 	var run_fast = (block.getFieldValue("RUN_FAST") === "TRUE");
 	var type = block.type;
 	
+	console.log(type);
+	
 	//return args
 	var return_args = {};
 	
@@ -69,6 +71,11 @@ BlockIt.HandleLoopStep = function(args){
 		//END MOVE ALL SANDBOX VARIABLES INTO THE LOCAL SCOPE
 		
 		code = Blockly.JavaScript[block.type](block);
+		
+		//scope blockly javascript definition functions
+		for (var funcName in Blockly.JavaScript.definitions_){
+			eval(Blockly.JavaScript.definitions_[funcName]);
+		}
 		value = eval(code);
 
 		//MOVE ALL LOCAL SCOPE VARIABLES (taken from sandbox) TO SANDBOX
@@ -189,15 +196,17 @@ BlockIt.HandleLoopStep = function(args){
 				if (block.iterator === undefined){
 					//cheating and using "block.iterator" to know when to set the 
 					//sandbox variable ;) 
+					console.log("WELL");
 					BlockIt.sandbox[var_name] = start;
+					BlockIt.sandbox[var_name2] = start;
 				}else{
 					//increment the sandbox variable by the requested amount
 					//only at the beginning of an iteration
 					//and only on not the first iteration
-					BlockIt.sandbox[var_name] += inc;
-					if (BlockIt.sandbox[var_name] > end || (inc < 0 && BlockIt.sandbox[var_name] < end)){
-						BlockIt.sandbox[var_name] = start;
-						BlockIt.sandbox[var_name2] += inc;
+					BlockIt.sandbox[var_name2] += inc;
+					if (BlockIt.sandbox[var_name2] > end || (inc < 0 && BlockIt.sandbox[var_name2] < end)){
+						BlockIt.sandbox[var_name2] = start;
+						BlockIt.sandbox[var_name] += inc;
 					}
 				}
 				//need to set the iterator to the sandbox variable

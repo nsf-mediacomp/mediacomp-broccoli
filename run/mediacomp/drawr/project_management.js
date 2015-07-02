@@ -29,8 +29,6 @@ Drawr.openProject = function(){
 		[Blockly.Msg.EXAMPLE_GREENSCREEN, "greenscreen"],
 		[Blockly.Msg.EXAMPLE_LINES, "simple_lines"],
 		[Blockly.Msg.EXAMPLE_MANDELBROT, "mandelbrot"],
-		[Blockly.Msg.EXAMPLE_MANDELBROT2, "mandelbrot2"],
-		[Blockly.Msg.EXAMPLE_MANDELBROT_ZOOM, "mandelbrot_zoom"],
 	];
 	for (var i = 0; i < options_array.length; i++){
 		var option = $(document.createElement("option"));

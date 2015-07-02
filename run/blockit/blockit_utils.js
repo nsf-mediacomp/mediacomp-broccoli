@@ -37,7 +37,7 @@ BlockIt.ReturnValidBlocksAndCacheFunctions = function(valid_block_types){
 	var blocks	= BlockIt.workspace.getAllBlocks().sort();
 	
 	var valid_blocks = [];
-	
+		
 	for (i in blocks){
 		var block = blocks[i];
 		//The block is valid!!!

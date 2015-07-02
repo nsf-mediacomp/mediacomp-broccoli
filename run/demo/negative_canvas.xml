@@ -1,67 +1,67 @@
 <xml>
-  <block type="mediacomp_run" id="25" x="63" y="34">
+  <block type="mediacomp_run" id="187" x="63" y="34">
     <statement name="DO">
-      <block type="controls_forfor" id="80" inline="true">
-        <field name="VAR">x</field>
-        <field name="VAR2">y</field>
-        <value name="FROM">
-          <block type="math_number" id="81">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-        <value name="TO">
-          <block type="math_number" id="82">
-            <field name="NUM">400</field>
-          </block>
-        </value>
-        <value name="BY">
-          <block type="math_number" id="83">
-            <field name="NUM">1</field>
+      <block type="controls_forEach" id="188" inline="false">
+        <field name="VAR">pixel</field>
+        <field name="RUN_FAST">TRUE</field>
+        <value name="LIST">
+          <block type="mediacomp_getPixels" id="189" inline="true">
+            <value name="CANVAS">
+              <block type="math_number" id="190">
+                <field name="NUM">0</field>
+              </block>
+            </value>
           </block>
         </value>
         <statement name="DO">
-          <block type="variables_set" id="34" inline="true">
-            <field name="VAR">pixel</field>
+          <block type="mediacomp_setPixelRGB" id="191" inline="true">
+            <field name="RGB">r</field>
+            <value name="PIXEL">
+              <block type="variables_get" id="192">
+                <field name="VAR">pixel</field>
+              </block>
+            </value>
             <value name="VALUE">
-              <block type="mediacomp_getPixelAt" id="35" inline="true">
-                <value name="X">
-                  <block type="variables_get" id="36">
-                    <field name="VAR">x</field>
+              <block type="math_arithmetic" id="193" inline="true">
+                <field name="OP">MINUS</field>
+                <value name="A">
+                  <block type="math_number" id="194">
+                    <field name="NUM">100</field>
                   </block>
                 </value>
-                <value name="Y">
-                  <block type="variables_get" id="37">
-                    <field name="VAR">y</field>
-                  </block>
-                </value>
-                <value name="CANVAS">
-                  <block type="math_number" id="38">
-                    <field name="NUM">2</field>
+                <value name="B">
+                  <block type="mediacomp_getPixelRGB" id="195" inline="true">
+                    <field name="RGB">r</field>
+                    <value name="PIXEL">
+                      <block type="variables_get" id="196">
+                        <field name="VAR">pixel</field>
+                      </block>
+                    </value>
                   </block>
                 </value>
               </block>
             </value>
             <next>
-              <block type="mediacomp_setPixelRGB" id="39" inline="true">
-                <field name="RGB">r</field>
+              <block type="mediacomp_setPixelRGB" id="197" inline="true">
+                <field name="RGB">g</field>
                 <value name="PIXEL">
-                  <block type="variables_get" id="40">
+                  <block type="variables_get" id="198">
                     <field name="VAR">pixel</field>
                   </block>
                 </value>
                 <value name="VALUE">
-                  <block type="math_arithmetic" id="41" inline="true">
+                  <block type="math_arithmetic" id="199" inline="true">
                     <field name="OP">MINUS</field>
                     <value name="A">
-                      <block type="math_number" id="42">
-                        <field name="NUM">255</field>
+                      <block type="math_number" id="200">
+                        <field name="NUM">100</field>
                       </block>
                     </value>
                     <value name="B">
-                      <block type="mediacomp_getPixelRGB" id="43" inline="true">
-                        <field name="RGB">r</field>
+                      <block type="mediacomp_getPixelRGB" id="201" inline="true">
+                        <field name="RGB">g</field>
                         <value name="PIXEL">
-                          <block type="variables_get" id="44">
+                          <block type="variables_get" id="202">
                             <field name="VAR">pixel</field>
                           </block>
                         </value>
@@ -70,26 +70,26 @@
                   </block>
                 </value>
                 <next>
-                  <block type="mediacomp_setPixelRGB" id="45" inline="true">
-                    <field name="RGB">g</field>
+                  <block type="mediacomp_setPixelRGB" id="203" inline="true">
+                    <field name="RGB">b</field>
                     <value name="PIXEL">
-                      <block type="variables_get" id="46">
+                      <block type="variables_get" id="204">
                         <field name="VAR">pixel</field>
                       </block>
                     </value>
                     <value name="VALUE">
-                      <block type="math_arithmetic" id="47" inline="true">
+                      <block type="math_arithmetic" id="205" inline="true">
                         <field name="OP">MINUS</field>
                         <value name="A">
-                          <block type="math_number" id="48">
-                            <field name="NUM">255</field>
+                          <block type="math_number" id="206">
+                            <field name="NUM">100</field>
                           </block>
                         </value>
                         <value name="B">
-                          <block type="mediacomp_getPixelRGB" id="49" inline="true">
-                            <field name="RGB">g</field>
+                          <block type="mediacomp_getPixelRGB" id="207" inline="true">
+                            <field name="RGB">b</field>
                             <value name="PIXEL">
-                              <block type="variables_get" id="50">
+                              <block type="variables_get" id="208">
                                 <field name="VAR">pixel</field>
                               </block>
                             </value>
@@ -97,36 +97,6 @@
                         </value>
                       </block>
                     </value>
-                    <next>
-                      <block type="mediacomp_setPixelRGB" id="51" inline="true">
-                        <field name="RGB">b</field>
-                        <value name="PIXEL">
-                          <block type="variables_get" id="52">
-                            <field name="VAR">pixel</field>
-                          </block>
-                        </value>
-                        <value name="VALUE">
-                          <block type="math_arithmetic" id="53" inline="true">
-                            <field name="OP">MINUS</field>
-                            <value name="A">
-                              <block type="math_number" id="54">
-                                <field name="NUM">255</field>
-                              </block>
-                            </value>
-                            <value name="B">
-                              <block type="mediacomp_getPixelRGB" id="55" inline="true">
-                                <field name="RGB">b</field>
-                                <value name="PIXEL">
-                                  <block type="variables_get" id="56">
-                                    <field name="VAR">pixel</field>
-                                  </block>
-                                </value>
-                              </block>
-                            </value>
-                          </block>
-                        </value>
-                      </block>
-                    </next>
                   </block>
                 </next>
               </block>

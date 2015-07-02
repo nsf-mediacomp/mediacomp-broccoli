@@ -50,6 +50,8 @@ Dialog.AddButton = function(callback, text){
 
 
 Dialog.Alert = function(content, title, close_callback){
+	Dialog.Close();
+	
 	if (title === undefined) title = "";
 	
 	var dialog = document.createElement("div");
@@ -117,6 +119,8 @@ Dialog.Alert = function(content, title, close_callback){
 }
 
 Dialog.Confirm = function(content, confirm_callback, title, confirm_text, close_callback){
+	Dialog.Close();
+	
 	if (title === undefined) title = "";
 	if (confirm_text === undefined) confirm_text = "OK";
 	
