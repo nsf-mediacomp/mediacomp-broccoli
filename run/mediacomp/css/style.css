@@ -154,6 +154,14 @@ button.notext {
 	cursor: pointer;
 }
 
+#visualization{
+	min-width: 416px;
+	max-width: 416px;
+	max-height: 640px;
+	
+	overflow: auto;
+}
+
 /* canvas selector */
 
 #canvas_select_controls{
@@ -170,6 +178,7 @@ button.notext {
 #canvas_select{
     display: inline-block;
     width: 400px;
+	min-height: 200px;
     overflow-x: hidden;
     overflow-y: auto;
     border-style: solid;

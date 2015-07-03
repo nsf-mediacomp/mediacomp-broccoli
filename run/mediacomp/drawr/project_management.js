@@ -102,6 +102,4 @@ Drawr.saveProject = function(){
 		$("#export")[0].click();
 	}, Blockly.Msg.SAVE_PROJECT_DOWNLOAD_BLOCKS, Blockly.Msg.SAVE_PROJECT);
 	Dialog.AddElement(message[0]);	
-	
-	$("#dialog").width(360);
 }

@@ -1,4 +1,3 @@
-
 function CanvasSelect(){}
 CanvasSelect.init = function(count, init_images){
     CanvasSelect.default_images = init_images;
@@ -7,9 +6,7 @@ CanvasSelect.init = function(count, init_images){
 		Drawr.addCanvas($('#canvas_'+i)[0].getContext('2d'));
 		CanvasSelect.addSelectBox();
 	}
-	for (var i = count; i < 12; i++){
-		Drawr.addCanvas($('#canvas_'+i)[0].getContext('2d'));
-	}
+	CanvasSelect.canvas_id = count;
     
     CanvasSelect.reset();
     
@@ -193,13 +190,43 @@ CanvasSelect.upload = function(e){
 	var reader = new FileReader();
 	reader.onload = function(event){
 		var img = new Image();
-		img.onload = function(){	
-			var id = CanvasSelect.selected;
-			Drawr.getCtx(id).drawImage(this, 0, 0, 400, 400);
-            Drawr.resetCache(id);
-			Drawr.canvases[id].image = this;
+		img.onload = function(){
+			if (this.width < 100 || this.height < 100){
+				alert("minimum image size: 100 x 100 px");
+			}
+			else if (this.width > 1024 || this.height > 1024){
+				alert("maximum image size: 1024 x 1024 px");
+			}
+			else{
+				Dialog.Close();
+				CanvasSelect.addCanvas(img);
+			}
 		}
 		img.src = event.target.result;
 	}
 	reader.readAsDataURL(e.target.files[0]);
+}
+
+CanvasSelect.addCanvas = function(img){
+	var visualizer = $("#visualization")[0];
+	
+	var canvas = document.createElement("canvas");
+	var id = CanvasSelect.canvas_id;
+	canvas.id = "canvas_" + id;
+	canvas.className = "display_canvas";
+	canvas.style.display = "none";
+	CanvasSelect.canvas_id++;
+	
+	canvas.width = img.width;
+	canvas.height = img.height;
+	visualizer.appendChild(canvas);
+	
+	Drawr.addCanvas($('#'+canvas.id)[0].getContext('2d'));
+	Drawr.getCtx(id).drawImage(img, 0, 0, img.width, img.height);
+	Drawr.resetCache(id);
+	Drawr.canvases[id].image = img;
+	
+	CanvasSelect.addSelectBox();
+	
+	CanvasSelect.select(id);
 }

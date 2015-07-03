@@ -49,7 +49,9 @@ Dialog.AddButton = function(callback, text){
 }
 
 
-Dialog.Alert = function(content, title, close_callback){
+Dialog.Alert = function(content, title, close_callback, include_button){
+	if (include_button === undefined)
+		include_button = true;
 	Dialog.Close();
 	
 	if (title === undefined) title = "";
@@ -74,16 +76,20 @@ Dialog.Alert = function(content, title, close_callback){
 	dialogBody.id = "dialogBody";
 	dialogBody.innerHTML = content;
 	dialog.appendChild(dialogBody);
+
+	var buttonContainer;
+	var dialogButton;
+	if (include_button){	
+		buttonContainer = document.createElement("div");
+		buttonContainer.id = "dialogButtonContainer";
 	
-	var buttonContainer = document.createElement("div");
-	buttonContainer.id = "dialogButtonContainer";
-	
-	var dialogButton = document.createElement("div");
-	dialogButton.className = "dialogButton dialogConfirm";
-	dialogButton.innerHTML = "OK";
-	buttonContainer.appendChild(dialogButton);
-	
-	dialog.appendChild(buttonContainer);
+		dialogButton = document.createElement("div");
+		dialogButton.className = "dialogButton dialogConfirm";
+		dialogButton.innerHTML = "OK";
+		buttonContainer.appendChild(dialogButton);
+			
+		dialog.appendChild(buttonContainer);
+	}
 	
 	//set up event handlers
 	dialogTitle.onmousedown = function(e){
@@ -110,10 +116,15 @@ Dialog.Alert = function(content, title, close_callback){
 		if (typeof(close_callback) === "function")
 			close_callback();
 	}
-	dialogButton.onclick = function(e){
-		closeDialogButton.onclick(e);
+	if (include_button){
+		dialogButton.onclick = function(e){
+			closeDialogButton.onclick(e);
+		}
+		
+		Dialog.addEventHandler(window, 'keyup', keyupHandler);
+	}else{
+		dialogBody.style.marginBottom = "16px";
 	}
-	Dialog.addEventHandler(window, 'keyup', keyupHandler);
 	
 	document.body.appendChild(dialog);
 }

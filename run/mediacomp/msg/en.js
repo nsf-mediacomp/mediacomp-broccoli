@@ -23,6 +23,10 @@ Blockly.Msg.PIXLYPROJECT_XML = "PixlyProject.xml";
 /**PIXLY MESSAGES**/
 Blockly.Msg.MEDIACOMP_RUN_TITLE = "When run button pressed";
 Blockly.Msg.MEDIACOMP_RUN_TOOLTIP = "The block that contains what code to execute when the run button is pressed";
+Blockly.Msg.MEDIACOMP_CANVASDIMENSION_WIDTH = "width";
+Blockly.Msg.MEDIACOMP_CANVASDIMENSION_HEIGHT = "height";
+Blockly.Msg.MEDIACOMP_CANVASDIMENSION_TITLE = "of canvas";
+Blockly.Msg.MEDIACOMP_CANVASDIMENSION_TOOLTIP = "get width or height of specified canvas";
 Blockly.Msg.MEDIACOMP_UPDATECANVAS_TITLE = "update canvas";
 Blockly.Msg.MEDIACOMP_UPDATECANVAS_TOOLTIP = "Redraw the canvas to match the current state of the pixels.";
 Blockly.Msg.MEDIACOMP_RESTARTCANVAS_TITLE = "restart canvas";

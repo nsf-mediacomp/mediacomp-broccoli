@@ -20,6 +20,15 @@ Drawr.getCtx = function(id){
     }
 }
 
+Drawr.getDimension = function(id, dimension){
+	if (dimension === "width"){
+		return Drawr.getWidth(id);
+	}
+	else if (dimension === "height"){
+		return Drawr.getHeight(id);
+	}
+}
+
 Drawr.getWidth = function(id){
 	return Drawr.canvases[id].width;
 }

@@ -41,6 +41,7 @@
   <script type="text/javascript" src="mediacomp/drawr/Drawr.js"></script>
   <script type="text/javascript" src="mediacomp/drawr/run_mediacomp.js"></script>
   <script type="text/javascript" src="mediacomp/drawr/canvas_select.js"></script>
+  <script type="text/javascript" src="mediacomp/drawr/canvas_popout.js"></script>
   <script type="text/javascript" src="mediacomp/drawr/project_management.js"></script>
   
   
@@ -62,25 +63,17 @@
 	</button>
 	</td></tr></table>
     
-    <div id="visualization">
+    <div id="visualization" title="click to pop out">
         <canvas id="canvas_0" width="400" height="400" class="display_canvas"></canvas>
         <canvas id="canvas_1" width="400" height="400" class="display_canvas" style="display: none"></canvas>
         <canvas id="canvas_2" width="400" height="400" class="display_canvas" style="display: none"></canvas>
         <canvas id="canvas_3" width="400" height="400" class="display_canvas" style="display: none"></canvas>
         <canvas id="canvas_4" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_5" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_6" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_7" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_8" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_9" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_10" width="400" height="400" class="display_canvas" style="display: none"></canvas>
-		<canvas id="canvas_11" width="400" height="400" class="display_canvas" style="display: none"></canvas>
     </div>
     
     <table>
     <tr>
-        <td style="width: 15px;">
-        </td>
+        <td style="width: 15px;"></td>
         <td style="text-align: center">
             <button id="runButton" class="primary" title="Makes the canvas do what the blocks say.">
                 <img id="runButtonImg" src="blockly/media/1x1.gif" class="run icon21"><span id="runButtonText">Run Program</span>
@@ -126,6 +119,7 @@
   
 	<category name="Media Comp">
 	  <!--<block type="mediacomp_run"></block>-->
+	  <block type="mediacomp_canvasDimension"></block>
 	  <!--<block type="controls_forfor"></block>-->
 	  <block type="controls_forEach">
 		<field name="VAR">p</field>
