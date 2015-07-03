@@ -160,6 +160,8 @@ Drawr.setPixelAt = function(id, x, y, pixel){
 		pixel = hexToRgb(pixel);
 		pixel['a'] = 255;
 	}
+	pixel.id = id;
+	pixel.index = index;
 	
 	Drawr.updatePixel(pixel);
 }

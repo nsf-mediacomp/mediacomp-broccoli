@@ -169,8 +169,10 @@ Drawr.RunCode = function(){
 
 	//window.setInterval(function(){ Drawr.flushCache(); }, 10);
 	window.setTimeout(function(){
+		document.getElementById("spinner").style.visibility = "";
 		if (!BlockIt.IterateThroughBlocks("mediacomp_run", function(){
 			Drawr.flushCache();
+			Drawr.RunButton();
 		})){
 			document.getElementById("runButton").click();
 		}

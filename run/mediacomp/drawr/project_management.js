@@ -70,6 +70,8 @@ Drawr.openProject = function(){
 }
 
 Drawr.loaded_xml = "";
+Drawr.saved_xml = "";
+Drawr.xml_filename = "";
 
 Drawr.saveProject = function(){
 	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
@@ -81,19 +83,25 @@ Drawr.saveProject = function(){
 	filename.attr("type", "text");
 	filename.attr("id", "filename_filename");
 	filename.val(Blockly.Msg.PIXLYPROJECT_XML);
+	filename.on("change", function(e){
+		Drawr.xml_filename = filename.val();
+	});
 	message.append(filename);
 		message.append(document.createElement("br"));
 	var textarea = $(document.createElement('textarea'));
 	textarea.attr('id', 'dialog_block_xml');
 	textarea.css("width", "320px").css("height", "160px").css("margin-top", "5px");
 	textarea.html(xml);
+	textarea.on("change", function(e){
+		Drawr.saved_xml = textarea.val();
+	});
 	message.append(textarea);
 	
 	Dialog.Confirm('', function(e){
-		createDownloadLink("#export", $("#dialog_block_xml").val(), $("#filename_filename").val());
+		createDownloadLink("#export", Drawr.saved_xml, Drawr.xml_filename);
 		$("#export")[0].click();
 	}, Blockly.Msg.SAVE_PROJECT_DOWNLOAD_BLOCKS, Blockly.Msg.SAVE_PROJECT);
-	Dialog.AddElement(message[0]);
+	Dialog.AddElement(message[0]);	
 	
 	$("#dialog").width(360);
 }
