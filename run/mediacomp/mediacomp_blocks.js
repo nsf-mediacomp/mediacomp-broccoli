@@ -44,6 +44,36 @@ Blockly.JavaScript['mediacomp_run'] = function(block) {
 };
 
 
+Blockly.Blocks["mediacomp_canvasDimension"] = {
+	init: function(){
+		var dimension = [[Blockly.Msg.MEDIACOMP_CANVASDIMENSION_WIDTH, 'width'], [Blockly.Msg.MEDIACOMP_CANVASDIMENSION_HEIGHT, 'height']];
+		this.setColour(230);
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldDropdown(dimension), 'DIMENSION');
+		this.appendValueInput("CANVAS")
+			.setCheck('Number')
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.MEDIACOMP_CANVASDIMENSION_TITLE);
+		this.setOutput(true, "Number");
+		this.setInputsInline(true);
+		this.setTooltip(Blockly.Msg.MEDIACOMP_CANVASDIMENSION_TOOLTIP);
+	}
+}
+Blockly.JavaScript['mediacomp_canvasDimension'] = function(block){
+	var dimension = block.getFieldValue('DIMENSION').toLowerCase();
+	var ctxid = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+	
+	var code = "Drawr.getDimension(" + ctxid + ", '" + dimension + "')";
+	
+	return [code, Blockly.JavaScript.ORDER_ATOMIC];
+}
+BlockIt['mediacomp_canvasDimension'] = function(block, ctxid){
+	ctxid = ctxid || 0;
+	var dimension = block.getFieldValue("DIMENSION").toLowerCase();
+	return Drawr.getDimension(ctxid, dimension);
+}
+
+
 Blockly.Blocks['mediacomp_updateCanvas'] = {
 	init: function(){
 		this.setHelpUrl('http://outreach.cs.ua.edu/pixly/content/PixlyUserManual.pdf');
@@ -69,36 +99,6 @@ BlockIt['mediacomp_updateCanvas'] = function(block, ctxid){
 	ctxid = ctxid || 0;
 	Drawr.flushCache(ctxid);
 }
-
-Blockly.Blocks["mediacomp_canvasDimension"] = {
-	init: function(){
-		var dimension = [[Blockly.Msg.MEDIACOMP_CANVASDIMENSION_WIDTH, 'width'], [Blockly.Msg.MEDIACOMP_CANVASDIMENSION_HEIGHT, 'height']];
-		this.setColour(230);
-		this.appendDummyInput()
-			.appendField(new Blockly.FieldDropdown(dimension), 'DIMENSION');
-		this.appendValueInput("CANVAS")
-			.setCheck('Number')
-			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.MEDIACOMP_CANVASDIMENSION_TITLE);
-		this.setOutput(true, "Number");
-		this.setInputsInline(true);
-		this.setTooltip(Blockly.Msg.MEDIACOMP_CANVASDIMENSION_TOOLTIP);
-	}
-}
-Blockly.JavaScript['mediacomp_canvasDimension'] = function(block){
-	var dimension = block.getFieldValue('DIMENSION').toLowerCase();
-	var ctxid = Blockly.JavaScript.valueToCode(block, 'CANVAS', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-	
-	var code = "Drawr.getDimension(" + ctxid + ", " + dimension + ")";
-	
-	return [code, Blockly.JavaScript.ORDER_ATOMIC];
-}
-BlockIt['mediacomp_canvasDimension'] = function(block, ctxid){
-	ctxid = ctxid || 0;
-	var dimension = block.getFieldValue("DIMENSION").toLowerCase();
-	return Drawr.getDimension(ctxid, dimension);
-}
-
 
 Blockly.Blocks['mediacomp_restartCanvas'] = {
 	init: function(){

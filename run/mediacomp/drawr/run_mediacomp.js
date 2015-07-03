@@ -1,5 +1,5 @@
 Drawr.imagePath = "mediacomp/images/"
-Drawr.images = [Drawr.imagePath+"redeye.png", Drawr.imagePath+"greenscreen.png", Drawr.imagePath+"tokyo.png", Drawr.imagePath+"beach.png", Drawr.imagePath+"blank.png"];
+Drawr.image_paths = [Drawr.imagePath+"redeye.png", Drawr.imagePath+"greenscreen.png", Drawr.imagePath+"tokyo.png", Drawr.imagePath+"beach.png", Drawr.imagePath+"blank.png"];
 
 Drawr.DOUBLE_CLICK_TIME = 100;
 
@@ -17,7 +17,7 @@ Drawr.init = function(){
 	
     // Connect canvases
 	//canvas_select.js
-    CanvasSelect.init(Drawr.images.length, Drawr.images);
+    CanvasSelect.init(Drawr.image_paths);
 	
 	//canvas_popout.js
 	CanvasSelect.setupCanvasPopout();
@@ -46,8 +46,6 @@ Drawr.init = function(){
 		var canvas = Drawr.getCtx(CanvasSelect.selected).canvas;
 		download(canvas, 'pixlyCanvas.png');
 	});
-	
-	Drawr.Reset();
 	
 	window.setTimeout(function(){
 		$("#runButton")[0].className = "";

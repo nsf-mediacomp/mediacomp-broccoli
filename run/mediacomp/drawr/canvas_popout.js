@@ -13,7 +13,6 @@ CanvasSelect.setupCanvasPopout = function(){
 		
 		for (var i = 0; i < canvii.length; i++){
 			var canvas = canvii[i];
-			console.log(canvas);
 			canvas_container[0].removeChild(canvas);
 			Dialog.AddElement(canvas);
 		}

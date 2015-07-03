@@ -122,7 +122,7 @@
 	  <block type="mediacomp_canvasDimension"></block>
 	  <!--<block type="controls_forfor"></block>-->
 	  <block type="controls_forEach">
-		<field name="VAR">p</field>
+		<field name="VAR">pixel</field>
         <field name="RUN_FAST">TRUE</field>
 		<value name="LIST">
 			<block type="mediacomp_getPixels">
@@ -173,7 +173,7 @@
             </value>
             <statement name="DO">
                 <block type="variables_set">
-                    <field name="VAR">p</field>
+                    <field name="VAR">pixel</field>
                     <value name="VALUE">
                       <block type="mediacomp_getPixelAt">
                         <value name="X">
@@ -238,14 +238,14 @@
             </value>
 			<value name="PIXEL">
 				<block type="variables_get">
-					<field name="VAR">p</field>
+					<field name="VAR">pixel</field>
 				  </block>
 			</value>
 		</block>
 		<block type="mediacomp_setPixel">
 			<value name="PIXEL">
 				<block type="variables_get">
-					<field name="VAR">p</field>
+					<field name="VAR">pixel</field>
 				</block>
 			</value>
 			<value name="PIXEL2">
@@ -255,7 +255,7 @@
 		<block type="mediacomp_getPixelColour">
 			<value name="PIXEL">
 				<block type="variables_get">
-					<field name="VAR">p</field>
+					<field name="VAR">pixel</field>
 				</block>
 			</value>
 		</block>
@@ -263,28 +263,28 @@
 		<block type="mediacomp_getPixelRGB">
 			<value name="PIXEL">
 				<block type="variables_get">
-					<field name="VAR">p</field>
+					<field name="VAR">pixel</field>
 				</block>
 			</value>
 		</block>
 		<block type="mediacomp_getPixelRGBIntensity">
 			<value name="PIXEL">
 				<block type="variables_get">
-					<field name="VAR">p</field>
+					<field name="VAR">pixel</field>
 				</block>
 			</value>
 		</block>
 		<!--block type="mediacomp_getPixelColour">
 			<value name="PIXEL">
 				<block type="variables_get">
-					<field name="VAR">pixel</field>
+					<field name="VAR">pixelixel</field>
 				</block>
 			</value>
 		</block-->
 		<block type="mediacomp_setPixelRGB">
 			<value name="PIXEL">
 				<block type="variables_get">
-					<field name="VAR">p</field>
+					<field name="VAR">pixel</field>
 				</block>
 			</value>
 			<value name="VALUE">
@@ -296,7 +296,7 @@
 		<!--block type="mediacomp_setPixelColour">
 			<value name="PIXEL">
 				<block type="variables_get">
-					<field name="VAR">pixel</field>
+					<field name="VAR">pixelixel</field>
 				</block>
 			</value>
 		</block-->

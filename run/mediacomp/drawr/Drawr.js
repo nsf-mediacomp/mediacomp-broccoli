@@ -4,9 +4,8 @@ function Drawr(){}
 Drawr.global_cache = [];
 Drawr.pixel_cache = [];
 
-Drawr.addCanvas = function(ctx, title){
-    var id = Drawr.canvases.length;
-    Drawr.canvases[id] = {ctx: ctx, title: title, width: ctx.canvas.width, height: ctx.canvas.height};
+Drawr.addCanvas = function(ctx, id, img, title){
+    Drawr.canvases[id] = {ctx: ctx, title: title, width: ctx.canvas.width, height: ctx.canvas.height, image: img};
     Drawr.resetCache(id);
     return id;
 }

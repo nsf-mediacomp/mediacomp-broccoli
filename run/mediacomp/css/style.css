@@ -155,9 +155,9 @@ button.notext {
 }
 
 #visualization{
-	min-width: 416px;
-	max-width: 416px;
-	max-height: 640px;
+	min-width: 412px;
+	max-width: 412px;
+	max-height: 520px;
 	
 	overflow: auto;
 }
@@ -178,7 +178,7 @@ button.notext {
 #canvas_select{
     display: inline-block;
     width: 400px;
-	min-height: 200px;
+	/*min-height: 200px;*/
     overflow-x: hidden;
     overflow-y: auto;
     border-style: solid;

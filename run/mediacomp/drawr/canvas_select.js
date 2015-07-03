@@ -1,14 +1,19 @@
 function CanvasSelect(){}
-CanvasSelect.init = function(count, init_images){
-    CanvasSelect.default_images = init_images;
+CanvasSelect.init = function(img_paths){
+	var count = img_paths.length;
+	
     Drawr.canvases = [];
 	for (var i = 0; i < count; i++){
-		Drawr.addCanvas($('#canvas_'+i)[0].getContext('2d'));
+		var img = new Image();
+		img.src = img_paths[i];
+		img.onload = function(id){
+			var ctx = $('#canvas_'+id)[0].getContext('2d');
+			Drawr.addCanvas($('#canvas_'+id)[0].getContext('2d'), id, this);
+			ctx.drawImage(this, 0, 0, this.width, this.height);
+		}.bind(img, i);
 		CanvasSelect.addSelectBox();
 	}
 	CanvasSelect.canvas_id = count;
-    
-    CanvasSelect.reset();
     
     CanvasSelect.selected = 0;
     CanvasSelect.select(0);
@@ -20,19 +25,7 @@ CanvasSelect.init = function(count, init_images){
 
 CanvasSelect.reset = function(){
     for(var i=0; i < Drawr.canvases.length; ++i){
-        Drawr.getCtx(i).fillStyle = "#ffffff";
-        Drawr.getCtx(i).fillRect(0, 0, Drawr.canvases[i].width, Drawr.canvases[i].height);
-        Drawr.resetCache(i);
-    }
-    for(var i=0; i < CanvasSelect.default_images.length; ++i){
-        var img = new Image();
-        img.onload = function(){
-            Drawr.getCtx(this.index).drawImage(this.img, 0, 0);
-            Drawr.resetCache(this.index);
-			Drawr.canvases[this.index].image = this.img;
-            //CanvasSelect.updateSelectBoxCanvases();
-        }.bind({index: i, img: img});
-        img.src = CanvasSelect.default_images[i];
+		Drawr.restartCanvas(i);
     }
 }
 
@@ -221,7 +214,7 @@ CanvasSelect.addCanvas = function(img){
 	canvas.height = img.height;
 	visualizer.appendChild(canvas);
 	
-	Drawr.addCanvas($('#'+canvas.id)[0].getContext('2d'));
+	Drawr.addCanvas($('#'+canvas.id)[0].getContext('2d'), id);
 	Drawr.getCtx(id).drawImage(img, 0, 0, img.width, img.height);
 	Drawr.resetCache(id);
 	Drawr.canvases[id].image = img;
