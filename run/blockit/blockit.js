@@ -560,7 +560,7 @@ BlockIt.StepDefaultBlock = function(args){
 	args.push(block);
 	args.reverse();
 	args.push(sandbox);
-	console.log(type);
+	//console.log(type);
 	value = BlockIt[type].apply(this, args);
 	return value;
 }

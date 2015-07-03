@@ -27,12 +27,12 @@ BlockIt.HandleLoopStep = function(args){
 	var run_fast = (block.getFieldValue("RUN_FAST") === "TRUE");
 	var type = block.type;
 	
-	console.log(type);
+	//console.log(type);
 	
 	//return args
 	var return_args = {};
 	
-	if (run_fast){
+	if (run_fast){		
 		//WE NEED TO USE THE APPROPRIATE VARIABLE SANDBOX
 		//either use the default global blockit scope if not in a function or the variable is not one of the function's arguments
 		//or if it is, then use the function call's sandbox,..
@@ -56,6 +56,7 @@ BlockIt.HandleLoopStep = function(args){
 				}
 			}
 		}
+		
 		//also scope the functions to allow successful calls!
 		for (var funcName in BlockIt.sandbox.funcs){
 			if (BlockIt.sandbox.funcs.hasOwnProperty(funcName)){
@@ -68,15 +69,18 @@ BlockIt.HandleLoopStep = function(args){
 				eval(code);
 			}
 		}
+		
 		//END MOVE ALL SANDBOX VARIABLES INTO THE LOCAL SCOPE
 		
 		code = Blockly.JavaScript[block.type](block);
 		
 		//scope blockly javascript definition functions
 		for (var funcName in Blockly.JavaScript.definitions_){
+			if (funcName === "variables") continue;
 			eval(Blockly.JavaScript.definitions_[funcName]);
 		}
 		value = eval(code);
+		
 
 		//MOVE ALL LOCAL SCOPE VARIABLES (taken from sandbox) TO SANDBOX
 		for (var var_name in sandbox){
@@ -195,8 +199,7 @@ BlockIt.HandleLoopStep = function(args){
 				
 				if (block.iterator === undefined){
 					//cheating and using "block.iterator" to know when to set the 
-					//sandbox variable ;) 
-					console.log("WELL");
+					//sandbox variable ;)
 					BlockIt.sandbox[var_name] = start;
 					BlockIt.sandbox[var_name2] = start;
 				}else{

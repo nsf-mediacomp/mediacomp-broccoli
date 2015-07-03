@@ -149,7 +149,7 @@ Drawr.updatePixel = function(pixel){
     // INSTEAD: flushCache() at the end of execution, significantly faster.
 	var id = pixel['id'];
     var canvas = Drawr.canvases[id];
-    canvas.ctx.fillStyle = "rgb(" + pixel['r'] + ", " +  pixel['g'] + ", " +  pixel['b'] + ")";
+    canvas.ctx.fillStyle = "rgba(" + cache[index] + ", " +  cache[index+1] + ", " +  cache[index+2] + ", " + cache[index+3]+ ")";
     canvas.ctx.fillRect(pixel['x'], pixel['y'], 1, 1);
 }
 Drawr.setPixelAt = function(id, x, y, pixel){
