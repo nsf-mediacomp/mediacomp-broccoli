@@ -169,7 +169,7 @@ Blockly.Blocks['mediacomp_getPixelRGB'] = {
 			.setAlign(Blockly.ALIGN_CENTRE);
 		this.setInputsInline(true);
 		this.setOutput(true, "Number");
-		this.setTooltip('Get the red, green, or blue color value of a pixel');
+		this.setTooltip('Get the red, green, or blue color value of a pixel (values will be from 0 to 100)');
 	}
 }
 Blockly.JavaScript['mediacomp_getPixelRGB'] = function(block){
@@ -208,7 +208,7 @@ Blockly.Blocks['mediacomp_setPixelRGB'] = {
 		this.setInputsInline(true);
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
-		this.setTooltip('Set the red, green, or blue color value of a pixel');
+		this.setTooltip('Set the red, green, or blue color value of a pixel (value must be between 0 and 100)');
 	}
 }
 Blockly.JavaScript['mediacomp_setPixelRGB'] = function(block){
@@ -244,7 +244,7 @@ Blockly.Blocks['mediacomp_getPixelRGBIntensity'] = {
 			.setAlign(Blockly.ALIGN_CENTRE);
 		this.setInputsInline(true);
 		this.setOutput(true, "Number");
-		this.setTooltip('Get the red, green, or blue color intensity of a pixel');
+		this.setTooltip('Get the red, green, or blue color intensity of a pixel (represents how much more red/green/blue the pixel is in relation to its other two components) (will be values from 0 to 100)');
 	}
 }
 Blockly.JavaScript['mediacomp_getPixelRGBIntensity'] = function(block){

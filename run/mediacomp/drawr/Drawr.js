@@ -158,7 +158,7 @@ Drawr.updatePixel = function(pixel){
 	var id = pixel['id'];
     var canvas = Drawr.canvases[id];
     canvas.ctx.fillStyle = "rgba(" + cache[index] + ", " +  cache[index+1] + ", " +  cache[index+2] + ", " + cache[index+3]+ ")";
-    canvas.ctx.fillRect(pixel['x'], pixel['y'], 1, 1);
+    canvas.ctx.fillRect(pixel.x, pixel.y, 1, 1);
 }
 Drawr.setPixelAt = function(id, x, y, pixel){
 	if (pixel === undefined) return;
@@ -198,6 +198,8 @@ Drawr.setPixel2 = function(pixel, pixel2){
 	
 	pixel2.id = id;
 	pixel2.index = index;
+	pixel2.x = pixel.x;
+	pixel2.y = pixel.y;
 
 	Drawr.updatePixel(pixel2);
 }
@@ -224,21 +226,29 @@ Drawr.setPixelRGB = function(pixel, rgb, value){
 Drawr.getPixelRGBIntensity = function(pixel, rgb){
 	pixel = pixel || Drawr.blankPixel();
 	
+	var intensity = 0;
+	
 	switch (rgb){
 		case 'r':
 			if (pixel['g'] + pixel['b'] === 0)
-				return pixel['r'];
-			return pixel['r'] / ((pixel['g']+pixel['b'])/2);
+				intensity = pixel['r'];
+			else 
+				intensity = pixel['r'] / ((pixel['g']+pixel['b'])/2);
+			break;
 		case 'g':
 			if (pixel['r'] + pixel['b'] === 0)
-				return pixel['g'];
-			return pixel['g'] / ((pixel['r']+pixel['b'])/2);
+				intensity = pixel['g'];
+			else
+				intensity = pixel['g'] / ((pixel['r']+pixel['b'])/2);
+			break;
 		case 'b':
 			if (pixel['r'] + pixel['g'] === 0)
-				return pixel['b'];
-			return pixel['b'] / ((pixel['r']+pixel['g'])/2);
-		default:
-			return pixel['a'];
+				intensity = pixel['b'];
+			else 
+				intensity = pixel['b'] / ((pixel['r']+pixel['g'])/2);
+			break;
 	}
-	return pixel[rgb];
+	
+	intensity = Math.min(intensity, 100);
+	return intensity;
 }

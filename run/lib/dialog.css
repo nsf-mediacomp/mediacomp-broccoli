@@ -32,7 +32,7 @@
 	font-size: 16px;
 	margin-bottom: 64px;
 	/*max-height: 320px;*/
-	overflow: scroll;
+	overflow: auto;
 }
 
 #dialogButtonContainer{

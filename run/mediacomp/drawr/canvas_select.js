@@ -3,6 +3,7 @@ CanvasSelect.init = function(img_paths){
 	var count = img_paths.length;
 	
     Drawr.canvases = [];
+	var loaded_images = 0;
 	for (var i = 0; i < count; i++){
 		var img = new Image();
 		img.src = img_paths[i];
@@ -10,6 +11,11 @@ CanvasSelect.init = function(img_paths){
 			var ctx = $('#canvas_'+id)[0].getContext('2d');
 			Drawr.addCanvas($('#canvas_'+id)[0].getContext('2d'), id, this);
 			ctx.drawImage(this, 0, 0, this.width, this.height);
+			
+			loaded_images++;
+			if (loaded_images === img_paths.length){
+				CanvasSelect.reset();
+			}
 		}.bind(img, i);
 		CanvasSelect.addSelectBox();
 	}

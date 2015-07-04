@@ -10,6 +10,36 @@ goog.provide('Blockly.JavaScript.variables');
 goog.provide('Blockly.JavaScript.colour');
 goog.require('Blockly.JavaScript');
 
+Blockly.Blocks['mediacomp_canvas'] = {
+  init: function() {	    
+	var canvas = [];
+	for (var i = 0; i < Drawr.canvases.length; i++){
+		canvas.push([''+i, ''+i]);
+	}
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(this.getCanvasImage(), 76, 76, "*"), "IMAGE");
+	this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+		.appendField("canvas")
+		.appendField(new Blockly.FieldDropdown(canvas), 'CANVAS');
+    this.setOutput(true, "Number");
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  },
+  getCanvasImage: function(){
+	  var canvas_id = Number(this.getFieldValue('CANVAS'));
+	  console.log("CANVAS ID: " + canvas_id);
+	  return Drawr.getCtx(canvas_id).canvas.toDataURL();
+  }
+};
+Blockly.JavaScript['mediacomp_canvas'] = function(block){
+	var canvas_id = Number(block.getFieldValue('CANVAS'));
+	return [canvas_id, Blockly.JavaScript.ORDER_ATOMIC];
+}
+BlockIt['mediacomp_canvas'] = function(block){
+	var canvas_id = Number(block.getFieldValue('CANVAS'));
+	return canvas_id;
+}
 
 Blockly.Blocks['mediacomp_run'] = {
   /**

@@ -12,6 +12,7 @@ h1 {
   font-size: 140%;
 }
 .display_canvas {
+	padding: 2px;
 	border: 1px solid black;
 }
 

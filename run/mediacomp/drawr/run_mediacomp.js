@@ -145,7 +145,6 @@ Drawr.loadBlocks = function(defaultXml){
 window.addEventListener('load', Drawr.init);
 
 Drawr.Reset = function(){
-	Drawr.clearAllCommands();
 	CanvasSelect.reset();
 }
 	

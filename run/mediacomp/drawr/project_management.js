@@ -76,6 +76,7 @@ Drawr.xml_filename = "";
 Drawr.saveProject = function(){
 	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
 	xml = Blockly.Xml.domToPrettyText(xml);
+	Drawr.saved_xml = xml;
 	
 	var message = $(document.createElement("div"));
 	message.append(document.createTextNode(Blockly.Msg.FILENAME));
@@ -83,6 +84,7 @@ Drawr.saveProject = function(){
 	filename.attr("type", "text");
 	filename.attr("id", "filename_filename");
 	filename.val(Blockly.Msg.PIXLYPROJECT_XML);
+	Drawr.xml_filename = filename.val();
 	filename.on("change", function(e){
 		Drawr.xml_filename = filename.val();
 	});
