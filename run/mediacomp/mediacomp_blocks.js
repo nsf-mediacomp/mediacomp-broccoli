@@ -29,7 +29,7 @@ Blockly.Blocks['mediacomp_canvas'] = {
 	
 	setTimeout(function(){
 		this.getField_("IMAGE").setValue(this.getCanvasImage());
-	}.bind(this), 100);
+	}.bind(this), 3);
   },
   getCanvasImage: function(val){
 	  if (val === undefined)

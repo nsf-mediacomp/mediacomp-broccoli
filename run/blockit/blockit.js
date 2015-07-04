@@ -78,6 +78,7 @@ BlockIt.StopIteration = function(){
 
 BlockIt.natural_wait_time = 0;
 BlockIt.Step = function(args){
+try{
 	var block = args.block || null;
 	var ret_value = args.ret_value || [];
 	var arguments_stack = args.arguments_stack || [];
@@ -525,6 +526,11 @@ BlockIt.Step = function(args){
 	}else{
 		BlockIt.Step(step_args);
 	}
+}catch(e){
+	alert(e);
+	BlockIt.final_callback();
+	BlockIt.StopIteration();
+}
 }
 
 BlockIt.StepDefaultBlock = function(args){
