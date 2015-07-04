@@ -1,49 +1,49 @@
 <xml>
-  <block type="mediacomp_run" id="264" x="32" y="21">
+  <block type="mediacomp_run" id="181" x="32" y="21">
     <statement name="DO">
-      <block type="controls_forEach" id="265" inline="false">
+      <block type="controls_forEach" id="182" inline="false">
         <field name="VAR">pixel</field>
         <field name="RUN_FAST">TRUE</field>
         <value name="LIST">
-          <block type="mediacomp_getPixels" id="266" inline="true">
+          <block type="mediacomp_getPixels" id="183" inline="true">
             <value name="CANVAS">
-              <block type="math_number" id="267">
-                <field name="NUM">2</field>
+              <block type="mediacomp_canvas" id="184">
+                <field name="CANVAS">2</field>
               </block>
             </value>
           </block>
         </value>
         <statement name="DO">
-          <block type="variables_set" id="268" inline="true">
+          <block type="variables_set" id="185" inline="true">
             <field name="VAR">color list</field>
             <value name="VALUE">
-              <block type="lists_create_with" id="269" inline="false">
+              <block type="lists_create_with" id="186" inline="false">
                 <mutation items="3"></mutation>
                 <value name="ADD0">
-                  <block type="mediacomp_getPixelRGB" id="270" inline="true">
+                  <block type="mediacomp_getPixelRGB" id="187" inline="true">
                     <field name="RGB">r</field>
                     <value name="PIXEL">
-                      <block type="variables_get" id="271">
+                      <block type="variables_get" id="188">
                         <field name="VAR">pixel</field>
                       </block>
                     </value>
                   </block>
                 </value>
                 <value name="ADD1">
-                  <block type="mediacomp_getPixelRGB" id="272" inline="true">
+                  <block type="mediacomp_getPixelRGB" id="189" inline="true">
                     <field name="RGB">g</field>
                     <value name="PIXEL">
-                      <block type="variables_get" id="273">
+                      <block type="variables_get" id="190">
                         <field name="VAR">pixel</field>
                       </block>
                     </value>
                   </block>
                 </value>
                 <value name="ADD2">
-                  <block type="mediacomp_getPixelRGB" id="274" inline="true">
+                  <block type="mediacomp_getPixelRGB" id="191" inline="true">
                     <field name="RGB">b</field>
                     <value name="PIXEL">
-                      <block type="variables_get" id="275">
+                      <block type="variables_get" id="192">
                         <field name="VAR">pixel</field>
                       </block>
                     </value>
@@ -52,39 +52,39 @@
               </block>
             </value>
             <next>
-              <block type="variables_set" id="276" inline="true">
+              <block type="variables_set" id="193" inline="true">
                 <field name="VAR">color average</field>
                 <value name="VALUE">
-                  <block type="math_on_list" id="277" inline="false">
+                  <block type="math_on_list" id="194" inline="false">
                     <field name="OP">AVERAGE</field>
                     <value name="LIST">
-                      <block type="variables_get" id="278">
+                      <block type="variables_get" id="195">
                         <field name="VAR">color list</field>
                       </block>
                     </value>
                   </block>
                 </value>
                 <next>
-                  <block type="mediacomp_setPixel" id="279" inline="true">
+                  <block type="mediacomp_setPixel" id="196" inline="true">
                     <value name="PIXEL">
-                      <block type="variables_get" id="280">
+                      <block type="variables_get" id="197">
                         <field name="VAR">pixel</field>
                       </block>
                     </value>
                     <value name="PIXEL2">
-                      <block type="colour_rgb" id="281" inline="false">
+                      <block type="colour_rgb" id="198" inline="false">
                         <value name="RED">
-                          <block type="variables_get" id="282">
+                          <block type="variables_get" id="199">
                             <field name="VAR">color average</field>
                           </block>
                         </value>
                         <value name="GREEN">
-                          <block type="variables_get" id="283">
+                          <block type="variables_get" id="200">
                             <field name="VAR">color average</field>
                           </block>
                         </value>
                         <value name="BLUE">
-                          <block type="variables_get" id="284">
+                          <block type="variables_get" id="201">
                             <field name="VAR">color average</field>
                           </block>
                         </value>

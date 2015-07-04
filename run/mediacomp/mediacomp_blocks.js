@@ -19,17 +19,22 @@ Blockly.Blocks['mediacomp_canvas'] = {
     this.appendDummyInput()
         .appendField(new Blockly.FieldImage(this.getCanvasImage(), 76, 76, "*"), "IMAGE");
 	this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_CENTRE)
 		.appendField("canvas")
-		.appendField(new Blockly.FieldDropdown(canvas), 'CANVAS');
+		.appendField(new Blockly.FieldDropdown(canvas, function(val){
+			this.getField_("IMAGE").setValue(this.getCanvasImage(val));
+		}.bind(this)), 'CANVAS');
     this.setOutput(true, "Number");
-    this.setTooltip('');
+    this.setTooltip('Returns the id of the canvas specified (for use in mediacomp blocks prompting for canvas)');
     this.setHelpUrl('http://www.example.com/');
+	
+	setTimeout(function(){
+		this.getField_("IMAGE").setValue(this.getCanvasImage());
+	}.bind(this), 100);
   },
-  getCanvasImage: function(){
-	  var canvas_id = Number(this.getFieldValue('CANVAS'));
-	  console.log("CANVAS ID: " + canvas_id);
-	  return Drawr.getCtx(canvas_id).canvas.toDataURL();
+  getCanvasImage: function(val){
+	  if (val === undefined)
+		val = Number(this.getFieldValue('CANVAS'));
+	  return Drawr.getCtx(val).canvas.toDataURL();
   }
 };
 Blockly.JavaScript['mediacomp_canvas'] = function(block){

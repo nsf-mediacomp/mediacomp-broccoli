@@ -13,6 +13,7 @@ Drawr.openProject = function(){
 		var reader = new FileReader();
 		reader.onload = function(e){
 			textarea.html(reader.result);
+			Drawr.loaded_xml = reader.result;
 		}
 		reader.readAsText(file);
 	});

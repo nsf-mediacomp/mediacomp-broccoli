@@ -199,6 +199,8 @@ CanvasSelect.upload = function(e){
 			else{
 				Dialog.Close();
 				CanvasSelect.addCanvas(img);
+				BlockIt.InitWorkspace();
+				BlockIt.RefreshWorkspace();
 			}
 		}
 		img.src = event.target.result;
