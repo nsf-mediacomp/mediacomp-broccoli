@@ -1,7 +1,7 @@
 Blockly.Msg.PROJECT_MANAGEMENT = "Project Management";
 
 Blockly.Msg.OPEN_PROJECT = "Open Project";
-Blockly.Msg.SELECT_XML_FILE = "Import Project (XML): ";
+Blockly.Msg.SELECT_XML_FILE = "Import Project (JSON): ";
 Blockly.Msg.CHOOSE_EXAMPLE = "Or choose example project: ";
 Blockly.Msg.LOAD_PROJECT = "Load Project";
 Blockly.Msg.EXAMPLE_REDEYE = "Red Eye Removal";
@@ -17,7 +17,7 @@ Blockly.Msg.EXAMPLE_MANDELBROT_ZOOM = "Mandelbrot Zoom";
 Blockly.Msg.SAVE_PROJECT = "Export Project";
 Blockly.Msg.SAVE_PROJECT_DOWNLOAD_BLOCKS = "Save Project / Download Blocks";
 Blockly.Msg.FILENAME = "Filename: ";
-Blockly.Msg.PIXLYPROJECT_XML = "PixlyProject.xml";
+Blockly.Msg.PIXLYPROJECT_JSON = "PixlyProject.json";
 
 
 /**PIXLY MESSAGES**/
@@ -29,7 +29,7 @@ Blockly.Msg.MEDIACOMP_CANVASDIMENSION_TITLE = "of canvas";
 Blockly.Msg.MEDIACOMP_CANVASDIMENSION_TOOLTIP = "get width or height of specified canvas";
 Blockly.Msg.MEDIACOMP_UPDATECANVAS_TITLE = "update canvas";
 Blockly.Msg.MEDIACOMP_UPDATECANVAS_TOOLTIP = "Redraw the canvas to match the current state of the pixels.";
-Blockly.Msg.MEDIACOMP_RESTARTCANVAS_TITLE = "restart canvas";
+Blockly.Msg.MEDIACOMP_RESTARTCANVAS_TITLE = "reset canvas";
 Blockly.Msg.MEDIACOMP_RESTARTCANVAS_TOOLTIP = "Redraw the canvas with its original image";
 Blockly.Msg.MEDIACOMP_GETPIXELS_TITLE = "pixels from canvas";
 Blockly.Msg.MEDIACOMP_GETPIXELS_TOOLTIP = "Get a one dimensional 'flattened' array of the canvas's pixel";

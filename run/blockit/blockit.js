@@ -28,7 +28,6 @@ BlockIt.IterateThroughBlocks = function(valid_block_types, callback, opt_workspa
 	BlockIt.final_callback = callback;
 	
 	BlockIt.InitWorkspace(opt_workspace);
-	BlockIt.RefreshWorkspace();
 	
 	//BlockIt.DisableFloatingBlocks(valid_block_types);
 	//BlockIt.FreezeWorkspace();
@@ -72,6 +71,7 @@ BlockIt.StopIteration = function(){
 	BlockIt.final_callback = {};
 	BlockIt.EnableFloatingBlocks();
 	BlockIt.ResetIteration();
+	BlockIt.RefreshWorkspace();
 	//BlockIt.HardUnfreezeWorkspace();
 	BlockIt.stop_iteration = true;
 }

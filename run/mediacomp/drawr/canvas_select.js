@@ -14,7 +14,7 @@ CanvasSelect.init = function(img_paths){
 			
 			loaded_images++;
 			if (loaded_images === img_paths.length){
-				CanvasSelect.reset();
+				CanvasSelect.resetAll();
 			}
 		}.bind(img, i);
 		CanvasSelect.addSelectBox();
@@ -29,10 +29,14 @@ CanvasSelect.init = function(img_paths){
 	$("#uploadcanvas")[0].addEventListener("change", CanvasSelect.upload, false);
 }
 
-CanvasSelect.reset = function(){
+CanvasSelect.resetAll = function(){
     for(var i=0; i < Drawr.canvases.length; ++i){
 		Drawr.restartCanvas(i);
     }
+}
+
+CanvasSelect.reset = function(){
+	Drawr.restartCanvas(CanvasSelect.selected);
 }
 
 CanvasSelect.onresize = function(){
@@ -113,17 +117,19 @@ CanvasSelect.updateSelectBoxCanvases = function(){
 }
 
 CanvasSelect.select = function(id){
-    var boxes = document.getElementsByClassName("canvas_select_box");
-    for(var i=0; i<boxes.length; ++i){
-        boxes[i].style.backgroundColor = "rgb(255,255,255)";
-    }
-    CanvasSelect.getSelectBox(id).style.backgroundColor = "rgb(241,241,255)";
-    var canvi = document.getElementsByClassName("display_canvas");
-    for(var i=0; i<canvi.length; ++i){
-        canvi[i].style.display = "none";
-    }
-    CanvasSelect.getCanvas(id).style.display = "block";
-    CanvasSelect.selected = id;
+	try{
+		var boxes = document.getElementsByClassName("canvas_select_box");
+		for(var i=0; i<boxes.length; ++i){
+			boxes[i].style.backgroundColor = "rgb(255,255,255)";
+		}
+		CanvasSelect.getSelectBox(id).style.backgroundColor = "rgb(241,241,255)";
+		var canvi = document.getElementsByClassName("display_canvas");
+		for(var i=0; i<canvi.length; ++i){
+			canvi[i].style.display = "none";
+		}
+		CanvasSelect.getCanvas(id).style.display = "block";
+		CanvasSelect.selected = id;
+	}catch(e){}
 }
 
 CanvasSelect.newBox = function(){
@@ -185,6 +191,35 @@ CanvasSelect.hide = function(){
 }
 
 //http://stackoverflow.com/questions/10906734/how-to-upload-image-into-html5-canvas
+CanvasSelect.uploaded_images = [];
+
+CanvasSelect.clearUploadedImages = function(){
+	var display_canvii = $(".display_canvas");
+	for (var i = 5; i < 5 + CanvasSelect.uploaded_images.length; i++){
+		Drawr.canvases.splice(i, 1);
+		var display_canvas = $("#canvas_" + i)[0];
+		display_canvas.parentNode.removeChild(display_canvas);
+		var select_box = $("#canvas_select_" + i)[0];
+		select_box.parentNode.removeChild(select_box);
+	}
+	CanvasSelect.canvas_id = 5;
+	
+	CanvasSelect.select(0);
+	CanvasSelect.uploaded_images = [];
+}
+
+CanvasSelect.restoreUploadedImage = function(src){
+	var img = new Image();
+	img.onload = function(){
+		Dialog.Close();
+		CanvasSelect.uploaded_images.push(img.src);
+		CanvasSelect.addCanvas(img);
+		BlockIt.InitWorkspace();
+		BlockIt.RefreshWorkspace();
+	}
+	img.src = src;
+}
+
 CanvasSelect.upload = function(e){	
 	var reader = new FileReader();
 	reader.onload = function(event){
@@ -198,6 +233,7 @@ CanvasSelect.upload = function(e){
 			}
 			else{
 				Dialog.Close();
+				CanvasSelect.uploaded_images.push(img.src);
 				CanvasSelect.addCanvas(img);
 				BlockIt.InitWorkspace();
 				BlockIt.RefreshWorkspace();

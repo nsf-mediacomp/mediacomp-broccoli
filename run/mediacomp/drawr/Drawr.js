@@ -11,12 +11,15 @@ Drawr.addCanvas = function(ctx, id, img, title){
 }
 
 Drawr.getCtx = function(id){
-    if(typeof id === "undefined"){ // TODO: maybe revert this
-        var random_id = Math.floor(Math.random()*Drawr.canvases.length);
-        return Drawr.canvases[random_id].ctx;
-    }else{
-        return Drawr.canvases[id].ctx;
-    }
+	try{
+		if(typeof id === "undefined"){ // TODO: maybe revert this
+			var random_id = Math.floor(Math.random()*Drawr.canvases.length);
+			return Drawr.canvases[random_id].ctx;
+		}else{
+			return Drawr.canvases[id].ctx;
+		}
+	}catch(e){
+	}
 }
 
 Drawr.getDimension = function(id, dimension){

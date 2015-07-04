@@ -9,12 +9,6 @@ Drawr.stepTimeoutId = null;
 Drawr.init = function(){ 
     Drawr.setupBlockly();
 	
-	var defaultXml = 
-		'<xml>' +
-		'	<block type="mediacomp_run" x="70" y="70"></block>' +
-		'</xml>';
-	Drawr.loadBlocks(defaultXml);
-	
     // Connect canvases
 	//canvas_select.js
     CanvasSelect.init(Drawr.image_paths);
@@ -30,7 +24,7 @@ Drawr.init = function(){
 	$("#codeButton")[0].addEventListener("click", function(){
 		var generated_code = Blockly.JavaScript.workspaceToCode();
 			generated_code = getRidOfNakedCode(generated_code);
-			generated_code += "if (pixly_run) pixly_run();\n";
+			generated_code += "pixly_run();\n";
 		var content = "<pre>" + generated_code + "</pre>";
 			
 		Dialog.Alert(content, "Generated JavaScript Code");
@@ -100,14 +94,60 @@ Drawr.setupBlockly = function(){
 	//Add to reserver word list
 	Blockly.JavaScript.addReservedWords('Drawr');
 	
+	Drawr.loadWorkspaceFromCookie();
+	setInterval(Drawr.saveWorkspaceToCookie, 10000);
 	window.addEventListener('beforeunload', function(e){
-		if (Blockly.mainWorkspace.getAllBlocks().length > 2){
+		/*if (Blockly.mainWorkspace.getAllBlocks().length > 2){
 			var msg = "Leaving this page will result in the loss of your work.";
 			e.returnValue =  msg; //Gecko
 			return msg; //Webkit
 		}
-		return null;
+		return null;*/
+		Drawr.saveWorkspaceToCookie();
 	});
+}
+
+Drawr.saveWorkspaceToCookie = function(){
+	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+	xml = Blockly.Xml.domToPrettyText(xml);
+	setCookie("xml", xml, 356);
+	
+	localStorage.setItem("selected", CanvasSelect.selected);
+	for (var i = 0; i < CanvasSelect.uploaded_images.length; i++){
+		var name = "uploaded_image_" + i;
+		var src = CanvasSelect.uploaded_images[i];
+		localStorage.setItem(name, src);
+	}
+}
+
+Drawr.loadWorkspaceFromCookie = function(){
+	var xml = getCookie("xml");
+	if (xml === undefined){		
+		var defaultXml = 
+			'<xml>' +
+			'	<block type="mediacomp_run" x="70" y="70"></block>' +
+			'</xml>';
+		Drawr.loadBlocks(defaultXml);
+		return;
+	}
+	Blockly.mainWorkspace.clear();
+	Drawr.loadBlocks(xml);
+	
+	var img_num = 0;
+	while (true){
+		var name = "uploaded_image_" + img_num;
+		var src = localStorage.getItem(name);
+		if (src === null || src === undefined) break;
+		
+		CanvasSelect.restoreUploadedImage(src);
+		img_num++;
+	}
+	window.setTimeout(function(){
+		var selected = localStorage.getItem("selected");
+		if (selected !== null && selected !== undefined){
+			CanvasSelect.select(selected);
+		}
+	}, 100);
 }
 
 Drawr.importXml = function(textarea){

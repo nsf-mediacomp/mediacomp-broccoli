@@ -7,13 +7,24 @@ Drawr.openProject = function(){
 	var fileinput = $(document.createElement("input"));
 
 	fileinput.attr('type', "file");
-	fileinput.attr('accept', "text/plain, text/xml");
+	fileinput.attr('accept', "text/plain, text/xml, .json");
 	fileinput.on('change', function(e){
 		var file = fileinput[0].files[0];
 		var reader = new FileReader();
 		reader.onload = function(e){
 			textarea.html(reader.result);
-			Drawr.loaded_xml = reader.result;
+			var data = reader.result;
+			try{
+				var obj = JSON.parse(data);
+				$(textarea).html(obj.xml);
+				Drawr.loaded_xml = obj.xml;
+				Drawr.loaded_images = obj.images;
+				Drawr.loaded_selected = obj.selected;
+			}catch(e){
+				data = xmlToString(data);
+				$(textarea).html(data);
+				Drawr.loaded_xml = data;
+			}
 		}
 		reader.readAsText(file);
 	});
@@ -49,6 +60,8 @@ Drawr.openProject = function(){
 				Drawr.loaded_xml = data;
 			});
 		}
+		Drawr.loaded_images = [];
+		Drawr.loaded_selected = CanvasSelect.selected;
 	});
 	message.append(example_select);
 	message.append(document.createElement('br'));
@@ -66,13 +79,24 @@ Drawr.openProject = function(){
 		var xml = Drawr.loaded_xml;
 		Blockly.mainWorkspace.clear();
 		Drawr.loadBlocks(xml);
+		
+		if (Drawr.loaded_images.length > 0){
+			CanvasSelect.clearUploadedImages();
+			for (var i = 0; i < Drawr.loaded_images.length; i++){
+				CanvasSelect.restoreUploadedImage(Drawr.loaded_images[i]);
+			}
+		}
+		CanvasSelect.select(Drawr.loaded_selected);
 	}, Blockly.Msg.PROJECT_MANAGEMENT, Blockly.Msg.LOAD_PROJECT);
 	Dialog.AddElement(message[0]);
 }
 
 Drawr.loaded_xml = "";
+Drawr.loaded_images = [];
+Drawr.loaded_selected = 0;
+Drawr.loaded_json = "";
 Drawr.saved_xml = "";
-Drawr.xml_filename = "";
+Drawr.json_filename = "";
 
 Drawr.saveProject = function(){
 	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
@@ -84,10 +108,10 @@ Drawr.saveProject = function(){
 	var filename = $(document.createElement("input"));
 	filename.attr("type", "text");
 	filename.attr("id", "filename_filename");
-	filename.val(Blockly.Msg.PIXLYPROJECT_XML);
-	Drawr.xml_filename = filename.val();
+	filename.val(Blockly.Msg.PIXLYPROJECT_JSON);
+	Drawr.json_filename = filename.val();
 	filename.on("change", function(e){
-		Drawr.xml_filename = filename.val();
+		Drawr.json_filename = filename.val();
 	});
 	message.append(filename);
 		message.append(document.createElement("br"));
@@ -101,7 +125,10 @@ Drawr.saveProject = function(){
 	message.append(textarea);
 	
 	Dialog.Confirm('', function(e){
-		createDownloadLink("#export", Drawr.saved_xml, Drawr.xml_filename);
+		var obj = {xml: Drawr.saved_xml, images: CanvasSelect.uploaded_images, selected: CanvasSelect.selected};
+		var json = JSON.stringify(obj);
+		
+		createDownloadLink("#export", json, Drawr.json_filename);
 		$("#export")[0].click();
 	}, Blockly.Msg.SAVE_PROJECT_DOWNLOAD_BLOCKS, Blockly.Msg.SAVE_PROJECT);
 	Dialog.AddElement(message[0]);	

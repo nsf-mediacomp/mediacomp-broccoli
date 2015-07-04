@@ -1,27 +1,24 @@
 
 /*** utils.js V1.0 ***/
 
-function getRidOfNakedCode(jscode){
-	var lines = jscode.split("\n");
-	var f_depth = 0;
-	var is_in_function = false;
-	for (var i = 0; i < lines.length; i++){
-		
-		if (lines[i].match(/function(\s+[a-zA-Z0-9_\$]*)?\([^\)]*\)/)){
-			is_in_function = true;
-		}
-		
-		if (lines[i].indexOf("{") >= 0 && is_in_function)
-			f_depth++;
-		else if (lines[i].indexOf("}") >= 0 && f_depth > 0){
-			f_depth--;
-			if (f_depth == 0) is_in_function = false;
-		}
-		else if (!is_in_function && f_depth <= 0 && lines[i].replace(/\s/g,'') !== "" && !(lines[i].match(/\s*var/) && !lines[i].match(/\s*for/))){
-			lines[i] = "//" + lines[i];
+//http://stackoverflow.com/questions/4825683/how-do-i-create-and-read-a-value-from-cookie
+function setCookie(c_name,value,exdays){
+  var exdate=new Date();
+  exdate.setDate(exdate.getDate() + exdays);
+  var c_value=escape(value) + ((exdays==null) ? "" : ("; expires="+exdate.toUTCString()));
+  document.cookie=c_name + "=" + c_value;
+}
+
+function getCookie(c_name){
+	var i,x,y,ARRcookies=document.cookie.split(";");
+	for (i=0;i<ARRcookies.length;i++){
+		x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+		y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+		x=x.replace(/^\s+|\s+$/g,"");
+		if (x==c_name){
+			return unescape(y);
 		}
 	}
-	return lines.join("\n");
 }
 
 function drawCircle(ctx,color,x,y,r){

@@ -13,11 +13,17 @@ goog.require('Blockly.JavaScript');
 Blockly.Blocks['mediacomp_canvas'] = {
   init: function() {	    
 	var canvas = [];
-	for (var i = 0; i < Drawr.canvases.length; i++){
-		canvas.push([''+i, ''+i]);
+	try{
+		for (var i = 0; i < Drawr.canvases.length; i++){
+			canvas.push([''+i, ''+i]);
+		}
+	}catch(e){
+		for (var i = 0; i < 4; i++){
+			canvas.push([''+i, ''+i]);
+		}
 	}
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage(this.getCanvasImage(), 76, 76, "*"), "IMAGE");
+        .appendField(new Blockly.FieldImage("./mediacomp/images/redeye.png", 76, 76, "*"), "IMAGE");
 	this.appendDummyInput()
 		.appendField("canvas")
 		.appendField(new Blockly.FieldDropdown(canvas, function(val){
@@ -28,8 +34,10 @@ Blockly.Blocks['mediacomp_canvas'] = {
     this.setHelpUrl('http://www.example.com/');
 	
 	setTimeout(function(){
-		this.getField_("IMAGE").setValue(this.getCanvasImage());
-	}.bind(this), 3);
+		try{
+			this.getField_("IMAGE").setValue(this.getCanvasImage());
+		}catch(e){}
+	}.bind(this), 100);
   },
   getCanvasImage: function(val){
 	  if (val === undefined)
