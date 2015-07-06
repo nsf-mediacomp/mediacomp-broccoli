@@ -91,6 +91,7 @@ Drawr.resetCache = function(id){
 	var x = 0;
 	var y = 0;
 	for (var i = 0; i < Drawr.global_cache[id].length; i+=4){
+		Drawr.global_cache[id][i+3] = 255;
 		var pixel = {
 			id: id,
 			index: i,
@@ -100,7 +101,7 @@ Drawr.resetCache = function(id){
 			r: Drawr.global_cache[id][i] * (100.0 / 255.0),
 			g: Drawr.global_cache[id][i+1] * (100.0 / 255.0),
 			b: Drawr.global_cache[id][i+2] * (100.0 / 255.0),
-			a: Drawr.global_cache[id][i+3] * (100.0 / 255.0)
+			a: 100
 		}
 		pixels.push(pixel);
 		//update the x and y variables for the pixel
@@ -142,26 +143,35 @@ Drawr.getPixel = function(id, x, y){
 	return pixel;
 }
 
-Drawr.updatePixel = function(pixel){
+Drawr.updatePixel = function(pixel, id, index, x, y){
 	if (pixel === undefined) return;
 	
-	var index = pixel.index;
+	if (id === undefined) id = pixel.id;
+	if (index === undefined) index = pixel.index;
+	
+	//console.log(x + ", " + y + ", " + id + ", " + index);
 	
 	//update global cache! (make sure to convert from 0 - 100 back to 0 - 255)
 	var cache = Drawr.global_cache[pixel.id];
-	cache[index+0] = pixel['r'] * (255.0 / 100.0);
-	cache[index+1] = pixel['g'] * (255.0 / 100.0);
-	cache[index+2] = pixel['b'] * (255.0 / 100.0);
-	cache[index+3] = pixel['a'] * (255.0 / 100.0);
+	cache[index+0] = pixel.r * (255.0 / 100.0);
+	cache[index+1] = pixel.g * (255.0 / 100.0);
+	cache[index+2] = pixel.b * (255.0 / 100.0);
 
-	Drawr.pixel_cache[pixel.id][pixel.index/4] = pixel;
+	Drawr.pixel_cache[id][index/4].r = pixel.r;
+	Drawr.pixel_cache[id][index/4].g = pixel.g;
+	Drawr.pixel_cache[id][index/4].b = pixel.b;
+	
+	if (x === undefined)
+		x = pixel.x;
+	if (y === undefined)
+		y = pixel.y;
 	
     // draw a 1x1 rectangle so the image reflects the cache
     // INSTEAD: flushCache() at the end of execution, significantly faster.
 	var id = pixel['id'];
     var canvas = Drawr.canvases[id];
-    canvas.ctx.fillStyle = "rgba(" + cache[index] + ", " +  cache[index+1] + ", " +  cache[index+2] + ", " + cache[index+3]+ ")";
-    canvas.ctx.fillRect(pixel.x, pixel.y, 1, 1);
+    canvas.ctx.fillStyle = "rgb(" + pixel.r + ", " +  pixel.g + ", " +  pixel.b + ")";
+    canvas.ctx.fillRect(x, y, 1, 1);
 }
 Drawr.setPixelAt = function(id, x, y, pixel){
 	if (pixel === undefined) return;
@@ -171,10 +181,12 @@ Drawr.setPixelAt = function(id, x, y, pixel){
 		pixel = hexToRgb(pixel);
 		pixel['a'] = 255;
 	}
-	pixel.id = id;
-	pixel.index = index;
+	//pixel.x = x;
+	//pixel.y = y;
+	//pixel.id = id;
+	//pixel.index = index;
 	
-	Drawr.updatePixel(pixel);
+	Drawr.updatePixel(pixel, id, index, x, y);
 }
 Drawr.setPixel = function(pixel){
 	if (pixel === undefined) return;

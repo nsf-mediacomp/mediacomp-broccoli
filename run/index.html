@@ -31,22 +31,35 @@
   <script src="blockit/blockit_text.js"></script>
   <script src="blockit/blockit_variables.js"></script>
   
+  <!--import TUNELY!!!-->
+	<!--custom tunely messages-->
+	<script src="mediacomp/tunely/lang/en.js"></script>
+	<!-- in order to draw on canvases of possibly exceeding max width (for explore sound)-->
+	<script src="mediacomp/tunely/BigCanvas.js"></script>
+  <script src="mediacomp/tunely/initSynth.js"></script>
+	<!--wad (web audio daw) javascript library (https://github.com/rserota/wad)-->
+	<script src="mediacomp/tunely/lib/wad.min.js"></script>
+	<!--pitch shift (http://mikolalysenko.github.io/pitch-shift/)-->
+	<script src="mediacomp/tunely/lib/pitchshift_lib/pitchshiftBundle.js"></script>
+  <script src="mediacomp/tunely/Synth.js"></script>
+  <script src="mediacomp/tunely/exploreSynth.js"></script>
+	<!--tunely blockly block definitions/javascript generators-->
+	<script src="mediacomp/tunely/audio_blocks.js"></script>
+  <link rel="stylesheet" type="text/css" href="mediacomp/tunely/style.css">
+  
   <!--Custom block definitions-->
   <script type="text/javascript" src="mediacomp/mediacomp_blocks.js"></script>
   <script type="text/javascript" src="mediacomp/pixel_blocks.js"></script>
   
   <script type="text/javascript" src="mediacomp/utils.js"></script>
   
-  <!--okay actually inject blockly and initialize the stuff-->
+  <!--okay actually inject blockly and initialize the pixel mediacomp-->
   <script type="text/javascript" src="mediacomp/drawr/Drawr.js"></script>
-  <script type="text/javascript" src="mediacomp/drawr/run_mediacomp.js"></script>
   <script type="text/javascript" src="mediacomp/drawr/canvas_select.js"></script>
   <script type="text/javascript" src="mediacomp/drawr/canvas_popout.js"></script>
-  <script type="text/javascript" src="mediacomp/drawr/project_management.js"></script>
   
-  
-  <!--modify blockly colors to use 255 instead of 100-->
-  <!--<script type="text/javascript" src="mediacomp/colour_mod.js"></script>-->
+  <script type="text/javascript" src="mediacomp/project_management.js"></script>  
+  <script type="text/javascript" src="mediacomp/main.js"></script>
  
   <link rel="stylesheet" type="text/css" href="mediacomp/css/style.css">
 </head>
@@ -75,16 +88,20 @@
     <tr>
         <td style="width: 15px;"></td>
         <td style="text-align: center">
+		
+            <img id="spinner" style="visibility: hidden;" src="mediacomp/loading.gif" height=15 width=15>
             <button id="runButton" class="primary" title="Makes the canvas do what the blocks say.">
                 <img id="runButtonImg" src="blockly/media/1x1.gif" class="run icon21"><span id="runButtonText">Run Program</span>
             </button>
-			
-            <img id="spinner" style="visibility: hidden;" src="mediacomp/loading.gif" height=15 width=15>
 			
             <button id="resetButton" class="primary">
                 <img src="blockly/media/1x1.gif" class="icon21 turtleImg"> Reset Canvas
             </button>
 			<br/>
+			<button id="uploadSoundButton" class="secondary" title="Upload your own sound from your computer.">
+				Upload Sound
+			</button>
+			<input type="file" id="uploadSound" />
 			<button id="codeButton" class="notext" title="See generated JavaScript code.">
                 <img src='blockly/media/1x1.gif' class="code icon21">
             </button>
@@ -113,10 +130,76 @@
     <div id="blockly"></div>
 	
 	<a id="export" download="" href="#" style="display:none;"></a>
+	
+<div id="explore_mainContainer" style="display:none;">
+		<style type="text/css" scoped>
+			input[type=submit]{
+				font-weight: bold;
+				background-color: #aaaaaa;
+			}
+			input[type=submit]:disabled{
+				color: #bbbbbb;
+				background-color: #eeeeee;
+			}
+			.explore_inputs > *{
+				line-height: 24px;
+			}
+			.explore_inputs > p{
+				line-height: 28px;
+			}
+		</style>
+		<center class="explore_inputs">
+			<p>
+				<input type="submit" value="Play Entire Sound" id="explore_playSound"/>
+				<input type="submit" value="Play Before" id="explore_playBefore"/>
+				<input type="submit" value="Play After" id="explore_playAfter"/>
+				<input type="submit" value="Stop" id="explore_stop"/>
+			</p>
+			<p>
+				<input type="submit" value="Play Selection" id="explore_playSelection"/>
+				<input type="submit" value="Clear Selection" id="explore_clearSelection"/>
+				&nbsp;&nbsp;
+				<b>Start Index:</b>
+				<input type="text" value="N/A" id="explore_startIndex" disabled="true" style="width:100px;"/>
+				&nbsp;&nbsp;
+				<b>Stop Index:</b>
+				<input type="text" value="N/A" id="explore_stopIndex" disabled="true" style="width:100px;"/>
+			</p>
+		</center>
+		<div style="position:relative;">
+			<div id="explore_canvasContainer" style="width:800px;height:220px;overflow-x: scroll;overflow-y:hidden;position:relative;display:inline-block;border: 2px solid #e0e0e0;">
+				<div id="explore_selectionHighlighter" style="position:absolute;top:0px; left:0px; width:0px; height:220px;z-index:50;background-color:#ffffff;opacity:0.5;"></div>
+				<img src="mediacomp/tunely/arrow.png" id="explore_indexArrow" style="position:absolute;top:0px;left:0px;z-index:99;"/>
+			</div>
+		</div>
+		<br/>
+		<center class="explore_inputs">
+			<p>
+				<input type="submit" value="<<" id="explore_firstIndex"/>
+				<input type="submit" value=" <" id="explore_prevIndex"/>
+				&nbsp;&nbsp;
+				<b>Current Index:</b>
+				<input type="text" value="1" id="explore_currIndex"/>
+				&nbsp;&nbsp;&nbsp;
+				<b>Sample Value:</b>
+				<input type="text" value="0" id="explore_sampleValue" disabled="true"/>
+				&nbsp;&nbsp;
+				<input type="submit" value=" >" id="explore_nextIndex"/>
+				<input type="submit" value=">>" id="explore_lastIndex"/>
+			</p>
+			<p>
+				<b>Number of Samples between pixels:</b> <input type="text" value="1" id="explore_numSamplesPerPixel" disabled="true"/>
+			</p>
+			<p>
+				<input type="submit" value="Zoom Out" id="explore_zoomOut"/>
+				<input type="submit" value="Zoom In" id="explore_zoomIn"/>
+			</p>
+		</center>
+	</div>
 
   <xml id="toolbox" style="display: none">
   
-	<category name="Media Comp">
+	<category name="Canvas">
 	  <block type="mediacomp_canvas"></block>
 	  <!--<block type="mediacomp_run"></block>-->
 	  <block type="mediacomp_canvasDimension"></block>
@@ -133,7 +216,7 @@
 		</value>
 	  </block>
       <block type="controls_for">
-      <field name="VAR">x</field>
+      <field name="VAR">y</field>
 	  <field name="RUN_FAST">TRUE</field>
         <value name="FROM">
           <block type="math_number">
@@ -152,7 +235,7 @@
         </value>
         <statement name="DO">
           <block type="controls_for">
-            <field name="VAR">y</field>
+            <field name="VAR">x</field>
 			<field name="RUN_FAST">TRUE</field>
             <value name="FROM">
               <block type="math_number">
@@ -193,8 +276,6 @@
           </block>
         </statement>
       </block>
-	  <block type="mediacomp_run">
-	  </block>
 	</category>
     
     <category name="Pixels">
@@ -294,6 +375,56 @@
 		</block-->
 		<!--block type="mediacomp_setpixel"></block-->
 	</category>
+	<category name="Events">
+	  <block type="mediacomp_run"></block>
+	  <block type="javascript_consoleLog"></block>
+	</category>
+	<category name="Sounds">
+			<block type="synth_playSound">
+				<value name="SOUND">
+					<block type="synth_defaultInstruments"></block>
+				</value>
+			</block>
+			<block type="synth_blockPlaySound">
+				<value name="SOUND">
+					<block type="synth_defaultInstruments"></block>
+				</value>
+			</block>
+			<block type="synth_getSamples">
+				<value name="SOUND">
+					<block type="synth_defaultInstruments"></block>
+				</value>
+			</block>
+			<block type="synth_getSampleValue">
+			</block>
+			<block type="synth_setSampleValue">
+			</block>
+			<!--<block type="synth_setInstrument">
+				<value name="SOUND">
+					<block type="synth_defaultInstruments"></block>
+				</value>
+			</block>
+			<block type="synth_playNote">
+				<value name="NOTE">
+					<block type="text">
+						<field name="TEXT">C4</field>
+					</block>
+				</value>
+			</block>
+			<block type="synth_blockPlayNote">
+				<value name="NOTE">
+					<block type="text">
+						<field name="TEXT">C4</field>
+					</block>
+				</value>
+			</block>-->
+			<block type="synth_exploreSound">
+				<value name="SOUND">
+					<block type="synth_defaultInstruments"></block>
+				</value>
+			</block>
+		</category>
+	<sep></sep>
     <category name="Logic">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>

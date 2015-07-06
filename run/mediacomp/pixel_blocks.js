@@ -66,7 +66,7 @@ Blockly.Blocks['mediacomp_setPixelAt'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("to");
 		
-	//this.setInputsInline(true);
+	this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('Set the pixel at the specified location to another pixel or color');

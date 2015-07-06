@@ -108,11 +108,13 @@ CanvasSelect.getCanvas = function(id){
 CanvasSelect.updateSelectBoxCanvases = function(){
     var boxes = document.getElementsByClassName("canvas_select_box");
     for(var i=0; i<boxes.length; ++i){
-		if (boxes[i].style.display === "none") continue;
-        var ctx = boxes[i].getElementsByTagName("canvas")[0].getContext('2d');
-        var w = ctx.canvas.width;
-        var h = ctx.canvas.height;
-        ctx.drawImage(Drawr.getCtx(i).canvas, 0, 0, w, h);
+		try{
+			if (boxes[i].style.display === "none") continue;
+			var ctx = boxes[i].getElementsByTagName("canvas")[0].getContext('2d');
+			var w = ctx.canvas.width;
+			var h = ctx.canvas.height;
+			ctx.drawImage(Drawr.getCtx(i).canvas, 0, 0, w, h);
+		}catch(e){}
     }
 }
 

@@ -23,7 +23,7 @@ Blockly.Blocks['mediacomp_canvas'] = {
 		}
 	}
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage("./mediacomp/images/redeye.png", 76, 76, "*"), "IMAGE");
+        .appendField(new Blockly.FieldImage("./mediacomp/images/redeye.png", 48, 48, "*"), "IMAGE");
 	this.appendDummyInput()
 		.appendField("canvas")
 		.appendField(new Blockly.FieldDropdown(canvas, function(val){

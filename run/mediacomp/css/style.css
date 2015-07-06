@@ -156,9 +156,10 @@ button.notext {
 }
 
 #visualization{
-	min-width: 412px;
-	max-width: 412px;
-	max-height: 520px;
+	min-width: 416px;
+	max-width: 416px;
+	min-height: 416px;
+	max-height: 416px;
 	
 	overflow: auto;
 }
@@ -170,7 +171,6 @@ button.notext {
     width: 380px; /* 400 - 10 - 10 */
     background: rgb(238,238,255);
     padding: 5px 10px;
-    font-size: 0.75em;
     border-style: solid;
     border-color: rgb(221, 221, 221);
     border-width: 1px 1px 0px 1px;
