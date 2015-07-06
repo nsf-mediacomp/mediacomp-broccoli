@@ -148,29 +148,28 @@ Drawr.updatePixel = function(pixel, id, index, x, y){
 	
 	if (id === undefined) id = pixel.id;
 	if (index === undefined) index = pixel.index;
+	if (x === undefined) x = pixel.x;
+	if (y === undefined) y = pixel.y;
 	
 	//console.log(x + ", " + y + ", " + id + ", " + index);
+	//console.log(pixel);
 	
 	//update global cache! (make sure to convert from 0 - 100 back to 0 - 255)
-	var cache = Drawr.global_cache[pixel.id];
+	var cache = Drawr.global_cache[id];
 	cache[index+0] = pixel.r * (255.0 / 100.0);
 	cache[index+1] = pixel.g * (255.0 / 100.0);
 	cache[index+2] = pixel.b * (255.0 / 100.0);
+	cache[index+3] = 255;
 
 	Drawr.pixel_cache[id][index/4].r = pixel.r;
 	Drawr.pixel_cache[id][index/4].g = pixel.g;
 	Drawr.pixel_cache[id][index/4].b = pixel.b;
-	
-	if (x === undefined)
-		x = pixel.x;
-	if (y === undefined)
-		y = pixel.y;
+	Drawr.pixel_cache[id][index/4].a = 100;
 	
     // draw a 1x1 rectangle so the image reflects the cache
     // INSTEAD: flushCache() at the end of execution, significantly faster.
-	var id = pixel['id'];
     var canvas = Drawr.canvases[id];
-    canvas.ctx.fillStyle = "rgb(" + pixel.r + ", " +  pixel.g + ", " +  pixel.b + ")";
+canvas.ctx.fillStyle = "rgb(" + cache[index] + ", " +  cache[index+1] + ", " +  cache[index+2] + ")";
     canvas.ctx.fillRect(x, y, 1, 1);
 }
 Drawr.setPixelAt = function(id, x, y, pixel){

@@ -106,8 +106,8 @@ Drawr.setupBlockly = function(){
 	//Add to reserver word list
 	Blockly.JavaScript.addReservedWords('Drawr');
 	
-	Drawr.loadWorkspaceFromCookie();
-	setInterval(Drawr.saveWorkspaceToCookie, 10000);
+	Drawr.loadWorkspaceFromLocalStorage();
+	setInterval(Drawr.saveWorkspaceToLocalStorage, 10000);
 	window.addEventListener('beforeunload', function(e){
 		/*if (Blockly.mainWorkspace.getAllBlocks().length > 2){
 			var msg = "Leaving this page will result in the loss of your work.";
@@ -115,14 +115,14 @@ Drawr.setupBlockly = function(){
 			return msg; //Webkit
 		}
 		return null;*/
-		Drawr.saveWorkspaceToCookie();
+		Drawr.saveWorkspaceToLocalStorage();
 	});
 }
 
-Drawr.saveWorkspaceToCookie = function(){
+Drawr.saveWorkspaceToLocalStorage = function(){
 	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
 	xml = Blockly.Xml.domToPrettyText(xml);
-	setCookie("xml", xml, 356);
+	localStorage.setItem("xml", xml);
 	
 	localStorage.setItem("selected", CanvasSelect.selected);
 	for (var i = 0; i < CanvasSelect.uploaded_images.length; i++){
@@ -132,9 +132,9 @@ Drawr.saveWorkspaceToCookie = function(){
 	}
 }
 
-Drawr.loadWorkspaceFromCookie = function(){
-	var xml = getCookie("xml");
-	if (xml === undefined){		
+Drawr.loadWorkspaceFromLocalStorage = function(){
+	var xml = localStorage.getItem("xml");
+	if (xml === undefined || xml === null){		
 		var defaultXml = 
 			'<xml>' +
 			'	<block type="mediacomp_run" x="70" y="70"></block>' +
