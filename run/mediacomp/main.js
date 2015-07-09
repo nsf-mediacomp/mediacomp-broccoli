@@ -32,6 +32,45 @@ Main.init = function(){
 		uploadSound.click(e);
 	}
 	uploadSound.onchange = Synth.UploadSound;
+	
+	$("#deleteSoundButton")[0].addEventListener("click", function(){
+		if (Synth.uploaded_sounds.length > 0){
+			Dialog.Alert("", "Remove Uploaded Sound");
+			
+			var dropdown = document.createElement("select");
+			dropdown.id = "uploaded_sound_option";
+			for (var i = 0; i < Synth.uploaded_sounds.length; i++){
+				var name = Synth.uploaded_sounds[i].name;
+				var option = document.createElement("option");
+				option.innerHTML = name;
+				option.value = i;
+				dropdown.appendChild(option);
+			}
+			
+			var playButton = document.createElement("button");
+			playButton.innerHTML = "play";
+			playButton.onclick = function(){
+				var index = $(dropdown)[0].options[$(dropdown)[0].selectedIndex].value;
+				var name = Synth.uploaded_sounds[index].name;
+				Synth.PlaySound(Synth.GetSound(name));
+			}
+			
+			var removeButton = document.createElement("button");
+			removeButton.innerHTML = "remove";
+			removeButton.onclick = function(){
+				var index = $(dropdown)[0].options[$(dropdown)[0].selectedIndex].value;
+				Synth.RemoveUploadedSound(index);
+				$("#deleteSoundButton")[0].click();
+			}
+			
+			Dialog.AddElement(dropdown);
+			Dialog.AddElement(playButton);
+			Dialog.AddElement(removeButton);
+		}else{
+			Dialog.Alert("No uploaded sounds found.<br><br>Click <b>Upload Sound</b> button to choose one from your computer.", "Remove Uploaded Sound");
+		}
+	});
+	
 
     
 	//////////////////////////////////////////////////////////

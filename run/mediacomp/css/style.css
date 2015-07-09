@@ -125,6 +125,15 @@ button.secondary {
 	border: 1px solid #80A55B;
 	background-color: #80A55B;
 }
+#deleteSoundButton{
+	margin-left: -3px;
+	min-width: 28px;
+	max-width: 28px;
+	min-height: 28px;
+	max-height: 28px;
+	padding-left: 3px;
+	padding-top: 3px;
+}
 button.nospace {
   margin-left:2px;
   margin-right:2px;

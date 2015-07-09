@@ -74,7 +74,6 @@ CanvasSelect.addSelectBox = function(id){
 		'    canvas $id' +
 		'</div>';
 	new_box = new_box.interpolate({id: id});
-	console.log(id);
 	$("#canvas_select")[0].innerHTML += new_box;
 	
     return id;
@@ -249,7 +248,6 @@ CanvasSelect.addCanvas = function(img){
 	Drawr.resetCache(id);
 	Drawr.canvases[id].image = img;
 	
-	console.log(id);
 	CanvasSelect.addSelectBox(id);
 	
 	CanvasSelect.select(id);

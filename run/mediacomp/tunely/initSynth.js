@@ -34,6 +34,19 @@ Synth.UploadSound = function(e){
 	}
 };
 
+Synth.RemoveUploadedSound = function(index){
+	var name = Synth.uploaded_sounds[index].name;
+	localStorage.removeItem(name);
+	var memory = JSON.parse(getCookie("soundMemory"));
+	
+	Synth.uploaded_sounds.splice(index, 1);
+	
+	index = memory.indexOf(name);
+	memory.splice(index, 1);
+	setCookie("soundMemory", JSON.stringify(memory));
+	BlockIt.RefreshWorkspace();
+}
+
 //http://stackoverflow.com/questions/12484052/how-can-i-reverse-playback-in-web-audio-api-but-keep-a-forward-version-as-well
 Synth.CloneSound = function(audioBuffer){
     var channels = [],
