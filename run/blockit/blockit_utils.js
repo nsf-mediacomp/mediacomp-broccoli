@@ -1,5 +1,9 @@
 BlockIt.disabled_blocks = [];
 BlockIt.DisableFloatingBlocks = function(valid_block_types){
+	if (valid_block_types === undefined){
+		valid_block_types = BlockIt.valid_block_types;
+	}
+	
 	if (!Array.isArray(valid_block_types)){
 		valid_block_types = [valid_block_types];
 	}
@@ -30,7 +34,11 @@ BlockIt.EnableFloatingBlocks = function(){
 }
 
 //returns valid (wrapped) top level blocks
-BlockIt.ReturnValidBlocksAndCacheFunctions = function(valid_block_types){
+BlockIt.ReturnValidBlocksAndCacheFunctions = function(){
+	if (valid_block_types === undefined){
+		valid_block_types = BlockIt.valid_block_types;
+	}
+	
 	if (!Array.isArray(valid_block_types)){
 		valid_block_types = [valid_block_types];
 	}

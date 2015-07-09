@@ -4,6 +4,22 @@ function Drawr(){}
 Drawr.global_cache = [];
 Drawr.pixel_cache = [];
 
+Drawr.RememberImagesFromMemory = function(){
+	var img_num = 0;
+	
+	while (true){
+		var name = "uploaded_image_" + img_num;
+		var src = localStorage.getItem(name);
+		if (src === null || src === undefined) break;
+		
+		window.setTimeout(function(src){
+			CanvasSelect.restoreUploadedImage(src);
+		}.bind(this, src), 0);
+		img_num++;
+	}
+	CanvasSelect.select(0);
+}
+
 Drawr.addCanvas = function(ctx, id, img, title){
     Drawr.canvases[id] = {ctx: ctx, title: title, width: ctx.canvas.width, height: ctx.canvas.height, image: img};
     Drawr.resetCache(id);
@@ -138,10 +154,15 @@ Drawr.getPixels = function(id){
 }
 
 Drawr.getPixel = function(id, x, y){
+	var canvas = Drawr.canvases[id];
+	x = Math.min(canvas.width, Math.max(0, x));
+	y = Math.min(canvas.height, Math.max(0, y));
+	
     var index = (y * Drawr.canvases[id].width + x)*4;
     var pixel = Drawr.pixel_cache[id][index/4] || Drawr.blankPixel();;
 	return pixel;
 }
+
 
 Drawr.updatePixel = function(pixel, id, index, x, y){
 	if (pixel === undefined) return;
@@ -169,21 +190,22 @@ Drawr.updatePixel = function(pixel, id, index, x, y){
     // draw a 1x1 rectangle so the image reflects the cache
     // INSTEAD: flushCache() at the end of execution, significantly faster.
     var canvas = Drawr.canvases[id];
-canvas.ctx.fillStyle = "rgb(" + cache[index] + ", " +  cache[index+1] + ", " +  cache[index+2] + ")";
+	canvas.ctx.fillStyle = "rgb(" + cache[index] + ", " +  cache[index+1] + ", " +  cache[index+2] + ")";
     canvas.ctx.fillRect(x, y, 1, 1);
 }
+
 Drawr.setPixelAt = function(id, x, y, pixel){
 	if (pixel === undefined) return;
+	
+	var canvas = Drawr.canvases[id];
+	x = Math.min(canvas.width, Math.max(0, x));
+	y = Math.min(canvas.height, Math.max(0, y));
 	
 	var index = (y * Drawr.canvases[id].width + x)*4;
 	if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(pixel)){
 		pixel = hexToRgb(pixel);
 		pixel['a'] = 255;
 	}
-	//pixel.x = x;
-	//pixel.y = y;
-	//pixel.id = id;
-	//pixel.index = index;
 	
 	Drawr.updatePixel(pixel, id, index, x, y);
 }

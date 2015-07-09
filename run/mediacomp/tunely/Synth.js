@@ -126,7 +126,7 @@ Synth.PlaySound = function(sound){
 		source.start(0);
 	}
 	
-    var key = new Date().getTime() - Main.appstart_time;
+    var key = new Date().getTime() - Synth.appstart_time;
 	Synth.playing_sounds[key] = source;
 	
 	window.setTimeout(function(){
@@ -173,7 +173,7 @@ Synth.PlayNote = function(note){
 		source.start(0);
 	}
 	
-    var key = new Date().getTime() - Main.appstart_time;
+    var key = new Date().getTime() - Synth.appstart_time;
 	Synth.playing_sounds[key] = source;
 	
 	window.setTimeout(function(){

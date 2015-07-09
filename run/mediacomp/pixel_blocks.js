@@ -102,8 +102,7 @@ Blockly.Blocks['mediacomp_setPixel'] = {
         .setCheck('Pixel')
         .setAlign(Blockly.ALIGN_RIGHT);
     this.appendValueInput('PIXEL2')
-        .setCheck('Pixel')
-		.setCheck('Colour')
+		.setCheck(['Colour', 'Pixel'])
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("to");
 		

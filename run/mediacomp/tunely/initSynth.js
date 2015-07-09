@@ -1,7 +1,12 @@
 function Synth(){}
 
+Synth.appstart_time = new Date().getTime();
+
 Synth.originalSounds = {};
 Synth.sounds = {};
+
+Synth.uploaded_sounds = [];
+
 Synth.name_counter = 1;
 Synth.GetSound = function(sound_name){
 	var buffer = Synth.sounds[sound_name];
@@ -20,9 +25,8 @@ Synth.UploadSound = function(e){
 			Synth.addToOriginalSounds(ev.target.result, name,
 				function(sound){
 					Synth.StoreSoundMemory(name, sound);
-					var xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-					Main.LoadBlocksFromXml(xml);
-					alert("Sound uploaded! (Should appear in instrument drop down)");
+					BlockIt.RefreshWorkspace();
+					Dialog.Alert("Sound uploaded! (Should appear in instrument drop down)");
 				}
 			);
 		});
@@ -112,6 +116,12 @@ Synth.loadFileIntoVoiceBuffer = function(url, name, callback){
 	request.send();
 }
 
+Synth.clearUploadedSounds = function(){
+	var piano = Synth.sounds.piano;
+	Synth.sounds = {};
+	Synth.sounds.piano = piano;
+}
+
 Synth.StoreSoundMemory = function(name, sound){
 	var obj = {};
 	obj.name = name;
@@ -123,6 +133,8 @@ Synth.StoreSoundMemory = function(name, sound){
 		channel = Array.prototype.slice.call(channel);
 		obj["channel" + i] = channel;
 	}
+	
+	Synth.uploaded_sounds.push(obj);
 	
 	//store the names in cookies so know what to remember
 	var memory = getCookie("soundMemory");
@@ -150,6 +162,12 @@ Synth.RememberSoundsFromMemory = function(){
 Synth.RememberSound = function(name){
 	var json = localStorage.getItem(name);
 	var obj = JSON.parse(json);
+	Synth.LoadSound(obj);
+}
+
+Synth.LoadSound = function(obj){
+	Synth.uploaded_sounds.push(obj);
+	var name = obj.name;
 	var sound = Synth.context.createBuffer(obj.numberOfChannels, obj.length, obj.sampleRate);
 	
 	for (var i = 0; i < obj.numberOfChannels; i++){
@@ -163,7 +181,7 @@ Synth.RememberSound = function(name){
 	Synth.sounds[name] = Synth.CloneSound(sound);
 	
 	//refresh blocks
-	Main.RefreshBlocks();
+	BlockIt.RefreshWorkspace();
 }
 
 Synth.addToOriginalSounds = function(audiobuffer, name, callback){

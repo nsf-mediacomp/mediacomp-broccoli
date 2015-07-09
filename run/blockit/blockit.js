@@ -3,11 +3,16 @@ var BlockIt = function(){};
 BlockIt.workspace;
 BlockIt.stop_iteration = false;
 BlockIt.wait_time = 0;
+BlockIt.valid_block_types = [];
 
-BlockIt.Init = function(opt_workspace){
+BlockIt.Init = function(valid_block_types, opt_reserved_words, opt_workspace){
+	BlockIt.valid_block_types = valid_block_types;
+	
 	BlockIt.InitWorkspace(opt_workspace);	
+	if (opt_reserved_words === undefined)
+		opt_reserved_words = "";
 	//todo need to fully populate this
-	Blockly.JavaScript.addReservedWords("block,BlockIt,sandbox,var_name,temp_sandbox,funcs,funcName,temp_block,return_args,args,ret_value,ret_values,arguments_stack,parent_stack,control_flow");
+	Blockly.JavaScript.addReservedWords("block,BlockIt,sandbox,var_name,temp_sandbox,funcs,funcName,temp_block,return_args,args,ret_value,ret_values,arguments_stack,parent_stack,control_flow,"+opt_reserved_words);
 }
 BlockIt.InitWorkspace = function(opt_workspace){	
 	var workspace = opt_workspace || Blockly.mainWorkspace;
@@ -23,7 +28,7 @@ BlockIt.RefreshWorkspace = function(){
 	BlockIt.LoadBlocks(xml, BlockIt.workspace);
 }
 
-BlockIt.IterateThroughBlocks = function(valid_block_types, callback, opt_workspace){
+BlockIt.IterateThroughBlocks = function(callback, opt_workspace){
 	if (callback === undefined) callback = function(){};
 	BlockIt.final_callback = callback;
 	
@@ -34,7 +39,7 @@ BlockIt.IterateThroughBlocks = function(valid_block_types, callback, opt_workspa
 	BlockIt.ResetIteration();
 	BlockIt.stop_iteration = false;
 	
-	var mains = BlockIt.ReturnValidBlocksAndCacheFunctions(valid_block_types);
+	var mains = BlockIt.ReturnValidBlocksAndCacheFunctions();
 	
 	if (mains.length <= 0){
 		alert("No main program!");
@@ -92,6 +97,8 @@ try{
 		BlockIt.StopIteration();
 		return;
 	}
+	
+	//console.log(block);
 	
 	//only will be true for loops with the "run max speed" checkbox checked
 	var run_fast = (block.getFieldValue("RUN_FAST") === "TRUE");
@@ -566,7 +573,6 @@ BlockIt.StepDefaultBlock = function(args){
 	args.push(block);
 	args.reverse();
 	args.push(sandbox);
-	//console.log(type);
 	value = BlockIt[type].apply(this, args);
 	return value;
 }

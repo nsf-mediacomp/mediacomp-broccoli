@@ -239,6 +239,13 @@ CanvasSelect.upload = function(e){
 				CanvasSelect.addCanvas(img);
 				BlockIt.InitWorkspace();
 				BlockIt.RefreshWorkspace();
+
+				//now store uploaded image in local storage!
+				/*for (var i = 0; i < CanvasSelect.uploaded_images.length; i++){
+					var name = "uploaded_image_" + i;
+					var src = CanvasSelect.uploaded_images[i];
+					localStorage.setItem(name, src);
+				}*/
 			}
 		}
 		img.src = event.target.result;

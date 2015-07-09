@@ -37,3 +37,9 @@ Blockly.Msg.MEDIACOMP_GETPIXELAT_X = "pixel at x";
 Blockly.Msg.MEDIACOMP_GETPIXELAT_Y = "y";
 Blockly.Msg.MEDIACOMP_GETPIXELAT_CANVAS = "on canvas";
 Blockly.Msg.MEDIACOMP_GETPIXELAT_TOOLTIP = "Get the pixel at the specified x and y position at the specified canvas.";
+
+Blockly.Msg.COLOUR_HSV_TITLE = "colour with";
+Blockly.Msg.COLOUR_HSV_HUE = "hue";
+Blockly.Msg.COLOUR_HSV_SATURATION = "saturation";
+Blockly.Msg.COLOUR_HSV_VALUE = "value";
+Blockly.Msg.COLOUR_HSV_TOOLTIP = "Creates a color with the specified hue, saturation, and value. (Each value must be between 0 and 100)";

@@ -29,9 +29,10 @@ Blockly.Blocks['synth_defaultInstruments'] = {
 	init: function(){
 		this.setColour(90);
 		var SOUND_NAMES =[
+			["piano", 'piano']
 		];
 		for (var sound in Synth.sounds) {
-			if (Synth.sounds.hasOwnProperty(sound)) {
+			if (Synth.sounds.hasOwnProperty(sound) && sound !== "piano") {
 				SOUND_NAMES.push([sound, sound]);
 			}
 		}
@@ -114,7 +115,7 @@ BlockIt['synth_getSamples'] = function(block, sound){
 //GET THE VALUE OF A SAMPLE???
 Blockly.Blocks['synth_getSampleValue'] = {
 	init: function(){
-		this.setColour(Blockly.Blocks.variables.HUE);
+		this.setColour(0);
 		this.appendValueInput("SAMPLE")
 			.setCheck("Sample")
 			.appendField("get value from sample");
@@ -136,7 +137,7 @@ BlockIt['synth_getSampleValue'] = function(block, sample){
 //SET THE VALUE OF A SAMPLE???
 Blockly.Blocks['synth_setSampleValue'] = {
 	init: function(){
-		this.setColour(Blockly.Blocks.variables.HUE);
+		this.setColour(0);
 		this.appendValueInput("SAMPLE")
 			.setCheck("Sample")
 			.appendField("set value of sample");

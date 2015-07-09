@@ -1,13 +1,15 @@
 Drawr.imagePath = "mediacomp/images/"
 Drawr.image_paths = [Drawr.imagePath+"redeye.png", Drawr.imagePath+"greenscreen.png", Drawr.imagePath+"tokyo.png", Drawr.imagePath+"beach.png", Drawr.imagePath+"blank.png"];
 
-Drawr.DOUBLE_CLICK_TIME = 100;
+function Main(){}
+Main.DOUBLE_CLICK_TIME = 100;
 
-Drawr.stepTime = 10;
-Drawr.stepTimeoutId = null;
+Main.stepTime = 10;
+Main.stepTimeoutId = null;
 
-Drawr.init = function(){ 
-    Drawr.setupBlockly();
+Main.init = function(){ 
+    Main.setupBlockly();
+	BlockIt.Init(["mediacomp_run"], "Main,Drawr,CanvasSelect,Synth");
 	
     // Connect canvases
 	//canvas_select.js
@@ -22,9 +24,7 @@ Drawr.init = function(){
 	//load the sound samples
 	var default_sounds = ["piano"];
 	Synth.default_sound_names = default_sounds;
-	Synth.loadFileIntoVoiceBuffer("mediacomp/tunely/samples/piano.wav", "piano", function(){
-		Synth.RememberSoundsFromMemory();
-	});
+	Synth.loadFileIntoVoiceBuffer("mediacomp/tunely/samples/piano.wav", "piano");
 	Synth.Reset();
 	
 	var uploadSound = document.getElementById("uploadSound");
@@ -35,31 +35,45 @@ Drawr.init = function(){
     
 	//////////////////////////////////////////////////////////
     // Setup dom buttons
-	$("#runButton")[0].addEventListener("click", Drawr.RunButton);
-	$("#resetButton")[0].addEventListener("click", Drawr.Reset);
+	$("#runButton")[0].addEventListener("click", Main.RunButton);
+	$("#resetButton")[0].addEventListener("click", Main.Reset);
 
 	$("#codeButton")[0].addEventListener("click", function(){
+		BlockIt.DisableFloatingBlocks();
+		
 		var generated_code = Blockly.JavaScript.workspaceToCode();
-			generated_code = getRidOfNakedCode(generated_code);
-			generated_code += "pixly_run();\n";
+			generated_code += "pixly_runProgram();\n";
 		var content = "<pre>" + generated_code + "</pre>";
+		
+		BlockIt.EnableFloatingBlocks();
 			
 		Dialog.Alert(content, "Generated JavaScript Code");
 	});
 	$("#importButton")[0].addEventListener('click', function(){
-		Drawr.openProject();
+		Main.openProject();
 	});
 	$("#exportButton")[0].addEventListener('click', function(){
-		Drawr.saveProject();
+		Main.saveProject();
 	});
 	
 	$("#captureButton")[0].addEventListener("click", function(){
 		var canvas = Drawr.getCtx(CanvasSelect.selected).canvas;
 		download(canvas, 'pixlyCanvas.png');
 	});
+	
+	//LOAD UP EVERYTHING	
+	Main.loadWorkspaceFromLocalStorage();
+	Drawr.RememberImagesFromMemory();
+	Synth.RememberSoundsFromMemory();
+	
+	setInterval(Main.saveWorkspaceToLocalStorage, 10000);
+	window.addEventListener('beforeunload', function(e){
+		Main.saveWorkspaceToLocalStorage();
+	});
 }
+window.addEventListener('load', Main.init);
 
-Drawr.setupBlockly = function(){
+Main.setupBlockly = function(){
 	// Set the page title with the content of the H1 title.
 	document.title = document.getElementById('title').textContent;
 
@@ -102,73 +116,38 @@ Drawr.setupBlockly = function(){
 	var toolbox = document.getElementById('toolbox');
 	Blockly.inject($('#blockly')[0],
 		{path: 'blockly/', toolbox: $('#toolbox')[0], trashcan: true});
-		
-	//Add to reserver word list
-	Blockly.JavaScript.addReservedWords('Drawr');
-	
-	Drawr.loadWorkspaceFromLocalStorage();
-	setInterval(Drawr.saveWorkspaceToLocalStorage, 10000);
-	window.addEventListener('beforeunload', function(e){
-		/*if (Blockly.mainWorkspace.getAllBlocks().length > 2){
-			var msg = "Leaving this page will result in the loss of your work.";
-			e.returnValue =  msg; //Gecko
-			return msg; //Webkit
-		}
-		return null;*/
-		Drawr.saveWorkspaceToLocalStorage();
-	});
 }
 
-Drawr.saveWorkspaceToLocalStorage = function(){
+Main.saveWorkspaceToLocalStorage = function(){
+	console.log("workspace saved.");
+	
 	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
 	xml = Blockly.Xml.domToPrettyText(xml);
 	localStorage.setItem("xml", xml);
 	
 	localStorage.setItem("selected", CanvasSelect.selected);
-	for (var i = 0; i < CanvasSelect.uploaded_images.length; i++){
-		var name = "uploaded_image_" + i;
-		var src = CanvasSelect.uploaded_images[i];
-		localStorage.setItem(name, src);
-	}
 }
 
-Drawr.loadWorkspaceFromLocalStorage = function(){
+Main.loadWorkspaceFromLocalStorage = function(){
 	var xml = localStorage.getItem("xml");
 	if (xml === undefined || xml === null){		
 		var defaultXml = 
 			'<xml>' +
 			'	<block type="mediacomp_run" x="70" y="70"></block>' +
 			'</xml>';
-		Drawr.loadBlocks(defaultXml);
+		Main.loadBlocks(defaultXml);
 		return;
 	}
 	Blockly.mainWorkspace.clear();
-	Drawr.loadBlocks(xml);
-	
-	var img_num = 0;
-	while (true){
-		var name = "uploaded_image_" + img_num;
-		var src = localStorage.getItem(name);
-		if (src === null || src === undefined) break;
-		
-		CanvasSelect.restoreUploadedImage(src);
-		img_num++;
-	}
-	CanvasSelect.select(0);
-	window.setTimeout(function(){
-		var selected = localStorage.getItem("selected");
-		if (selected !== null && selected !== undefined){
-			CanvasSelect.select(selected);
-		}
-	}, 100);
+	Main.loadBlocks(xml);
 }
 
-Drawr.importXml = function(textarea){
+Main.importXml = function(textarea){
 	Blockly.mainWorkspace.clear();
-	Drawr.loadBlocks($(textarea)[0].value);
+	Main.loadBlocks($(textarea)[0].value);
 }
 
-Drawr.loadBlocks = function(defaultXml){
+Main.loadBlocks = function(defaultXml){
   try {
     var loadOnce = window.sessionStorage.loadOnceBlocks;
   } catch(e) {
@@ -195,45 +174,47 @@ Drawr.loadBlocks = function(defaultXml){
   }
 };
 
-window.addEventListener('load', Drawr.init);
 
-Drawr.Reset = function(){
+Main.Reset = function(){
 	CanvasSelect.reset();
 }
 	
-Drawr.runButton = true;
-Drawr.RunButton = function(){
+Main.runButton = true;
+Main.RunButton = function(){
 	// Prevent double-clicks or double-taps.
 	$("#runButton")[0].disabled = true;
-	setTimeout(function() {$("#runButton")[0].disabled = false;}, Drawr.DOUBLE_CLICK_TIME);
+	setTimeout(function() {$("#runButton")[0].disabled = false;}, Main.DOUBLE_CLICK_TIME);
 	
-	if (Drawr.runButton){
+	if (Main.runButton){
 		$("#runButtonText")[0].innerHTML = "Stop Program";
 		$("#runButtonImg")[0].style.backgroundPosition = "-63px 0px";
-		Drawr.RunCode();
+		Main.RunCode();
 	}else{
 		$("#runButtonText")[0].innerHTML = "Run Program";
 		$("#runButtonImg")[0].style.backgroundPosition = "-63px -21px";
-		Drawr.StopCode();
+		Main.StopCode();
 	}
-	Drawr.runButton = !Drawr.runButton;
+	Main.runButton = !Main.runButton;
 }
-Drawr.RunCode = function(){		
+Main.RunCode = function(){		
 	//document.getElementById('spinner').style.visibility = 'visible';
 
 	//window.setInterval(function(){ Drawr.flushCache(); }, 10);
 	window.setTimeout(function(){
 		document.getElementById("spinner").style.visibility = "";
-		if (!BlockIt.IterateThroughBlocks("mediacomp_run", function(){
+		if (!BlockIt.IterateThroughBlocks(function(){
 			Drawr.flushCache();
-			Drawr.RunButton();
+			Synth.Reset();
+			Main.RunButton();
 		})){
 			document.getElementById("runButton").click();
 		}
 	}, 0);
 }
-Drawr.StopCode = function(){	
+Main.StopCode = function(){	
 	BlockIt.StopIteration();
+	Drawr.flushCache();
+	Synth.Reset();
 
 	document.getElementById('spinner').style.visibility = 'hidden';
 }

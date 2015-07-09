@@ -58,8 +58,8 @@
   <script type="text/javascript" src="mediacomp/drawr/canvas_select.js"></script>
   <script type="text/javascript" src="mediacomp/drawr/canvas_popout.js"></script>
   
-  <script type="text/javascript" src="mediacomp/project_management.js"></script>  
   <script type="text/javascript" src="mediacomp/main.js"></script>
+  <script type="text/javascript" src="mediacomp/project_management.js"></script>  
  
   <link rel="stylesheet" type="text/css" href="mediacomp/css/style.css">
 </head>
@@ -201,6 +201,7 @@
   
 	<category name="Canvas">
 	  <block type="mediacomp_canvas"></block>
+	  <block type="mediacomp_selected_canvas"></block>
 	  <!--<block type="mediacomp_run"></block>-->
 	  <block type="mediacomp_canvasDimension"></block>
 	  <block type="mediacomp_restartCanvas"></block>
@@ -380,6 +381,7 @@
 	  <block type="javascript_consoleLog"></block>
 	</category>
 	<category name="Sounds">
+			<block type="synth_defaultInstruments"></block>
 			<block type="synth_playSound">
 				<value name="SOUND">
 					<block type="synth_defaultInstruments"></block>

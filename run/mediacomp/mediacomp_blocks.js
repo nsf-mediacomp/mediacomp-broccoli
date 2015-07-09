@@ -12,16 +12,12 @@ goog.require('Blockly.JavaScript');
 
 Blockly.Blocks['mediacomp_canvas'] = {
   init: function() {	    
-	var canvas = [];
+	var canvas = [['0', '0'], ['1', '1'], ['2', '2'], ['3', '3'], ['4', '4']];
 	try{
-		for (var i = 0; i < Drawr.canvases.length; i++){
+		for (var i = 5; i < Drawr.canvases.length; i++){
 			canvas.push([''+i, ''+i]);
 		}
-	}catch(e){
-		for (var i = 0; i < 4; i++){
-			canvas.push([''+i, ''+i]);
-		}
-	}
+	}catch(e){}
     this.appendDummyInput()
         .appendField(new Blockly.FieldImage("./mediacomp/images/redeye.png", 48, 48, "*"), "IMAGE");
 	this.appendDummyInput()
@@ -40,9 +36,13 @@ Blockly.Blocks['mediacomp_canvas'] = {
 	}.bind(this), 100);
   },
   getCanvasImage: function(val){
-	  if (val === undefined)
-		val = Number(this.getFieldValue('CANVAS'));
-	  return Drawr.getCtx(val).canvas.toDataURL();
+	  try{
+		if (val === undefined)
+			val = Number(this.getFieldValue('CANVAS'));
+		return Drawr.getCtx(val).canvas.toDataURL();
+	  }catch(e){
+		  return "./mediacomp/images/redeye.png";
+	  }
   }
 };
 Blockly.JavaScript['mediacomp_canvas'] = function(block){
@@ -52,6 +52,22 @@ Blockly.JavaScript['mediacomp_canvas'] = function(block){
 BlockIt['mediacomp_canvas'] = function(block){
 	var canvas_id = Number(block.getFieldValue('CANVAS'));
 	return canvas_id;
+}
+
+Blockly.Blocks['mediacomp_selected_canvas'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("selected canvas");
+    this.setOutput(true, "Number");
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+}
+Blockly.JavaScript['mediacomp_selected_canvas'] = function(block){
+	return [CanvasSelect.selected, Blockly.JavaScript.ORDER_ATOMIC];
+}
+BlockIt['mediacomp_selected_canvas'] = function(block){
+	return CanvasSelect.selected;
 }
 
 Blockly.Blocks['mediacomp_run'] = {
@@ -80,7 +96,7 @@ Blockly.JavaScript['mediacomp_run'] = function(block) {
   var do_branch = Blockly.JavaScript.statementToCode(block, 'DO');
   var funcName = Blockly.JavaScript.variableDB_.getDistinctName(
       'sphero_run', Blockly.Variables.NAME_TYPE);
-  var code = 'function pixly_run(){\n' + 
+  var code = 'function pixly_runProgram(){\n' + 
       do_branch +
 	  '}\n';
   return code;
