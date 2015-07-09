@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Pixly: Media Computation</title>
   <link rel="icon" type="image/ico" href="../favicon.ico">
   <!--JQUERY-->
@@ -98,17 +99,13 @@
                 <img src="blockly/media/1x1.gif" class="icon21 turtleImg"> Reset Canvas
             </button>
 			<br/>
-			<button id="uploadSoundButton" class="secondary" title="Upload your own sound from your computer.">
-				Upload Sound
-			</button>
-			<input type="file" id="uploadSound" />
 			<button id="codeButton" class="notext" title="See generated JavaScript code.">
                 <img src='blockly/media/1x1.gif' class="code icon21">
             </button>
-            <button class="notext" id="captureButton" title="Save the drawing.">
+            <button class="notext" id="captureButton" title="Save the selected canvas.">
                 <img src='blockly/media/1x1.gif' class="img icon21">
             </button>
-            <a id="downloadImageLink" download="drawing.png"></a>
+            <a id="downloadImageLink" href="" download="pixly_canvas.png" target="_blank"></a>
         </td>
     </tr>
     </table>
@@ -116,9 +113,15 @@
     
     <!--221,221,221
     238,238,238-->
-    <div id="canvas_select_controls">
-		Upload Image: 
-        <input id="uploadcanvas" name="uploadcanvas" type="file" />
+    <div id="canvas_select_controls" style="text-align:center;">	
+		<button id="uploadImageButton" class="secondary" title="Upload your own image from your computer.">
+			Upload Image
+		</button>
+		<input type="file" id="uploadcanvas" />
+		<button id="uploadSoundButton" class="secondary" title="Upload your own sound from your computer.">
+			Upload Sound
+		</button>
+		<input type="file" id="uploadSound" />
     </div>
     <br/>
     <div id="canvas_select">

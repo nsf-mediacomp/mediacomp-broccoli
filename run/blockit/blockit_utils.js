@@ -34,7 +34,7 @@ BlockIt.EnableFloatingBlocks = function(){
 }
 
 //returns valid (wrapped) top level blocks
-BlockIt.ReturnValidBlocksAndCacheFunctions = function(){
+BlockIt.ReturnValidBlocksAndCacheFunctions = function(valid_block_types){
 	if (valid_block_types === undefined){
 		valid_block_types = BlockIt.valid_block_types;
 	}

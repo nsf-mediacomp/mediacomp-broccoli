@@ -32,6 +32,7 @@ Main.init = function(){
 		uploadSound.click(e);
 	}
 	uploadSound.onchange = Synth.UploadSound;
+
     
 	//////////////////////////////////////////////////////////
     // Setup dom buttons
@@ -58,8 +59,16 @@ Main.init = function(){
 	
 	$("#captureButton")[0].addEventListener("click", function(){
 		var canvas = Drawr.getCtx(CanvasSelect.selected).canvas;
-		download(canvas, 'pixlyCanvas.png');
+		$("#downloadImageLink")[0].href = canvas.toDataURL();
+		$("#downloadImageLink")[0].download = "pixly_canvas_"+CanvasSelect.selected+".png"
+		$("#downloadImageLink")[0].click();
 	});
+	
+	$("#uploadcanvas")[0].addEventListener("change", CanvasSelect.upload, false);
+	$("#uploadImageButton")[0].addEventListener("click", 
+		function(){$("#uploadcanvas")[0].click(); }, 
+		false
+	);
 	
 	//LOAD UP EVERYTHING	
 	Main.loadWorkspaceFromLocalStorage();

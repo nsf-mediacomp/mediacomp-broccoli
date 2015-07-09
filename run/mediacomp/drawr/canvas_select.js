@@ -17,7 +17,7 @@ CanvasSelect.init = function(img_paths){
 				CanvasSelect.resetAll();
 			}
 		}.bind(img, i);
-		CanvasSelect.addSelectBox();
+		CanvasSelect.addSelectBox(i);
 	}
 	CanvasSelect.canvas_id = count;
     
@@ -25,8 +25,6 @@ CanvasSelect.init = function(img_paths){
     CanvasSelect.select(0);
   
     setInterval(CanvasSelect.updateSelectBoxCanvases, 1000);
-	
-	$("#uploadcanvas")[0].addEventListener("change", CanvasSelect.upload, false);
 }
 
 CanvasSelect.resetAll = function(){
@@ -60,41 +58,56 @@ CanvasSelect.onresize = function(){
     }
 }
 
-CanvasSelect.updateBoxes = function(){
-    
-}
-
-CanvasSelect.addSelectBox = function(){
+CanvasSelect.addSelectBox = function(id){
     var boxes = document.getElementsByClassName("canvas_select_box");
-	var id = boxes.length;
+	//var id = boxes.length;
 
-    /*var id = CanvasSelect.select_boxes.push({enabled: 1});
-    return id;*/
-    
-    /* create: 
-    <div class="canvas_select_box" id="canvas_select_0" onclick="CanvasSelect.select(0)">
-        <img src="images/cat_attendant.jpg" width="75px" height="75px"/><br/>
-        canvas 0
-    </div>
-    */
-	var new_box = '<div class="canvas_select_box" id="canvas_select_$id" onclick="CanvasSelect.select($id)">' +
+	var new_box = '<div class="canvas_select_box" id="canvas_select_$id" onclick="CanvasSelect.select($id)">';
+	if (id > 4){
+		new_box += "<div id='canvas_select_delete_$id' style='margin-left:65px;text-align:right;margin-top:-8px;cursor:pointer;font-size:16px;color:red;' onclick=\"(function(){ " +
+			"Dialog.Confirm('Really remove this uploaded image?', function(){  CanvasSelect.removeImage($id); }, 'Delete Image?', 'Yes');" + 
+		"})()\">x</div>";
+	}
+	new_box	+=
 		/*'    <!--img src="images/cat_attendant.jpg" width="75px" height="75px"/><br/-->' +*/
 		'    <canvas width="75px" height="75px"></canvas><br/>' +
 		'    canvas $id' +
 		'</div>';
 	new_box = new_box.interpolate({id: id});
+	console.log(id);
 	$("#canvas_select")[0].innerHTML += new_box;
 	
     return id;
 }
 
-CanvasSelect.removeSelectBox = function(id){
-    // just disables it/doesn't show it. the next time a canvas is added, it will overwrite this one. maybe?
-    /*if(CanvasSelect.select_boxes[id]){
-        CanvasSelect.select_boxes[id].enabled = 0;
-    }
-    CanvasSelect.updateBoxes();*/
-    CanvasSelect.getSelectBox(id).style.display = "none";
+CanvasSelect.removeImage = function(id){
+	var uploaded_images = CanvasSelect.uploaded_images.slice();
+	uploaded_images.splice(id-5, 1);
+	CanvasSelect.clearUploadedImages();
+	Drawr.canvases.splice(id, 1);
+	
+	var img_num = CanvasSelect.selected;
+	while (localStorage.getItem("uploaded_image_"+img_num) !== null){
+		localStorage.removeItem("uploaded_image_"+img_num);
+		img_num++;
+	}
+
+	var selected = CanvasSelect.selected;
+	CanvasSelect.uploaded_images = [];
+	CanvasSelect.canvas_id = 5;
+	
+	for (var i = 0; i < uploaded_images.length; i++){
+		CanvasSelect.restoreUploadedImage(uploaded_images[i]);
+		localStorage.setItem("uploaded_image_"+(i+5), uploaded_images[i]);
+	}
+	CanvasSelect.updateSelectBoxCanvases();
+	
+	CanvasSelect.selected = selected;
+	while (CanvasSelect.selected >= $(".canvas_select_box").length){
+		CanvasSelect.selected--;
+	}
+	CanvasSelect.select(CanvasSelect.selected);
+	BlockIt.RefreshWorkspace();
 }
 
 CanvasSelect.getSelectBox = function(id){
@@ -132,39 +145,6 @@ CanvasSelect.select = function(id){
 		CanvasSelect.getCanvas(id).style.display = "block";
 		CanvasSelect.selected = id;
 	}catch(e){}
-}
-
-CanvasSelect.newBox = function(){
-	//Remove event listener wasn't working for me for some reason
-	if ($("#pluscanvas")[0].style.cursor === "not-allowed"){
-		return;
-	}
-	$("#minuscanvas")[0].style.cursor = "pointer";
-
-	var boxes = document.getElementsByClassName("canvas_select_box");
-	var id = boxes.length;
-	//CHECK TO SEE IF THERE ARE ANY CURRENTLY HIDDEN BOXES WE CAN OVERRIDE
-	var is_new_box = true;
-	for (var i = 0; i < boxes.length; i++){
-		if (boxes[i].style.display === "none"){
-			id = i;
-			is_new_box = false;
-			break;
-		}
-	}
-	if (is_new_box && id < CanvasSelect.max_canvases){
-		CanvasSelect.addSelectBox();
-		
-		if (id == CanvasSelect.max_canvases - 1){
-			$("#pluscanvas")[0].style.cursor = "not-allowed";
-		}
-	}else{
-		boxes[id].style.display = "block";
-	}
-	
-	CanvasSelect.select(id);
-	CanvasSelect.updateSelectBoxCanvases();
-	return id;
 }
 
 CanvasSelect.hide = function(){
@@ -241,11 +221,8 @@ CanvasSelect.upload = function(e){
 				BlockIt.RefreshWorkspace();
 
 				//now store uploaded image in local storage!
-				/*for (var i = 0; i < CanvasSelect.uploaded_images.length; i++){
-					var name = "uploaded_image_" + i;
-					var src = CanvasSelect.uploaded_images[i];
-					localStorage.setItem(name, src);
-				}*/
+				var name = "uploaded_image_" + (4+CanvasSelect.uploaded_images.length);
+				localStorage.setItem(name, img.src);
 			}
 		}
 		img.src = event.target.result;
@@ -272,7 +249,8 @@ CanvasSelect.addCanvas = function(img){
 	Drawr.resetCache(id);
 	Drawr.canvases[id].image = img;
 	
-	CanvasSelect.addSelectBox();
+	console.log(id);
+	CanvasSelect.addSelectBox(id);
 	
 	CanvasSelect.select(id);
 }

@@ -5,18 +5,20 @@ Drawr.global_cache = [];
 Drawr.pixel_cache = [];
 
 Drawr.RememberImagesFromMemory = function(){
-	var img_num = 0;
+	var img_num = 5;
 	
-	while (true){
-		var name = "uploaded_image_" + img_num;
-		var src = localStorage.getItem(name);
-		if (src === null || src === undefined) break;
-		
-		window.setTimeout(function(src){
-			CanvasSelect.restoreUploadedImage(src);
-		}.bind(this, src), 0);
-		img_num++;
-	}
+	window.setTimeout(function(){
+		while (true){
+			var name = "uploaded_image_" + img_num;
+			var src = localStorage.getItem(name);
+			if (src === null || src === undefined) break;
+			
+			window.setTimeout(function(src){
+				CanvasSelect.restoreUploadedImage(src);
+			}.bind(this, src), 0);
+			img_num++;
+		}
+	}, 1);
 	CanvasSelect.select(0);
 }
 

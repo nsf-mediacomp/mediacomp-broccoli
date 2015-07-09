@@ -114,6 +114,17 @@ button.secondary {
   background-color: #4d90fe;
   color: #fff;
 }
+#uploadcanvas{
+	display:none;	
+}
+#uploadImageButton{
+	border: 1px solid #000000;
+	background-color: #000000;
+}
+#uploadSoundButton{
+	border: 1px solid #80A55B;
+	background-color: #80A55B;
+}
 button.nospace {
   margin-left:2px;
   margin-right:2px;
