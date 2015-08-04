@@ -34,19 +34,19 @@
   
   <!--import TUNELY!!!-->
 	<!--custom tunely messages-->
-	<script src="mediacomp/tunely/lang/en.js"></script>
+	<!--<script src="mediacomp/tunely/lang/en.js"></script>
 	<!-- in order to draw on canvases of possibly exceeding max width (for explore sound)-->
-	<script src="mediacomp/tunely/BigCanvas.js"></script>
+	<!--<script src="mediacomp/tunely/BigCanvas.js"></script>
   <script src="mediacomp/tunely/initSynth.js"></script>
 	<!--wad (web audio daw) javascript library (https://github.com/rserota/wad)-->
-	<script src="mediacomp/tunely/lib/wad.min.js"></script>
+	<!--<script src="mediacomp/tunely/lib/wad.min.js"></script>
 	<!--pitch shift (http://mikolalysenko.github.io/pitch-shift/)-->
-	<script src="mediacomp/tunely/lib/pitchshift_lib/pitchshiftBundle.js"></script>
+	<!--<script src="mediacomp/tunely/lib/pitchshift_lib/pitchshiftBundle.js"></script>
   <script src="mediacomp/tunely/Synth.js"></script>
   <script src="mediacomp/tunely/exploreSynth.js"></script>
 	<!--tunely blockly block definitions/javascript generators-->
-	<script src="mediacomp/tunely/audio_blocks.js"></script>
-  <link rel="stylesheet" type="text/css" href="mediacomp/tunely/style.css">
+	<!--<script src="mediacomp/tunely/audio_blocks.js"></script>
+  <link rel="stylesheet" type="text/css" href="mediacomp/tunely/style.css">-->
   
   <!--Custom block definitions-->
   <script type="text/javascript" src="mediacomp/mediacomp_blocks.js"></script>
@@ -118,13 +118,13 @@
 			Upload Image
 		</button>
 		<input type="file" id="uploadcanvas" />
-		<button id="uploadSoundButton" class="secondary" title="Upload your own sound from your computer.">
+		<!--<button id="uploadSoundButton" class="secondary" title="Upload your own sound from your computer.">
 			Upload Sound
 		</button>
 		<input type="file" id="uploadSound" />
 		<button id="deleteSoundButton" class="primary" title="Remove a sound you have uploaded.">
 			<img src="blockly/media/1x1.gif" class="icon21 stop">
-		</button>
+		</button>-->
     </div>
     <br/>
     <div id="canvas_select">
@@ -154,7 +154,7 @@
 				line-height: 28px;
 			}
 		</style>
-		<center class="explore_inputs">
+		<!--<center class="explore_inputs">
 			<p>
 				<input type="submit" value="Play Entire Sound" id="explore_playSound"/>
 				<input type="submit" value="Play Before" id="explore_playBefore"/>
@@ -200,7 +200,7 @@
 				<input type="submit" value="Zoom Out" id="explore_zoomOut"/>
 				<input type="submit" value="Zoom In" id="explore_zoomIn"/>
 			</p>
-		</center>
+		</center>-->
 	</div>
 
   <xml id="toolbox" style="display: none">
@@ -289,7 +289,7 @@
 	  <block type="mediacomp_run"></block>
 	  <block type="javascript_consoleLog"></block>
 	</category>
-	<category name="Sounds">
+	<!--<category name="Sounds">
 			<block type="synth_defaultInstruments"></block>
 			<block type="synth_playSound">
 				<value name="SOUND">
@@ -329,12 +329,12 @@
 					</block>
 				</value>
 			</block>-->
-			<block type="synth_exploreSound">
+			<!--<block type="synth_exploreSound">
 				<value name="SOUND">
 					<block type="synth_defaultInstruments"></block>
 				</value>
 			</block>
-		</category>
+		</category>-->
 	<sep></sep>
     <category name="Logic">
       <block type="controls_if"></block>

@@ -19,7 +19,7 @@ Main.init = function(){
 	
 	//////////////////////////////////////////////////////////
 	//SET UP TUNELY
-	Synth.EXPLORER.initContainer(document.getElementById("explore_mainContainer"));
+	/*Synth.EXPLORER.initContainer(document.getElementById("explore_mainContainer"));
 	
 	//load the sound samples
 	var default_sounds = ["piano"];
@@ -69,7 +69,7 @@ Main.init = function(){
 		}else{
 			Dialog.Alert("No uploaded sounds found.<br><br>Click <b>Upload Sound</b> button to choose one from your computer.", "Remove Uploaded Sound");
 		}
-	});
+	});*/
 	
 
     
@@ -112,7 +112,7 @@ Main.init = function(){
 	//LOAD UP EVERYTHING	
 	Main.loadWorkspaceFromLocalStorage();
 	Drawr.RememberImagesFromMemory();
-	Synth.RememberSoundsFromMemory();
+	//Synth.RememberSoundsFromMemory();
 	
 	setInterval(Main.saveWorkspaceToLocalStorage, 10000);
 	window.addEventListener('beforeunload', function(e){
@@ -252,7 +252,7 @@ Main.RunCode = function(){
 		document.getElementById("spinner").style.visibility = "";
 		if (!BlockIt.IterateThroughBlocks(function(){
 			Drawr.flushCache();
-			Synth.Reset();
+			//Synth.Reset();
 			Main.RunButton();
 		})){
 			document.getElementById("runButton").click();
@@ -262,7 +262,7 @@ Main.RunCode = function(){
 Main.StopCode = function(){	
 	BlockIt.StopIteration();
 	Drawr.flushCache();
-	Synth.Reset();
+	//Synth.Reset();
 
 	document.getElementById('spinner').style.visibility = 'hidden';
 }

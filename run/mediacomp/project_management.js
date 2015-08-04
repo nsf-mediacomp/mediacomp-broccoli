@@ -2,7 +2,7 @@ Main.example_projects = {};
 
 Main.loaded_xml = "";
 Main.loaded_images = [];
-Main.loaded_sounds = [];
+//Main.loaded_sounds = [];
 Main.loaded_selected = 0;
 Main.loaded_json = "";
 Main.saved_xml = "";
@@ -24,13 +24,13 @@ Main.openProject = function(){
 			var data = reader.result;
 			
 			Main.loaded_images = [];
-			Main.loaded_sounds = [];
+		//	Main.loaded_sounds = [];
 			try{
 				var obj = JSON.parse(data);
 				$(textarea).html(obj.xml);
 				Main.loaded_xml = obj.xml;
 				Main.loaded_images = obj.images;
-				Main.loaded_sounds = obj.sounds;
+				//Main.loaded_sounds = obj.sounds;
 				Main.loaded_selected = obj.selected;
 			}catch(e){
 				data = xmlToString(data);
@@ -54,9 +54,9 @@ Main.openProject = function(){
 		[Blockly.Msg.EXAMPLE_LINES, "simple_lines"],
 		[Blockly.Msg.EXAMPLE_MANDELBROT, "mandelbrot"],
 		
-		[Blockly.Msg.EXAMPLE_INCREASE_VOLUME, "increase_volume_forLoop"],
+		/*[Blockly.Msg.EXAMPLE_INCREASE_VOLUME, "increase_volume_forLoop"],
 		[Blockly.Msg.EXAMPLE_DECREASE_VOLUME, "decrease_volume_whileLoop"],
-		[Blockly.Msg.EXAMPLE_DOUBLE_PITCH, "double_pitch"],
+		[Blockly.Msg.EXAMPLE_DOUBLE_PITCH, "double_pitch"],*/
 	];
 	for (var i = 0; i < options_array.length; i++){
 		var option = $(document.createElement("option"));
@@ -72,7 +72,7 @@ Main.openProject = function(){
 			$(textarea).html(xml);
 			Main.loaded_xml = xml;
 			Main.loaded_images = [];
-			Main.loaded_sounds = [];
+			//Main.loaded_sounds = [];
 			Main.loaded_selected = CanvasSelect.selected;
 		}else{
 			$.get("./demo/"+value+".xml", function(data){
@@ -83,7 +83,7 @@ Main.openProject = function(){
 				$(textarea).html(xml);
 				Main.loaded_xml = xml;
 				Main.loaded_images = [];
-				Main.loaded_sounds = [];
+				//Main.loaded_sounds = [];
 				Main.loaded_selected = CanvasSelect.selected;
 			});
 		}
@@ -111,12 +111,12 @@ Main.openProject = function(){
 				CanvasSelect.restoreUploadedImage(Main.loaded_images[i]);
 			}
 		}
-		if (Main.loaded_sounds.length > 0){
+		/*if (Main.loaded_sounds.length > 0){
 			Synth.clearUploadedSounds();
 			for (var i = 0; i < Main.loaded_sounds.length; i++){
 				Synth.LoadSound(Main.loaded_sounds[i]);
 			}
-		}
+		}*/
 		CanvasSelect.select(Main.loaded_selected);
 	}, Blockly.Msg.PROJECT_MANAGEMENT, Blockly.Msg.LOAD_PROJECT);
 	Dialog.AddElement(message[0]);
@@ -150,7 +150,7 @@ Main.saveProject = function(){
 	message.append(textarea);
 	
 	Dialog.Confirm('', function(e){
-		var obj = {xml: Main.saved_xml, images: CanvasSelect.uploaded_images, selected: CanvasSelect.selected, sounds: Synth.uploaded_sounds};
+		var obj = {xml: Main.saved_xml, images: CanvasSelect.uploaded_images, selected: CanvasSelect.selected/*, sounds: Synth.uploaded_sounds*/};
 		var json = JSON.stringify(obj);
 		
 		createDownloadLink("#export", json, Main.json_filename);
