@@ -212,110 +212,13 @@
 	  <block type="mediacomp_canvasDimension"></block>
 	  <block type="mediacomp_restartCanvas"></block>
 	  <!--<block type="controls_forfor"></block>-->
-	  <block type="controls_forEach">
-		<field name="VAR">pixel</field>
-        <field name="RUN_FAST">TRUE</field>
-		<value name="LIST">
-			<block type="mediacomp_getPixels">
-				<value name="CANVAS">
-				</value>
-			</block>
-		</value>
-	  </block>
-      <block type="controls_for">
-      <field name="VAR">y</field>
-	  <field name="RUN_FAST">TRUE</field>
-        <value name="FROM">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-        <value name="TO">
-          <block type="math_number">
-            <field name="NUM">399</field>
-          </block>
-        </value>
-        <value name="BY">
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-        </value>
-        <statement name="DO">
-          <block type="controls_for">
-            <field name="VAR">x</field>
-			<field name="RUN_FAST">TRUE</field>
-            <value name="FROM">
-              <block type="math_number">
-                <field name="NUM">0</field>
-              </block>
-            </value>
-            <value name="TO">
-              <block type="math_number">
-                <field name="NUM">399</field>
-              </block>
-            </value>
-            <value name="BY">
-              <block type="math_number">
-                <field name="NUM">1</field>
-              </block>
-            </value>
-            <statement name="DO">
-                <block type="variables_set">
-                    <field name="VAR">pixel</field>
-                    <value name="VALUE">
-                      <block type="mediacomp_getPixelAt">
-                        <value name="X">
-                          <block type="variables_get">
-                            <field name="VAR">x</field>
-                          </block>
-                        </value>
-                        <value name="Y">
-                          <block type="variables_get">
-                            <field name="VAR">y</field>
-                          </block>
-                        </value>
-                        <value name="CANVAS">
-                        </value>
-                      </block>
-                    </value>
-                </block>
-            </statement>
-          </block>
-        </statement>
-      </block>
+	  <block type="mediacomp_getPixels"></block>
 	</category>
     
     <category name="Pixels">
 		<block type="mediacomp_getPixelAt">
-			<value name="X">
-				<block type="math_number">
-					<field name="NUM">0</field>
-				</block>
-			</value>
-			<value name="Y">
-				<block type="math_number">
-					<field name="NUM">0</field>
-				</block>
-			</value>
-            <value name="CANVAS">
-              <block type="mediacomp_canvas">
-                <field name="CANVAS">0</field>
-              </block>
-            </value>
 		</block>
 		<block type="mediacomp_setPixelAt">
-			<value name="X">
-			  <block type="variables_get">
-				<field name="VAR">x</field>
-			  </block>
-			</value>
-			<value name="Y">
-			  <block type="variables_get">
-				<field name="VAR">y</field>
-			  </block>
-			</value>
-            <value name="CANVAS">
-            </value>
 			<value name="PIXEL">
 				<block type="variables_get">
 					<field name="VAR">pixel</field>

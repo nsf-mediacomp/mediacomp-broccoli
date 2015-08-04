@@ -85,7 +85,7 @@ CanvasSelect.removeImage = function(id){
 	CanvasSelect.clearUploadedImages();
 	Drawr.canvases.splice(id, 1);
 	
-	var img_num = CanvasSelect.selected;
+	var img_num = id;
 	while (localStorage.getItem("uploaded_image_"+img_num) !== null){
 		localStorage.removeItem("uploaded_image_"+img_num);
 		img_num++;

@@ -75,10 +75,10 @@ Main.init = function(){
     
 	//////////////////////////////////////////////////////////
     // Setup dom buttons
-	$("#runButton")[0].addEventListener("click", Main.RunButton);
-	$("#resetButton")[0].addEventListener("click", Main.Reset);
+	$("#runButton").click(Main.RunButton);
+	$("#resetButton").click(Main.Reset);
 
-	$("#codeButton")[0].addEventListener("click", function(){
+	$("#codeButton").click(function(){
 		BlockIt.DisableFloatingBlocks();
 		
 		var generated_code = Blockly.JavaScript.workspaceToCode();
@@ -89,14 +89,14 @@ Main.init = function(){
 			
 		Dialog.Alert(content, "Generated JavaScript Code");
 	});
-	$("#importButton")[0].addEventListener('click', function(){
+	$("#importButton").click(function(){
 		Main.openProject();
 	});
-	$("#exportButton")[0].addEventListener('click', function(){
+	$("#exportButton").click(function(){
 		Main.saveProject();
 	});
 	
-	$("#captureButton")[0].addEventListener("click", function(){
+	$("#captureButton").click(function(){
 		var canvas = Drawr.getCtx(CanvasSelect.selected).canvas;
 		$("#downloadImageLink")[0].href = canvas.toDataURL();
 		$("#downloadImageLink")[0].download = "pixly_canvas_"+CanvasSelect.selected+".png"
