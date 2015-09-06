@@ -15,62 +15,7 @@ Main.init = function(){
 	//canvas_select.js
     CanvasSelect.init(Drawr.image_paths);
 	//canvas_popout.js
-	CanvasSelect.setupCanvasPopout();
-	
-	//////////////////////////////////////////////////////////
-	//SET UP TUNELY
-	/*Synth.EXPLORER.initContainer(document.getElementById("explore_mainContainer"));
-	
-	//load the sound samples
-	var default_sounds = ["piano"];
-	Synth.default_sound_names = default_sounds;
-	Synth.loadFileIntoVoiceBuffer("mediacomp/tunely/samples/piano.wav", "piano");
-	Synth.Reset();
-	
-	var uploadSound = document.getElementById("uploadSound");
-	document.getElementById("uploadSoundButton").onclick = function(e){
-		uploadSound.click(e);
-	}
-	uploadSound.onchange = Synth.UploadSound;
-	
-	$("#deleteSoundButton")[0].addEventListener("click", function(){
-		if (Synth.uploaded_sounds.length > 0){
-			Dialog.Alert("", "Remove Uploaded Sound");
-			
-			var dropdown = document.createElement("select");
-			dropdown.id = "uploaded_sound_option";
-			for (var i = 0; i < Synth.uploaded_sounds.length; i++){
-				var name = Synth.uploaded_sounds[i].name;
-				var option = document.createElement("option");
-				option.innerHTML = name;
-				option.value = i;
-				dropdown.appendChild(option);
-			}
-			
-			var playButton = document.createElement("button");
-			playButton.innerHTML = "play";
-			playButton.onclick = function(){
-				var index = $(dropdown)[0].options[$(dropdown)[0].selectedIndex].value;
-				var name = Synth.uploaded_sounds[index].name;
-				Synth.PlaySound(Synth.GetSound(name));
-			}
-			
-			var removeButton = document.createElement("button");
-			removeButton.innerHTML = "remove";
-			removeButton.onclick = function(){
-				var index = $(dropdown)[0].options[$(dropdown)[0].selectedIndex].value;
-				Synth.RemoveUploadedSound(index);
-				$("#deleteSoundButton")[0].click();
-			}
-			
-			Dialog.AddElement(dropdown);
-			Dialog.AddElement(playButton);
-			Dialog.AddElement(removeButton);
-		}else{
-			Dialog.Alert("No uploaded sounds found.<br><br>Click <b>Upload Sound</b> button to choose one from your computer.", "Remove Uploaded Sound");
-		}
-	});*/
-	
+	CanvasSelect.setupCanvasPopout();	
 
     
 	//////////////////////////////////////////////////////////
@@ -110,13 +55,12 @@ Main.init = function(){
 	);
 	
 	//LOAD UP EVERYTHING	
-	Main.loadWorkspaceFromLocalStorage();
-	Drawr.RememberImagesFromMemory();
-	//Synth.RememberSoundsFromMemory();
+	Main.Memory.loadWorkspaceFromLocalStorage();
+	Main.Memory.RememberImagesFromMemory();
 	
-	setInterval(Main.saveWorkspaceToLocalStorage, 10000);
+	setInterval(Main.Memory.saveWorkspaceToLocalStorage, 10000);
 	window.addEventListener('beforeunload', function(e){
-		Main.saveWorkspaceToLocalStorage();
+		Main.Memory.saveWorkspaceToLocalStorage();
 	});
 }
 window.addEventListener('load', Main.init);
@@ -164,30 +108,6 @@ Main.setupBlockly = function(){
 	var toolbox = document.getElementById('toolbox');
 	Blockly.inject($('#blockly')[0],
 		{path: 'blockly/', toolbox: $('#toolbox')[0], trashcan: true});
-}
-
-Main.saveWorkspaceToLocalStorage = function(){
-	console.log("workspace saved.");
-	
-	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-	xml = Blockly.Xml.domToPrettyText(xml);
-	localStorage.setItem("xml", xml);
-	
-	localStorage.setItem("selected", CanvasSelect.selected);
-}
-
-Main.loadWorkspaceFromLocalStorage = function(){
-	var xml = localStorage.getItem("xml");
-	if (xml === undefined || xml === null){		
-		var defaultXml = 
-			'<xml>' +
-			'	<block type="mediacomp_run" x="70" y="70"></block>' +
-			'</xml>';
-		Main.loadBlocks(defaultXml);
-		return;
-	}
-	Blockly.mainWorkspace.clear();
-	Main.loadBlocks(xml);
 }
 
 Main.importXml = function(textarea){

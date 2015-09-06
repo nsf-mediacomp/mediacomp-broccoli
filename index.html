@@ -7,14 +7,16 @@
 <body>
 <center>
 <h1>Pixly: Programmatic Media Computation</h1>
-<h3>Built on <a href="https://code.google.com/p/blockly/">Blockly</a></h3>
+<h3>Built on <a href="https://developers.google.com/blockly/">Blockly</a></h3>
 <img src="content/screenshot.png" alt="Canvas" style="border:1px solid black;">
 <br/><br/>
 <button id="runButton" class="primary" title="Go to Pixly Application."
 		onclick="document.getElementById('link_to_run').click();">
 	<img src="run/blockly/media/1x1.gif" class="run icon21">Run Pixly Now
 </button>
-<a id="link_to_run" style="display:none" href="run/" target="_blank"></a>
+<p><a id="link_to_run" style="display:none" href="run/" target="_blank"></a></p>
+<p><a id="link_to_run2" style="display:none" href="run/" target="_blank"></a> <br/>
+  <u>OTHER PROJECTS</u>: Also, check out our other Blockly projects called <a href="http://outreach.cs.ua.edu/tunely/" target="_blank">Tunely</a> (which supports exploration of media computation - sound manipulation) and <a href="http://outreach.cs.ua.edu/spherly/" target="_blank">Spherly</a> (Blockly programming with Sphero robots). </p>
 <div style="clear:both;"></div>
 <br/><br/>
 <table style="text-align:left; width:900px;">
@@ -36,31 +38,31 @@
 		<br/>
 		<u><b>Additional Links:</b></u>
 		<ul>
-			<li><a href='https://code.google.com/p/blockly/' target="_blank">Blockly: Open Source Blocks</a></li>
-			<li><a href="http://coweb.cc.gatech.edu/mediaComp-teach" target="_blank">Media Computation Resources</a></li>
+			<li><a href='https://developers.google.com/blockly/' target="_blank">Blockly: Open Source Blocks</a></li>
+			<li><a href="http://coweb.cc.gatech.edu/mediaComp-teach" target="_blank">GaTech Media Computation Resources</a></li>
 		</ul>
 	</td>
-	<td>
+	<td>		
+		<div onclick="document.getElementById('link_to_manual').click();" style="cursor:pointer;">
+		<b>User Manual (Updated):</b>
+		<img style="border:1px solid black;" src="content/manual.png">
+		</div>
+		<a id="link_to_manual" href="https://docs.google.com/document/d/1dWP3Y7YAqfNlMFMyscspdMyB1OIzWW4lzSF4CQt89ms/pub" style="display:none;" target="_blank"></a>
+		<br/><hr/><br/>
+		
 		<b onclick="document.getElementById('link_to_video').click();" style="cursor:pointer;">
-			Intro Video:</b>
+			Intro Video (old):</b>
 		<a id="link_to_video" href="https://www.youtube.com/watch?v=250pTeLRnNw" style="display:none;" target="_blank"></a>
 		<embed width="300" height="246"
 			src="https://www.youtube.com/v/250pTeLRnNw"
 			type="application/x-shockwave-flash"
 			allowFullScreen="true">
-		<br/><hr/><br/>
-		
-		<div onclick="document.getElementById('link_to_manual').click();" style="cursor:pointer;">
-			<b>User Manual:</b>
-			<img style="border:1px solid black;" src="content/manual.png">
-		</div>
-		<a id="link_to_manual" href="content/PixlyUserManual.pdf" style="display:none;" target="_blank"></a>
 	</td>
 	<td>
 		<ul>
 		<li style="margin-left:-15px;"><div> 
 <!--style="cursor:pointer;" onclick="document.getElementById('link_to_jake').click();">-->
-			<a id="link_to_jake" href="http://cakeandturtles.nfshost.com/games/index.php" style="display:none;" target="_blank"><b>Jake Trower:</b></a><br/>
+			<a id="link_to_jake" href="http://cakeandturtles.nfshost.com/games/index.php" target="_blank"><b>Jake Trower:</b></a><br/>
 				Graduate Student at the University of Alabama. Computer Science Major, Mathematics Minor
 			<br/><br/>
 		</div></li>
@@ -77,8 +79,8 @@
 		<ul>
 			<li style="margin-left:-15px;">
 				<a href="http://gray.cs.ua.edu/" target="_blank"><b>Jeff Gray:</b></a><br/>
-				Associate Professor in the Department of Computer Science at the University of Alabama (UA)
-			</li>
+			    Professor, Computer Science,<br>
+	      University of Alabama (UA) </li>
 		</ul>
 	</td>
 </tr>

@@ -85,11 +85,7 @@ CanvasSelect.removeImage = function(id){
 	CanvasSelect.clearUploadedImages();
 	Drawr.canvases.splice(id, 1);
 	
-	var img_num = id;
-	while (localStorage.getItem("uploaded_image_"+img_num) !== null){
-		localStorage.removeItem("uploaded_image_"+img_num);
-		img_num++;
-	}
+	Main.Memory.ClearImages(id);
 
 	var selected = CanvasSelect.selected;
 	CanvasSelect.uploaded_images = [];
@@ -97,7 +93,7 @@ CanvasSelect.removeImage = function(id){
 	
 	for (var i = 0; i < uploaded_images.length; i++){
 		CanvasSelect.restoreUploadedImage(uploaded_images[i]);
-		localStorage.setItem("uploaded_image_"+(i+5), uploaded_images[i]);
+		Main.Memory.StoreImage(i+5, uploaded_images[i]);
 	}
 	CanvasSelect.updateSelectBoxCanvases();
 	
@@ -219,9 +215,9 @@ CanvasSelect.upload = function(e){
 				BlockIt.InitWorkspace();
 				BlockIt.RefreshWorkspace();
 
-				//now store uploaded image in local storage!
-				var name = "uploaded_image_" + (4+CanvasSelect.uploaded_images.length);
-				localStorage.setItem(name, img.src);
+				Main.Memory.StoreImage(
+					4+CanvasSelect.uploaded_images.length, img.src
+				);
 			}
 		}
 		img.src = event.target.result;

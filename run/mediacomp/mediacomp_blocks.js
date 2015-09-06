@@ -383,3 +383,26 @@ Blockly.JavaScript['controls_forfor'] = function(block) {
   }
   return code;
 };
+
+//CONSOLE LOG10E
+Blockly.Blocks['javascript_consoleLog'] = {
+	//Logging output to console
+	init: function(){
+		this.appendValueInput('X')
+			.setCheck(null)
+			.appendField("print");
+		this.setInputsInline(true);
+		this.appendDummyInput().appendField("to the console");
+		this.setPreviousStatement(true);
+		this.setNextStatement(true);
+		this.setTooltip("Prints the given object or string to the developer console.");
+	}
+}
+Blockly.JavaScript['javascript_consoleLog'] = function(block){
+	//Logging output to console
+	var x = Blockly.JavaScript.valueToCode(block, 'X', Blockly.JavaScript.ORDER_NONE) || '';
+	return "console.log(" + x + ")";
+}
+BlockIt['javascript_consoleLog'] = function(block, x){
+	console.log(x);
+}
