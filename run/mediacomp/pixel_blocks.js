@@ -300,9 +300,9 @@ Blockly.JavaScript['colour_hsv'] = function(block) {
       'colour_hsv',
       [ 'function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
           '(h, s, v) {',
-        '  h = Math.max(Math.min(Number(h), '+Pixly.RGB_MAX+'), 0) / '+Pixly.RGB_MAX+';',
-        '  s = Math.max(Math.min(Number(s), '+Pixly.RGB_MAX+'), 0) / '+Pixly.RGB_MAX+';',
-        '  v = Math.max(Math.min(Number(v), '+Pixly.RGB_MAX+'), 0) / '+Pixly.RGB_MAX+';',
+        '  h = Math.max(Math.min(Number(h), '+Pixly.HUE_MAX+'), 0) / '+Pixly.HUE_MAX+';',
+        '  s = Math.max(Math.min(Number(s), 100.0), 0) / 100.0;',
+        '  v = Math.max(Math.min(Number(v), 100.0), 0) / 100.0;',
 		'  var c = HSVtoRGB(h, s, v);',
         '  c.r = (\'0\' + (Math.round(c.r) || 0).toString(16)).slice(-2);',
         '  c.g = (\'0\' + (Math.round(c.g) || 0).toString(16)).slice(-2);',
@@ -318,9 +318,9 @@ BlockIt["colour_hsv"] = function(block, hue, saturation, value){
 	value = value || 0;
 	
 	var colour_hsv = function(h, s, v){
-		h = Math.max(Math.min(Number(h), Pixly.RGB_MAX), 0) / Pixly.RGB_MAX;
-        s = Math.max(Math.min(Number(s), Pixly.RGB_MAX), 0) / Pixly.RGB_MAX;
-        v = Math.max(Math.min(Number(v), Pixly.RGB_MAX), 0) / Pixly.RGB_MAX;
+		h = Math.max(Math.min(Number(h), Pixly.HUE_MAX), 0) / Pixly.HUE_MAX;
+        s = Math.max(Math.min(Number(s), 100.0), 0) / 100.0;
+        v = Math.max(Math.min(Number(v), 100.0), 0) / 100.0;
 		var c = HSVtoRGB(h, s, v);
         c.r = ('0' + (Math.round(c.r) || 0).toString(16)).slice(-2);
         c.g = ('0' + (Math.round(c.g) || 0).toString(16)).slice(-2);
