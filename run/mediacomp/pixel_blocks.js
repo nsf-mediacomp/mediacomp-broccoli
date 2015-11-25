@@ -168,7 +168,7 @@ Blockly.Blocks['mediacomp_getPixelRGB'] = {
 			.setAlign(Blockly.ALIGN_CENTRE);
 		this.setInputsInline(true);
 		this.setOutput(true, "Number");
-		this.setTooltip('Get the red, green, or blue color value of a pixel (values will be from 0 to 100)');
+		this.setTooltip('Get the red, green, or blue color value of a pixel (values will be from 0 to '+Pixly.RGB_MAX+')');
 	}
 }
 Blockly.JavaScript['mediacomp_getPixelRGB'] = function(block){
@@ -207,7 +207,7 @@ Blockly.Blocks['mediacomp_setPixelRGB'] = {
 		this.setInputsInline(true);
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
-		this.setTooltip('Set the red, green, or blue color value of a pixel (value must be between 0 and 100)');
+		this.setTooltip('Set the red, green, or blue color value of a pixel (value must be between 0 and '+Pixly.RGB_MAX+')');
 	}
 }
 Blockly.JavaScript['mediacomp_setPixelRGB'] = function(block){
@@ -300,9 +300,9 @@ Blockly.JavaScript['colour_hsv'] = function(block) {
       'colour_hsv',
       [ 'function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
           '(h, s, v) {',
-        '  h = Math.max(Math.min(Number(h), 100), 0) / 100.0;',
-        '  s = Math.max(Math.min(Number(s), 100), 0) / 100.0;',
-        '  v = Math.max(Math.min(Number(v), 100), 0) / 100.0;',
+        '  h = Math.max(Math.min(Number(h), '+Pixly.RGB_MAX+'), 0) / '+Pixly.RGB_MAX+';',
+        '  s = Math.max(Math.min(Number(s), '+Pixly.RGB_MAX+'), 0) / '+Pixly.RGB_MAX+';',
+        '  v = Math.max(Math.min(Number(v), '+Pixly.RGB_MAX+'), 0) / '+Pixly.RGB_MAX+';',
 		'  var c = HSVtoRGB(h, s, v);',
         '  c.r = (\'0\' + (Math.round(c.r) || 0).toString(16)).slice(-2);',
         '  c.g = (\'0\' + (Math.round(c.g) || 0).toString(16)).slice(-2);',
@@ -318,9 +318,9 @@ BlockIt["colour_hsv"] = function(block, hue, saturation, value){
 	value = value || 0;
 	
 	var colour_hsv = function(h, s, v){
-		h = Math.max(Math.min(Number(h), 255), 0) / 255.0;
-        s = Math.max(Math.min(Number(s), 255), 0) / 255.0;
-        v = Math.max(Math.min(Number(v), 255), 0) / 255.0;
+		h = Math.max(Math.min(Number(h), Pixly.RGB_MAX), 0) / Pixly.RGB_MAX;
+        s = Math.max(Math.min(Number(s), Pixly.RGB_MAX), 0) / Pixly.RGB_MAX;
+        v = Math.max(Math.min(Number(v), Pixly.RGB_MAX), 0) / Pixly.RGB_MAX;
 		var c = HSVtoRGB(h, s, v);
         c.r = ('0' + (Math.round(c.r) || 0).toString(16)).slice(-2);
         c.g = ('0' + (Math.round(c.g) || 0).toString(16)).slice(-2);

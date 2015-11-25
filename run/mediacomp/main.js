@@ -1,3 +1,6 @@
+var Pixly = {};
+Pixly.RGB_MAX = 255.0;
+
 Drawr.imagePath = "mediacomp/images/"
 Drawr.image_paths = [Drawr.imagePath+"redeye.png", Drawr.imagePath+"greenscreen.png", Drawr.imagePath+"tokyo.png", Drawr.imagePath+"beach.png", Drawr.imagePath+"blank.png"];
 
