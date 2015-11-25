@@ -97,11 +97,11 @@ Drawr.resetCache = function(id){
 			index: i,
 			x: x,
 			y: y,
-			//when going from global cache to pixel cache, convert from 0-255 to 0-100
-			r: Drawr.global_cache[id][i] * (100.0 / 255.0),
-			g: Drawr.global_cache[id][i+1] * (100.0 / 255.0),
-			b: Drawr.global_cache[id][i+2] * (100.0 / 255.0),
-			a: 100
+			//when going from global cache to pixel cache, convert from 0-255 to 0-Pixly.RGB_MAX
+			r: Drawr.global_cache[id][i] * (Pixly.RGB_MAX / 255.0),
+			g: Drawr.global_cache[id][i+1] * (Pixly.RGB_MAX / 255.0),
+			b: Drawr.global_cache[id][i+2] * (Pixly.RGB_MAX / 255.0),
+			a: Pixly.RGB_MAX
 		}
 		pixels.push(pixel);
 		//update the x and y variables for the pixel
@@ -159,17 +159,17 @@ Drawr.updatePixel = function(pixel, id, index, x, y){
 	//console.log(x + ", " + y + ", " + id + ", " + index);
 	//console.log(pixel);
 	
-	//update global cache! (make sure to convert from 0 - 100 back to 0 - 255)
+	//update global cache! (make sure to convert from 0 - Pixly.RGB_MAX back to 0 - 255)
 	var cache = Drawr.global_cache[id];
-	cache[index+0] = pixel.r * (255.0 / 100.0);
-	cache[index+1] = pixel.g * (255.0 / 100.0);
-	cache[index+2] = pixel.b * (255.0 / 100.0);
+	cache[index+0] = pixel.r * (255.0 / Pixly.RGB_MAX);
+	cache[index+1] = pixel.g * (255.0 / Pixly.RGB_MAX);
+	cache[index+2] = pixel.b * (255.0 / Pixly.RGB_MAX);
 	cache[index+3] = 255;
 
 	Drawr.pixel_cache[id][index/4].r = pixel.r;
 	Drawr.pixel_cache[id][index/4].g = pixel.g;
 	Drawr.pixel_cache[id][index/4].b = pixel.b;
-	Drawr.pixel_cache[id][index/4].a = 100;
+	Drawr.pixel_cache[id][index/4].a = Pixly.RGB_MAX;
 	
     // draw a 1x1 rectangle so the image reflects the cache
     // INSTEAD: flushCache() at the end of execution, significantly faster.
@@ -210,10 +210,10 @@ Drawr.setPixel2 = function(pixel, pixel2){
 		pixel2 = hexToRgb(pixel2);
 		pixel2['a'] = 255;
 		
-		//now convert rgb values from 255 (hex) to 100 (blockly standard)
-		pixel2.r *= (100 / 255);
-		pixel2.g *= (100 / 255);
-		pixel2.b *= (100 / 255);
+		//now convert rgb values from 255 (hex) to Pixly.RGB_MAX (blockly standard)
+		pixel2.r *= (Pixly.RGB_MAX / 255);
+		pixel2.g *= (Pixly.RGB_MAX / 255);
+		pixel2.b *= (Pixly.RGB_MAX / 255);
 	}
 	
 	pixel2.id = id;

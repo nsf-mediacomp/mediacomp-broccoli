@@ -5,6 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Pixly: Media Computation</title>
   <link rel="icon" type="image/ico" href="../favicon.ico">
+  
+<script>
+var Pixly = {};
+Pixly.RGB_MAX = 100.0;
+Pixly.HUE_MAX = Pixly.RGB_MAX == 255.0 ? 360.0 : 100.0;
+</script>
+  
   <!--JQUERY-->
   <script type="text/javascript" src="lib/jquery.js"></script>
   <!--Import Dialog.js-->
@@ -449,12 +456,12 @@
       <block type="colour_rgb">
 		<value name="RED">
 		  <block type="math_number">
-			<field name="NUM">100</field>
+			<field name="NUM">0</field>
 		  </block>
 		</value>
 		<value name="BLUE">
 		  <block type="math_number">
-			<field name="NUM">50</field>
+			<field name="NUM">0</field>
 		  </block>
 		</value>
 		<value name="GREEN">
