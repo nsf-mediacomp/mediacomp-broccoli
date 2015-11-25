@@ -59,9 +59,9 @@ Blockly.JavaScript['colour_rgb'] = function(block) {
       'colour_rgb',
       [ 'function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
           '(r, g, b) {',
-        '  r = Math.max(Math.min(Number(r), 100), 0) * 2.55;',
-        '  g = Math.max(Math.min(Number(g), 100), 0) * 2.55;',
-        '  b = Math.max(Math.min(Number(b), 100), 0) * 2.55;',
+        '  r = Math.max(Math.min(Number(r), '+Pixly.RGB_MAX+'), 0) * 255 / '+Pixly.RGB_MAX+';',
+        '  g = Math.max(Math.min(Number(g), '+Pixly.RGB_MAX+'), 0) * 255 / '+Pixly.RGB_MAX+';',
+        '  b = Math.max(Math.min(Number(b), '+Pixly.RGB_MAX+'), 0) * 255 / '+Pixly.RGB_MAX+';',
         '  r = (\'0\' + (Math.round(r) || 0).toString(16)).slice(-2);',
         '  g = (\'0\' + (Math.round(g) || 0).toString(16)).slice(-2);',
         '  b = (\'0\' + (Math.round(b) || 0).toString(16)).slice(-2);',
